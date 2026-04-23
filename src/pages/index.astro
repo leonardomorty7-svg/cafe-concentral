@@ -1,0 +1,28 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Hero from '../components/Hero';
+import ProductGrid from '../components/ProductGrid';
+import ProcessSection from '../components/ProcessSection';
+import ExportSection from '../components/ExportSection';
+import CTA from '../components/CTA';
+---
+
+<MainLayout title="Café Concentral | El Alma de Colombia">
+	<Hero client:load />
+	
+	<section id="about" class="section-container text-center">
+		<span class="text-brand-accent font-bold uppercase tracking-widest text-xs mb-4 block">Nuestra Esencia</span>
+		<h2 class="text-4xl md:text-5xl font-bold mb-8">Pasión por el origen, rigor en el detalle.</h2>
+		<p className="text-neutral-500 max-w-2xl mx-auto leading-relaxed text-lg">
+			Café Concentral nació de la necesidad de reconectar al consumidor final con la tierra. No solo vendemos café; entregamos el resultado de generaciones de conocimiento cafetero, procesado bajo los más altos estándares tecnológicos y humanos.
+		</p>
+	</section>
+
+	<ProductGrid client:visible />
+	
+	<ProcessSection client:visible />
+	
+	<ExportSection client:visible />
+	
+	<CTA client:visible />
+</MainLayout>
