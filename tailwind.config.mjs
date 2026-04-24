@@ -4,14 +4,27 @@ export default {
 	theme: {
 		extend: {
       colors: {
-        brand: {
-          dark: '#1a1a1a',
-          light: '#f9f9f9',
-          accent: '#8b5e34',
+        base: {
+          black: "#0B0B0B",
+          softBlack: "#121212",
+          white: "#FFFFFF",
+          muted: "#6B6B6B",
+        },
+        neutral: {
+          cream: "#F5F1EB",
+          warm: "#D6D1C9",
+        },
+        coffee: {
+          light: "#6B4F3A",
+          dark: "#3E2C23",
+        },
+        accent: {
+          gold: "#C6A77D",
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['Playfair Display', 'serif'],
+        sans: ['Manrope', 'Inter', 'system-ui', 'sans-serif'],
       },
     },
 	},

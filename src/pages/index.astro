@@ -1,28 +1,95 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import IntroAnimation from '../components/IntroAnimation';
 import Hero from '../components/Hero';
-import ProductGrid from '../components/ProductGrid';
+
 import ProcessSection from '../components/ProcessSection';
+import ExperienceSection from '../components/ExperienceSection.jsx';
+import ProductGrid from '../components/ProductGrid';
 import ExportSection from '../components/ExportSection';
+import FeaturedProducts from '../components/FeaturedProducts';
+import ArchitecturalSection from '../components/ArchitecturalSection.jsx';
 import CTA from '../components/CTA';
+
+
+const CATEGORIES = [
+  {
+    id: 1,
+    name: 'Grano Entero',
+    description: 'La máxima pureza y frescura para los amantes del ritual.',
+    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=2070&auto=format&fit=crop',
+    tag: 'Premium'
+  },
+  {
+    id: 2,
+    name: 'Café Molido',
+    description: 'Equilibrio perfecto y practicidad para tu mañana.',
+    image: 'https://images.unsplash.com/photo-1459755486867-b55449bb39ff?q=80&w=2069&auto=format&fit=crop',
+    tag: 'Clásico'
+  },
+  {
+    id: 3,
+    name: 'Tostión Especial',
+    description: 'Perfiles de sabor únicos desarrollados artesanalmente.',
+    image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop',
+    tag: 'Signature'
+  }
+];
+
+const PRODUCTS = [
+  {
+    id: 'hacienda-la-esperanza',
+    name: 'Hacienda La Esperanza',
+    tastingNotes: 'Chocolate amargo, Caramelo, Avellana',
+    price: '$45.000',
+    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=2070&auto=format&fit=crop',
+    tag: 'Edición Limitada',
+    category: 'Huila, Colombia'
+  },
+  {
+    id: 'valle-del-cauca-reserva',
+    name: 'Valle del Cauca Reserva',
+    tastingNotes: 'Frutos rojos, Cítricos, Panela',
+    price: '$38.000',
+    image: 'https://images.unsplash.com/photo-1580915411954-282cb1b0d780?q=80&w=1974&auto=format&fit=crop',
+    tag: 'Más Vendido',
+    category: 'Cauca, Colombia'
+  },
+  {
+    id: 'montanas-de-antioquia',
+    name: 'Montañas de Antioquia',
+    tastingNotes: 'Vainilla, Almendra, Jazmín',
+    price: '$32.000',
+    image: 'https://images.unsplash.com/photo-1459755486867-b55449bb39ff?q=80&w=2069&auto=format&fit=crop',
+    tag: 'Nuevo',
+    category: 'Antioquia, Colombia'
+  }
+];
 ---
 
 <MainLayout title="Café Concentral | El Alma de Colombia">
+	<IntroAnimation client:only="react" />
 	<Hero client:load />
 	
 	<section id="about" class="section-container text-center">
-		<span class="text-brand-accent font-bold uppercase tracking-widest text-xs mb-4 block">Nuestra Esencia</span>
-		<h2 class="text-4xl md:text-5xl font-bold mb-8">Pasión por el origen, rigor en el detalle.</h2>
-		<p className="text-neutral-500 max-w-2xl mx-auto leading-relaxed text-lg">
+		<span class="label-premium mx-auto">Nuestra Esencia</span>
+		<h2 class="text-4xl md:text-6xl mb-10">Pasión por el origen, <br /><span class="italic-serif text-accent-gold">rigor en el detalle.</span></h2>
+		<p class="text-base-muted max-w-3xl mx-auto leading-relaxed text-lg font-light">
 			Café Concentral nació de la necesidad de reconectar al consumidor final con la tierra. No solo vendemos café; entregamos el resultado de generaciones de conocimiento cafetero, procesado bajo los más altos estándares tecnológicos y humanos.
 		</p>
 	</section>
 
-	<ProductGrid client:visible />
-	
 	<ProcessSection client:visible />
 	
+	<ExperienceSection client:visible />
+
+	<ProductGrid client:visible products={CATEGORIES} />
+	
 	<ExportSection client:visible />
+
+	<FeaturedProducts client:visible products={PRODUCTS} />
+	
+	<ArchitecturalSection client:visible />
 	
 	<CTA client:visible />
 </MainLayout>

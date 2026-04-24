@@ -1,62 +1,64 @@
 import React from 'react';
 
-const products = [
-  {
-    id: 1,
-    name: 'Grano Entero',
-    description: 'La máxima pureza y frescura para los amantes del ritual.',
-    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=2070&auto=format&fit=crop',
-    tag: 'Premium'
-  },
-  {
-    id: 2,
-    name: 'Café Molido',
-    description: 'Equilibrio perfecto y practicidad para tu mañana.',
-    image: 'https://images.unsplash.com/photo-1459755486867-b55449bb39ff?q=80&w=2069&auto=format&fit=crop',
-    tag: 'Clásico'
-  },
-  {
-    id: 3,
-    name: 'Tostión Especial',
-    description: 'Perfiles de sabor únicos desarrollados artesanalmente.',
-    image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop',
-    tag: 'Signature'
-  }
-];
+const ProductCard = ({ name, description, image, tag }) => (
+  <div className="group cursor-pointer transition-all duration-500 ease-out hover:scale-[1.03] hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] bg-white rounded-sm overflow-hidden p-4">
+    <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-[#F5F1EB] mb-8">
+      <img 
+        src={image} 
+        alt={name}
+        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+      />
+      {tag && (
+        <span className="absolute top-3 left-3 text-[10px] uppercase tracking-widest bg-white px-3 py-1 rounded-full shadow-sm font-bold text-[#1A1A1A] z-10">
+          {tag}
+        </span>
+      )}
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
+    </div>
+    
+    <div className="flex flex-col px-2 pb-4">
+      <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-2">
+        Categoría
+      </p>
+      
+      <h3 className="font-serif text-xl text-[#1A1A1A] mb-2 group-hover:text-[#A68A64] transition-colors duration-300">
+        {name}
+      </h3>
+      
+      <p className="text-sm text-gray-500 font-light mb-6 line-clamp-2">
+        {description}
+      </p>
+      
+      <button className="self-start text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-transparent hover:border-[#A68A64] transition-all duration-300 py-1">
+        Explorar →
+      </button>
+    </div>
+  </div>
+);
 
-const ProductGrid = () => {
+const ProductGrid = ({ title = "Nuestras Categorías", products = [] }) => {
+  if (!products || products.length === 0) return null;
+
   return (
-    <section className="section-container bg-white" id="productos">
-      <div className="text-center mb-16">
-        <h2 className="text-3xl md:text-5xl font-bold mb-4">Nuestras Categorías</h2>
-        <div className="w-20 h-1 bg-brand-accent mx-auto mb-6" />
-        <p className="text-neutral-500 max-w-xl mx-auto">
-          Seleccionamos cuidadosamente cada lote para garantizar una experiencia sensorial incomparable.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {products.map((product) => (
-          <div key={product.id} className="group cursor-pointer">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-neutral-100 mb-6">
-              <img 
-                src={product.image} 
-                alt={product.name}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute top-4 left-4">
-                <span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-neutral-900">
-                  {product.tag}
-                </span>
-              </div>
-            </div>
-            <h3 className="text-xl font-bold mb-2 group-hover:text-brand-accent transition-colors">{product.name}</h3>
-            <p className="text-neutral-500 text-sm leading-relaxed mb-4">{product.description}</p>
-            <a href="/productos" className="text-sm font-semibold border-b border-neutral-900 pb-1 hover:border-brand-accent hover:text-brand-accent transition-all inline-block">
-              Ver más
-            </a>
+    <section className="py-32 px-6 bg-[#F5F1EB]" id="productos">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-24 flex flex-col md:flex-row justify-between items-end gap-10">
+          <div className="max-w-2xl">
+            <span className="text-[11px] uppercase tracking-[0.3em] text-[#A68A64] font-bold mb-6 block">Colección</span>
+            <h2 className="text-4xl md:text-5xl font-serif text-[#1A1A1A] leading-tight">
+              Categorías <span className="italic text-[#A68A64]">Exclusivas</span>
+            </h2>
           </div>
-        ))}
+          <p className="text-[#6B6B6B] max-w-sm font-light text-base leading-relaxed">
+            Seleccionamos cuidadosamente cada lote para garantizar una experiencia sensorial incomparable en cada preparación.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {products.map((product) => (
+            <ProductCard key={product.id} {...product} />
+          ))}
+        </div>
       </div>
     </section>
   );
