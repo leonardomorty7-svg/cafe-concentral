@@ -1,7 +1,10 @@
 import React from 'react';
 
-const ProductCard = ({ name, description, image, tag }) => (
-  <div className="group cursor-pointer transition-all duration-500 ease-out hover:scale-[1.03] hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] bg-white rounded-sm overflow-hidden p-4">
+const ProductCard = ({ id, name, description, image, tag, category, subcategory }) => (
+  <a
+    href={`/products/${id}`}
+    className="group block transition-all duration-500 ease-out hover:scale-[1.03] hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] bg-white rounded-sm overflow-hidden p-4"
+  >
     <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-[#F5F1EB] mb-8">
       <img 
         src={image} 
@@ -18,7 +21,7 @@ const ProductCard = ({ name, description, image, tag }) => (
     
     <div className="flex flex-col px-2 pb-4">
       <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-2">
-        Categoría
+        {category ?? subcategory ?? 'Café'}
       </p>
       
       <h3 className="font-serif text-xl text-[#1A1A1A] mb-2 group-hover:text-[#A68A64] transition-colors duration-300">
@@ -29,12 +32,13 @@ const ProductCard = ({ name, description, image, tag }) => (
         {description}
       </p>
       
-      <button className="self-start text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-transparent hover:border-[#A68A64] transition-all duration-300 py-1">
+      <span className="self-start text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-transparent group-hover:border-[#A68A64] transition-all duration-300 py-1">
         Explorar →
-      </button>
+      </span>
     </div>
-  </div>
+  </a>
 );
+
 
 const ProductGrid = ({ title = "Nuestras Categorías", products = [] }) => {
   if (!products || products.length === 0) return null;

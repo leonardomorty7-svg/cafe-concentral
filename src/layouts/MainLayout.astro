@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import FloatingWhatsApp from '../components/FloatingWhatsApp';
 
 interface Props {
 	title?: string;
@@ -33,6 +34,7 @@ const {
 			<slot />
 		</main>
 		<Footer />
+		<FloatingWhatsApp client:load />
 	</body>
 </html>
 

@@ -8,63 +8,27 @@ import ExperienceSection from '../components/ExperienceSection.jsx';
 import ProductGrid from '../components/ProductGrid';
 import ExportSection from '../components/ExportSection';
 import FeaturedProducts from '../components/FeaturedProducts';
+import ProductSlider from '../components/ProductSlider';
 import ArchitecturalSection from '../components/ArchitecturalSection.jsx';
 import CTA from '../components/CTA';
 
+import { getExclusivas, getColeccion } from '../lib/products';
 
-const CATEGORIES = [
-  {
-    id: 1,
-    name: 'Grano Entero',
-    description: 'La máxima pureza y frescura para los amantes del ritual.',
-    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=2070&auto=format&fit=crop',
-    tag: 'Premium'
-  },
-  {
-    id: 2,
-    name: 'Café Molido',
-    description: 'Equilibrio perfecto y practicidad para tu mañana.',
-    image: 'https://images.unsplash.com/photo-1459755486867-b55449bb39ff?q=80&w=2069&auto=format&fit=crop',
-    tag: 'Clásico'
-  },
-  {
-    id: 3,
-    name: 'Tostión Especial',
-    description: 'Perfiles de sabor únicos desarrollados artesanalmente.',
-    image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop',
-    tag: 'Signature'
-  }
-];
+// "Categorías Exclusivas" — 3 curated products, max visual diversity, sorted by priority
+const GRID_PRODUCTS = getExclusivas().map((p) => ({
+  ...p,
+  description: p.tags.join(' · '),
+  tag: p.tags[0] ?? null,
+}));
 
-const PRODUCTS = [
-  {
-    id: 'hacienda-la-esperanza',
-    name: 'Hacienda La Esperanza',
-    tastingNotes: 'Chocolate amargo, Caramelo, Avellana',
-    price: '$45.000',
-    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=2070&auto=format&fit=crop',
-    tag: 'Edición Limitada',
-    category: 'Huila, Colombia'
-  },
-  {
-    id: 'valle-del-cauca-reserva',
-    name: 'Valle del Cauca Reserva',
-    tastingNotes: 'Frutos rojos, Cítricos, Panela',
-    price: '$38.000',
-    image: 'https://images.unsplash.com/photo-1580915411954-282cb1b0d780?q=80&w=1974&auto=format&fit=crop',
-    tag: 'Más Vendido',
-    category: 'Cauca, Colombia'
-  },
-  {
-    id: 'montanas-de-antioquia',
-    name: 'Montañas de Antioquia',
-    tastingNotes: 'Vainilla, Almendra, Jazmín',
-    price: '$32.000',
-    image: 'https://images.unsplash.com/photo-1459755486867-b55449bb39ff?q=80&w=2069&auto=format&fit=crop',
-    tag: 'Nuevo',
-    category: 'Antioquia, Colombia'
-  }
-];
+// "Selección de Temporada" — curated colección, zero overlap with exclusivas
+const FEATURED_PRODUCTS = getColeccion().map((p) => ({
+  ...p,
+  tastingNotes: p.tags.join(', '),
+  price: null,
+  tag: p.tags[0] ?? null,
+  category: 'Café Concentral',
+}));
 ---
 
 <MainLayout title="Café Concentral | El Alma de Colombia">
@@ -83,11 +47,11 @@ const PRODUCTS = [
 	
 	<ExperienceSection client:visible />
 
-	<ProductGrid client:visible products={CATEGORIES} />
+	<ProductGrid client:visible products={GRID_PRODUCTS} />
 	
 	<ExportSection client:visible />
 
-	<FeaturedProducts client:visible products={PRODUCTS} />
+	<ProductSlider client:visible products={FEATURED_PRODUCTS} />
 	
 	<ArchitecturalSection client:visible />
 	

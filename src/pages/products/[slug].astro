@@ -1,0 +1,307 @@
+---
+/**
+ * /src/pages/products/[slug].astro
+ *
+ * Dynamic Product Detail Page.
+ * - Routes are pre-generated at build time via getStaticPaths()
+ * - Slug matches product.id from products.js
+ * - All data comes from the existing product catalogue — no invented content
+ */
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getAllProducts } from '../../lib/products';
+
+export async function getStaticPaths() {
+  const products = getAllProducts();
+  return products.map((product) => ({
+    params: { slug: product.id },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+
+// Safety guard — getStaticPaths ensures this never fires in production,
+// but keeps local dev and edge cases safe.
+if (!product) {
+  return Astro.redirect('/productos');
+}
+
+const {
+  name,
+  id,
+  category,
+  subcategory,
+  tags = [],
+  image,
+  images = [],
+} = product;
+
+// Human-readable category label
+const categoryLabel =
+  category === 'cafe' ? 'Café' :
+  category === 'accesorios' ? 'Accesorios' :
+  category === 'experiencias' ? 'Experiencias' :
+  category;
+
+// Use all available images; fall back to the primary image
+const gallery = images.length > 1 ? images : [image];
+
+// Primary tag used as the "badge"
+const badge = tags[0] ?? null;
+
+// Remaining tags used as sensory / descriptive chips
+const chips = tags.slice(1);
+---
+
+<MainLayout
+  title={`${name} | Café Concentral`}
+  description={`Descubre ${name} — ${tags.join(', ')}. Parte de la colección ${categoryLabel} de Café Concentral.`}
+>
+  <!-- Ensure page always starts at top -->
+  <script>window.scrollTo(0, 0);</script>
+
+  <!-- ─── HERO ──────────────────────────────────────────────────────────── -->
+  <section class="min-h-screen bg-[#F5F1EB] pt-28 pb-20">
+    <div class="max-w-7xl mx-auto px-6">
+
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#A68A64] font-bold mb-14" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[#1A1A1A] transition-colors duration-300">Inicio</a>
+        <span class="text-[#D6D1C9]">—</span>
+        <a href="/productos" class="hover:text-[#1A1A1A] transition-colors duration-300">Productos</a>
+        <span class="text-[#D6D1C9]">—</span>
+        <span class="text-[#1A1A1A]/50">{name}</span>
+      </nav>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-24 items-start">
+
+        <!-- LEFT — Primary image -->
+        <div class="relative">
+          <!-- Badge -->
+          {badge && (
+            <span class="absolute top-5 left-5 z-10 text-[10px] uppercase tracking-widest bg-white px-3 py-1 rounded-full shadow-sm font-bold text-[#1A1A1A]">
+              {badge}
+            </span>
+          )}
+          <div class="aspect-[4/5] rounded-sm overflow-hidden bg-white shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
+            <img
+              src={image}
+              alt={name}
+              class="w-full h-full object-cover"
+              loading="eager"
+            />
+          </div>
+
+          <!-- Thumbnail strip (only shown if multiple images exist) -->
+          {gallery.length > 1 && (
+            <div class="flex gap-3 mt-4">
+              {gallery.map((src, i) => (
+                <div class={`flex-1 aspect-square rounded-sm overflow-hidden bg-white cursor-pointer border-2 transition-all duration-300 ${i === 0 ? 'border-[#A68A64]' : 'border-transparent hover:border-[#A68A64]/50'}`}>
+                  <img src={src} alt={`${name} vista ${i + 1}`} class="w-full h-full object-cover" loading="lazy" />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <!-- RIGHT — Product info -->
+        <div class="flex flex-col lg:pt-6">
+          
+          <!-- Brand Mark — Subtle & Elegant -->
+          <div class="mb-10 opacity-80">
+            <img 
+              src="/assets/brand/logo-primary-gold.svg" 
+              alt="Café Concentral" 
+              class="h-8 w-auto grayscale brightness-110"
+            />
+          </div>
+
+          <!-- Category eyebrow -->
+          <span class="text-[10px] uppercase tracking-[0.4em] text-[#A68A64] font-bold mb-4 block">
+            {categoryLabel} <span class="mx-2 text-[#D6D1C9]">/</span> {subcategory}
+          </span>
+
+          <!-- Product name -->
+          <h1 class="font-serif text-5xl md:text-6xl xl:text-7xl text-[#1A1A1A] leading-[1.05] tracking-[-0.03em] mb-10">
+            {name}
+          </h1>
+
+          <!-- Tags / sensory chips -->
+          {tags.length > 0 && (
+            <div class="flex flex-wrap gap-2 mb-10">
+              {tags.map((tag) => (
+                <span class="text-[10px] uppercase tracking-[0.18em] font-bold text-[#1A1A1A] bg-white border border-[#1A1A1A]/8 px-4 py-2 rounded-full">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <!-- Divider -->
+          <div class="w-12 h-px bg-[#A68A64] mb-10"></div>
+
+          <!-- Category description — editorially tailored per category -->
+          <p class="text-[#6B6B6B] font-light text-lg leading-[1.8] mb-14 max-w-md">
+            {category === 'cafe'
+              ? `Una selección de origen único, procesada y tostada con rigor para elevar el perfil sensorial natural de la región.`
+              : `Herramienta de precisión diseñada para complementar la experiencia del café de especialidad en cada vertido.`
+            }
+          </p>
+
+          <!-- Primary CTA -->
+          <div class="flex flex-col sm:flex-row gap-5 items-start mt-4">
+            <a
+              href={`https://wa.me/573000000000?text=${encodeURIComponent(`Hola, estoy interesado en el producto ${name}. Me gustaría recibir más información.`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-primary px-12 py-6 shadow-xl shadow-accent-gold/10 hover:shadow-accent-gold/20 flex items-center gap-3"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="opacity-90">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+              Solicitar por WhatsApp
+            </a>
+            <a
+              href="/productos"
+              class="btn-secondary px-12 py-6 border-[#1A1A1A]/10"
+            >
+              Explorar Colección
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SENSORY PROFILE ──────────────────────────────────────────────── -->
+  {tags.length > 0 && (
+    <section class="py-24 bg-white">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+
+          <div>
+            <span class="label-premium">Perfil Sensorial</span>
+            <h2 class="font-serif text-3xl md:text-4xl text-[#1A1A1A] leading-tight mb-8">
+              Notas y <span class="italic text-[#A68A64]">carácter.</span>
+            </h2>
+            <p class="text-[#6B6B6B] font-light leading-relaxed">
+              Cada producto de Café Concentral es seleccionado por su perfil único. Las siguientes notas reflejan la identidad sensorial de esta selección.
+            </p>
+          </div>
+
+          <!-- Chips grid -->
+          <div class="flex flex-wrap gap-3">
+            {tags.map((note, i) => (
+              <div class="group flex items-center gap-3 bg-[#F5F1EB] rounded-sm px-5 py-4 transition-all duration-300 hover:bg-[#A68A64]/10">
+                <span class="text-[#A68A64] font-serif text-lg font-medium">{String(i + 1).padStart(2, '0')}</span>
+                <span class="text-[11px] uppercase tracking-[0.2em] font-bold text-[#1A1A1A]">{note}</span>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ─── ORIGIN / CATEGORY DETAIL ────────────────────────────────────── -->
+  <section class="py-24 bg-[#F5F1EB]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl">
+        <span class="label-premium">
+          {category === 'cafe' ? 'Origen & Proceso' : 'Detalles del Producto'}
+        </span>
+        <h2 class="font-serif text-3xl md:text-4xl text-[#1A1A1A] leading-tight mb-12">
+          Lo que hace <span class="italic text-[#A68A64]">especial</span> a esta selección.
+        </h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <!-- Categoría -->
+          <div class="border-t border-[#1A1A1A]/8 pt-6">
+            <p class="text-[10px] uppercase tracking-[0.25em] text-[#A68A64] font-bold mb-2">Categoría</p>
+            <p class="font-serif text-lg text-[#1A1A1A]">{categoryLabel}</p>
+          </div>
+
+          <!-- Tipo -->
+          <div class="border-t border-[#1A1A1A]/8 pt-6">
+            <p class="text-[10px] uppercase tracking-[0.25em] text-[#A68A64] font-bold mb-2">Tipo</p>
+            <p class="font-serif text-lg text-[#1A1A1A] capitalize">{subcategory.replace(/-/g, ' ')}</p>
+          </div>
+
+          <!-- Tags restantes como pares clave-valor -->
+          {tags.map((tag) => (
+            <div class="border-t border-[#1A1A1A]/8 pt-6">
+              <p class="text-[10px] uppercase tracking-[0.25em] text-[#A68A64] font-bold mb-2">Perfil</p>
+              <p class="font-serif text-lg text-[#1A1A1A]">{tag}</p>
+            </div>
+          ))}
+
+          <!-- País de origen -->
+          <div class="border-t border-[#1A1A1A]/8 pt-6">
+            <p class="text-[10px] uppercase tracking-[0.25em] text-[#A68A64] font-bold mb-2">Origen</p>
+            <p class="font-serif text-lg text-[#1A1A1A]">Colombia</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── BRAND STORY ──────────────────────────────────────────────────── -->
+  <section class="py-24 bg-[#1A1A1A]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+        <div>
+          <span class="text-[11px] uppercase tracking-[0.3em] text-[#A68A64] font-bold mb-6 block">
+            Nuestra Promesa
+          </span>
+          <h2 class="font-serif text-3xl md:text-5xl text-white leading-tight mb-8">
+            Cultivado con <span class="italic text-[#A68A64]">propósito.</span>
+          </h2>
+          <p class="text-white/60 font-light text-base leading-relaxed mb-6">
+            Café Concentral nació de la necesidad de reconectar al consumidor final con la tierra. Cada selección que ofrecemos es el resultado de generaciones de conocimiento cafetero, procesado bajo los más altos estándares tecnológicos y humanos.
+          </p>
+          <p class="text-white/60 font-light text-base leading-relaxed">
+            <strong class="text-white font-medium">{name}</strong> es parte de esa tradición — seleccionado, procesado y entregado con el mismo rigor que aplicamos a cada lote que sale de nuestra operación.
+          </p>
+        </div>
+
+        <!-- Visual accent -->
+        <div class="relative aspect-square rounded-sm overflow-hidden opacity-80">
+          <img
+            src={image}
+            alt={`${name} — Café Concentral`}
+            class="w-full h-full object-cover grayscale contrast-110"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/70 to-transparent"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SECONDARY CTA ────────────────────────────────────────────────── -->
+  <section class="py-24 bg-[#F5F1EB]">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <span class="label-premium mx-auto">¿Te interesa esta selección?</span>
+      <h2 class="font-serif text-3xl md:text-5xl text-[#1A1A1A] leading-tight mb-6 mx-auto">
+        Hablemos sobre <span class="italic text-[#A68A64]">tu pedido.</span>
+      </h2>
+      <p class="text-[#6B6B6B] font-light leading-relaxed mb-12 mx-auto">
+        Nuestro equipo está disponible para guiarte en la selección, preparación y pedido personalizado.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/contacto" class="btn-primary">
+          Hablar con un experto
+        </a>
+        <a href="/productos" class="btn-secondary">
+          Ver más productos
+        </a>
+      </div>
+    </div>
+  </section>
+
+</MainLayout>
