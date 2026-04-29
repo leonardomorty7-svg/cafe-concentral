@@ -9,6 +9,7 @@
  */
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getAllProducts } from '../../lib/products';
+import ProductGallery from '../../components/ProductGallery.jsx';
 
 export async function getStaticPaths() {
   const products = getAllProducts();
@@ -75,46 +76,16 @@ const chips = tags.slice(1);
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-24 items-start">
 
-        <!-- LEFT — Primary image -->
-        <div class="relative">
-          <!-- Badge -->
-          {badge && (
-            <span class="absolute top-5 left-5 z-10 text-[10px] uppercase tracking-widest bg-white px-3 py-1 rounded-full shadow-sm font-bold text-[#1A1A1A]">
-              {badge}
-            </span>
-          )}
-          <div class="aspect-[4/5] rounded-sm overflow-hidden bg-white shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
-            <img
-              src={image}
-              alt={name}
-              class="w-full h-full object-cover"
-              loading="eager"
-            />
-          </div>
-
-          <!-- Thumbnail strip (only shown if multiple images exist) -->
-          {gallery.length > 1 && (
-            <div class="flex gap-3 mt-4">
-              {gallery.map((src, i) => (
-                <div class={`flex-1 aspect-square rounded-sm overflow-hidden bg-white cursor-pointer border-2 transition-all duration-300 ${i === 0 ? 'border-[#A68A64]' : 'border-transparent hover:border-[#A68A64]/50'}`}>
-                  <img src={src} alt={`${name} vista ${i + 1}`} class="w-full h-full object-cover" loading="lazy" />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        <!-- LEFT — Interactive image gallery -->
+        <ProductGallery
+          client:load
+          images={gallery}
+          name={name}
+          badge={badge}
+        />
 
         <!-- RIGHT — Product info -->
-        <div class="flex flex-col lg:pt-6">
-          
-          <!-- Brand Mark — Subtle & Elegant -->
-          <div class="mb-10 opacity-80">
-            <img 
-              src="/assets/brand/logo-primary-gold.svg" 
-              alt="Café Concentral" 
-              class="h-8 w-auto grayscale brightness-110"
-            />
-          </div>
+        <div class="flex flex-col">
 
           <!-- Category eyebrow -->
           <span class="text-[10px] uppercase tracking-[0.4em] text-[#A68A64] font-bold mb-4 block">

@@ -1,9 +1,9 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import ProductGrid from '../components/ProductGrid';
-import { getExclusivas } from '../lib/products';
+import { getAllProducts } from '../lib/products';
 
-const GRID_PRODUCTS = getExclusivas().map((p) => ({
+const GRID_PRODUCTS = getAllProducts().map((p) => ({
   ...p,
   description: p.tags.join(' · '),
   tag: p.tags[0] ?? null,

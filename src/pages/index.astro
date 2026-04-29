@@ -47,7 +47,7 @@ const FEATURED_PRODUCTS = getColeccion().map((p) => ({
 	
 	<ExperienceSection client:visible />
 
-	<ProductGrid client:visible products={GRID_PRODUCTS} />
+	<ProductGrid client:visible products={GRID_PRODUCTS} limit={3} />
 	
 	<ExportSection client:visible />
 

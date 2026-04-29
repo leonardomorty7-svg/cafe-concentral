@@ -45,10 +45,11 @@ const ProductCard = ({ id, name, tag, description, category, subcategory, image 
   </a>
 );
 
-const ProductGrid = ({ title = "Nuestras Categorías", products = [] }) => {
+const ProductGrid = ({ title = "Nuestras Categorías", products = [], limit = 0 }) => {
   if (!products || products.length === 0) return null;
 
-  const featuredProducts = products.slice(0, 3);
+  // limit=0 means show all; any positive number caps the list
+  const displayedProducts = limit > 0 ? products.slice(0, limit) : products;
 
   return (
     <section className="py-32 md:py-48 px-6 bg-[#F5F1EB]" id="productos">
@@ -66,7 +67,7 @@ const ProductGrid = ({ title = "Nuestras Categorías", products = [] }) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-20 gap-x-10">
-          {featuredProducts.map((product, idx) => {
+          {displayedProducts.map((product, idx) => {
             const delayClass = `delay-${(idx % 3) * 100 + 100}`;
             return (
               <div key={product.id} className={`${delayClass} reveal`}>
@@ -76,14 +77,16 @@ const ProductGrid = ({ title = "Nuestras Categorías", products = [] }) => {
           })}
         </div>
 
-        <div className="mt-20 flex justify-center reveal delay-400">
-          <a 
-            href="/productos" 
-            className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1.5 hover:border-[#A68A64] hover:text-[#A68A64] transition-all duration-300 flex items-center gap-2 group"
-          >
-            Ver toda la colección <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-          </a>
-        </div>
+        {limit > 0 && (
+          <div className="mt-20 flex justify-center reveal delay-400">
+            <a 
+              href="/productos" 
+              className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1.5 hover:border-[#A68A64] hover:text-[#A68A64] transition-all duration-300 flex items-center gap-2 group"
+            >
+              Ver toda la colección <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </a>
+          </div>
+        )}
       </div>
     </section>
   );
