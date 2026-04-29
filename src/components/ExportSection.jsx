@@ -3,20 +3,24 @@ import React from 'react';
 const ExportSection = () => {
   const services = [
     {
-      title: 'Exportación B2B',
-      desc: 'Logística simplificada y certificada para envíos internacionales a gran escala.'
+      titleLine1: 'Exportación',
+      titleLine2: 'Internacional',
+      desc: 'Llevamos café del Huila a mercados globales con estándares de calidad consistentes.'
     },
     {
-      title: 'Marca Blanca',
-      desc: 'Desarrollamos tu propia línea de café con la calidad de origen Concentral.'
+      titleLine1: 'Red de',
+      titleLine2: 'Caficultores',
+      desc: 'Más de 3.500 familias que cultivan tradición, sostenibilidad y excelencia.'
     },
     {
-      title: 'Suscripción Office',
-      desc: 'Suministro recurrente para empresas que valoran la cultura del buen café.'
+      titleLine1: 'Calidad',
+      titleLine2: 'Certificada',
+      desc: 'Procesos controlados que garantizan trazabilidad y perfil sensorial único.'
     },
     {
-      title: 'Asesoría Barista',
-      desc: 'Capacitación técnica para maximizar el potencial de nuestro café en tu barra.'
+      titleLine1: 'Comercialización',
+      titleLine2: 'Especializada',
+      desc: 'Conectamos origen y mercado con una cadena de valor sólida.'
     }
   ];
 
@@ -32,10 +36,10 @@ const ExportSection = () => {
         <div className="max-w-4xl mb-28">
           <span className="label-premium text-accent-gold">Global Presence</span>
           <h2 className="text-base-white mb-10 leading-tight">
-            Llevamos lo mejor de Colombia <br />
-            <span className="italic-serif text-accent-gold">al mundo entero.</span>
+            <span className="block md:whitespace-nowrap">Llevamos lo mejor de Colombia</span>
+            <span className="block italic-serif text-accent-gold">al mundo entero.</span>
           </h2>
-          <p className="text-neutral-warm/50 text-xl font-light leading-relaxed max-w-2xl">
+          <p className="text-neutral-warm/50 text-xl font-light leading-relaxed max-w-[480px]">
             Somos aliados estratégicos para distribuidores, cafeterías de especialidad y hoteles que buscan excelencia y consistencia en cada grano.
           </p>
         </div>
@@ -47,7 +51,8 @@ const ExportSection = () => {
               className="group p-12 border border-base-white/5 rounded-sm hover:border-accent-gold/40 hover:bg-base-white/[0.02] transition-all duration-700"
             >
               <h4 className="text-base-white font-serif text-2xl mb-6 group-hover:text-accent-gold transition-colors duration-300">
-                {service.title}
+                <span className="block">{service.titleLine1}</span>
+                <span className="block">{service.titleLine2}</span>
               </h4>
               <p className="text-neutral-warm/30 text-sm font-light leading-relaxed">
                 {service.desc}

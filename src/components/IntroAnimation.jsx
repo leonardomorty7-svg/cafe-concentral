@@ -78,7 +78,7 @@ const IntroAnimation = () => {
           />
         </div>
 
-        <div className="text-center space-y-4">
+        <div className="flex flex-col items-center text-center">
           <h1 
             ref={textRef}
             className="text-white text-2xl md:text-3xl font-serif tracking-[0.4em] font-light"
@@ -88,9 +88,9 @@ const IntroAnimation = () => {
           
           <p 
             ref={subtitleRef}
-            className="text-white/30 text-[9px] uppercase tracking-[0.6em] font-light"
+            className="text-white/70 text-[10px] uppercase tracking-[0.18em] font-light mt-3 max-w-[520px]"
           >
-            Architectural Coffee Experience
+            ORIGEN QUE TRASCIENDE EN CADA TAZA
           </p>
         </div>
       </div>

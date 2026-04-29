@@ -15,11 +15,11 @@ const Footer = () => {
             <form className="flex gap-4 border-b border-white/20 pb-2 group focus-within:border-[#A68A64] transition-colors">
               <input 
                 type="email" 
-                placeholder="Tu email" 
+                placeholder="Tu correo" 
                 className="bg-transparent text-sm w-full focus:outline-none placeholder:text-white/30 font-light"
               />
               <button className="text-[10px] uppercase tracking-widest hover:text-[#A68A64] transition-colors font-bold">
-                ENVIAR
+                SUSCRIBIRME
               </button>
             </form>
           </div>
@@ -32,7 +32,7 @@ const Footer = () => {
               href="mailto:hola@cafeconcentral.com" 
               className="inline-block px-8 py-3 border border-white/20 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-[#0B0B0B] transition-all rounded-sm"
             >
-              ESCRIBENOS
+              ESCRÍBENOS
             </a>
           </div>
 
@@ -46,7 +46,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="inline-block px-8 py-3 border border-white/20 text-[10px] uppercase tracking-[0.2em] font-bold hover:border-[#A68A64] hover:text-[#A68A64] transition-all rounded-sm"
             >
-              WHITE PLAYLIST
+              ESCUCHAR PLAYLIST
             </a>
           </div>
         </div>
@@ -54,8 +54,12 @@ const Footer = () => {
         {/* Main Links */}
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-12 pt-24">
           <div className="col-span-2 space-y-6">
-            <a href="/" className="text-2xl font-serif font-bold tracking-tighter">
-              CAFÉ <span className="text-[#A68A64]">CONCENTRAL</span>
+            <a href="/">
+              <img 
+                src="/assets/brand/cafe-concentral-logo-primary-gold.svg" 
+                alt="Café Concentral" 
+                className="h-8 md:h-10 w-auto object-contain"
+              />
             </a>
             <p className="text-sm text-white/50 leading-relaxed max-w-xs font-light">
               Elevando el estándar del café colombiano para el mundo. Arquitectura sensorial en cada grano seleccionado a mano.
@@ -80,16 +84,20 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="col-span-2 lg:col-span-1 lg:col-start-6 flex flex-col justify-end items-end space-y-6">
-            <div className="flex gap-8">
-              {['IG', 'LN', 'VM'].map((social) => (
-                <a key={social} href="#" className="text-[10px] text-white/30 hover:text-white transition-colors font-bold tracking-widest">
-                  {social}
-                </a>
-              ))}
+          <div className="col-span-2 lg:col-span-1 lg:col-start-6 flex flex-col items-end gap-4 max-w-[220px] ml-auto">
+            <div className="flex justify-between w-full text-white">
+              <a href="#" className="flex items-center justify-center w-8 h-8 opacity-70 hover:opacity-100 transition-all duration-300 hover:-translate-y-0.5">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"> <rect x="3" y="3" width="18" height="18" rx="4"/> <circle cx="12" cy="12" r="4"/> <circle cx="17.5" cy="6.5" r="1"/> </svg>
+              </a>
+              <a href="#" className="flex items-center justify-center w-8 h-8 opacity-70 hover:opacity-100 transition-all duration-300 hover:-translate-y-0.5">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"> <path d="M4 4h4v16H4zM6 2a2 2 0 110 4 2 2 0 010-4zM10 9h4v2h.1c.6-1 2-2 4-2 4 0 5 2.6 5 6v7h-4v-6c0-1.5 0-3.5-2-3.5s-2.3 1.6-2.3 3.3V22H10z"/> </svg>
+              </a>
+              <a href="#" className="flex items-center justify-center w-8 h-8 opacity-70 hover:opacity-100 transition-all duration-300 hover:-translate-y-0.5">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"> <polygon points="5,3 19,12 5,21"/> </svg>
+              </a>
             </div>
-            <p className="text-[9px] text-white/20 uppercase tracking-[0.3em]">
-              © 2024 ARCHITECTURAL COFFEE
+            <p className="text-[12px] leading-[1.6] text-right text-white/40 w-full">
+              © 2026 Café Coocentral. Todos los derechos reservados.
             </p>
           </div>
         </div>

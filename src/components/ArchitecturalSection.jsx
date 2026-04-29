@@ -8,27 +8,32 @@ const ArchitecturalSection = () => {
         <div className="grid md:grid-cols-12 gap-16 items-center">
           
           {/* Narrative Content */}
-          <div className="md:col-span-5 space-y-12">
+          <div className="md:col-span-5 space-y-16">
             <div className="space-y-6">
-              <span className="text-[11px] uppercase tracking-[0.4em] text-[#A68A64] font-bold block">
-                NUESTRO COMPROMISO
+              <span className="text-[11px] uppercase tracking-[0.4em] text-[#A68A64] font-bold block reveal">
+                NUESTRO ORIGEN
               </span>
-              <h2 className="text-5xl md:text-7xl font-serif text-[#1A1A1A] leading-[1.1]">
-                Líneas arquitectónicas <span className="italic text-[#A68A64]">y granos vibrantes.</span>
-              </h2>
+              <div className="reveal delay-100">
+                <h2 className="text-5xl md:text-7xl font-serif text-[#1A1A1A] leading-[1.05]">
+                  Raíces que cultivan futuro.
+                </h2>
+                <p className="mt-4 md:mt-6 text-3xl md:text-4xl font-serif italic text-[#A68A64] tracking-[0.02em] font-light">
+                  Café construido desde el origen.
+                </p>
+              </div>
             </div>
 
-            <div className="space-y-8 text-lg text-[#6B6B6B] font-light leading-relaxed max-w-md">
+            <div className="space-y-6 text-lg text-[#6B6B6B] font-light leading-[1.7] max-w-[520px] reveal delay-200">
               <p>
-                Somos más que café; somos lugares. Espacios singulares donde la arquitectura mínima resalta la complejidad de cada tueste.
+                Somos una cooperativa de miles de familias caficultoras del Huila, unidas por la tradición, la calidad y el compromiso con el territorio.
               </p>
               <p>
-                Nuestro compromiso con el compromiso sostenible es absoluto. Trabajamos por lo bello y lo bueno, para componer y compartir experiencias sinceras que se reinventan constantemente.
+                Cada grano nace del trabajo colectivo, del respeto por la tierra y de una visión compartida: llevar el café colombiano a su máxima expresión, generando oportunidades, sostenibilidad y desarrollo para nuestras comunidades.
               </p>
             </div>
 
-            <div className="pt-12">
-              <a href="/nosotros" className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#1A1A1A] border-b border-[#1A1A1A]/10 pb-4 hover:border-[#A68A64] transition-all duration-500">
+            <div className="pt-12 reveal delay-300">
+              <a href="/nosotros" className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#1A1A1A] border-b border-[#1A1A1A]/10 pb-4 hover:border-[#A68A64] transition-all duration-500 inline-block hover:translate-x-1">
                 DESCUBRE NUESTRA HISTORIA
               </a>
             </div>
@@ -37,42 +42,56 @@ const ArchitecturalSection = () => {
           {/* Asymmetric Visual Grid */}
           <div className="md:col-span-7 relative">
             <div className="grid grid-cols-2 gap-8">
-              <div className="mt-24 space-y-8">
-                <div className="aspect-[4/5] bg-[#F5F1EB] rounded-sm overflow-hidden">
+              <div className="mt-24 space-y-8 reveal delay-100">
+                <div className="aspect-[4/5] bg-[#F5F1EB] rounded-sm overflow-hidden hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] transition-shadow duration-500">
                   <img 
-                    src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop" 
-                    alt="Interior minimalista"
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+                    src="/assets/images/huila-plantation.png" 
+                    alt="Caficultor caminando entre filas de la plantación en el Huila"
+                    className="w-full h-full object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03]"
                   />
                 </div>
                 <div className="text-right">
-                  <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">FOUNDERS</p>
-                  <p className="font-serif italic text-[#1A1A1A]">Selección de Origen</p>
+                  <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">ORÍGENES</p>
+                  <p className="font-serif italic text-[#1A1A1A]">Familias Caficultoras</p>
                 </div>
               </div>
-              <div className="space-y-8">
-                <div className="aspect-[3/4] bg-[#F5F1EB] rounded-sm overflow-hidden shadow-2xl">
+              <div className="space-y-8 reveal delay-200">
+                <div className="aspect-[4/5] bg-[#F5F1EB] rounded-sm overflow-hidden shadow-2xl hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)] transition-shadow duration-500">
                   <img 
-                    src="https://images.unsplash.com/photo-1453614512568-c4024d13c247?q=80&w=2064&auto=format&fit=crop" 
-                    alt="Café y Arquitectura"
-                    className="w-full h-full object-cover transition-transform duration-[3s] hover:scale-110"
+                    src="/assets/images/huila-landscape.jpg" 
+                    alt="Plantación de café en montañas de Huila"
+                    className="w-full h-full object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03]"
                   />
                 </div>
                 <div className="bg-[#A68A64] p-8 text-white rounded-sm">
-                  <h3 className="text-2xl font-serif mb-4 italic">B Corp Certified</h3>
-                  <p className="text-xs uppercase tracking-widest opacity-80 leading-loose">
-                    Garantizamos un impacto social y ambiental positivo en cada paso de nuestra cadena.
+                  <h3 className="text-xl font-serif mb-3 leading-snug">Impacto desde el origen</h3>
+                  <p className="text-xs text-white/80 leading-relaxed max-w-[280px] font-light">
+                    Trabajamos junto a nuestras comunidades para garantizar prácticas sostenibles, comercio justo y un desarrollo que respeta el territorio.
                   </p>
                 </div>
               </div>
             </div>
             
             {/* Floating label decoration */}
-            <div className="absolute -bottom-12 -left-12 hidden lg:block">
-              <div className="bg-[#1A1A1A] text-white p-12 rounded-full w-48 h-48 flex flex-col items-center justify-center text-center animate-spin-slow">
-                <p className="text-[9px] uppercase tracking-[0.3em] font-bold leading-tight">
-                  Premium • Organic • Specialty •
-                </p>
+            <div className="absolute -bottom-12 -left-12 hidden lg:block z-10">
+              <div className="bg-[#1A1A1A] rounded-full w-48 h-48 flex items-center justify-center animate-spin-slow">
+                <svg viewBox="0 0 200 200" className="w-[140px] h-[140px]">
+                  <defs>
+                    <path
+                      id="circlePath"
+                      d="M 100, 100
+                         m -75, 0
+                         a 75,75 0 1,1 150,0
+                         a 75,75 0 1,1 -150,0"
+                    />
+                  </defs>
+
+                  <text fontSize="14.5" letterSpacing="1.5" fill="white" fontWeight="600">
+                    <textPath href="#circlePath">
+                      100% COLOMBIANO • 100% COLOMBIANO •
+                    </textPath>
+                  </text>
+                </svg>
               </div>
             </div>
           </div>

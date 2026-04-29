@@ -7,13 +7,13 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 const ProductCard = ({ id, name, tastingNotes, price, image, tag, category = 'Origen' }) => (
   <a
     href={`/products/${id}`}
-    className="group block flex flex-col transition-all duration-500 ease-out hover:scale-[1.03] hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] bg-white rounded-sm overflow-hidden p-4"
+    className="group block flex flex-col transition-all duration-500 ease-out hover:scale-[1.02] hover:shadow-[0_15px_40px_rgba(0,0,0,0.06)] bg-white rounded-sm overflow-hidden p-4 reveal"
   >
     <div className="relative w-full aspect-[4/5] overflow-hidden rounded-sm bg-[#F5F1EB] mb-8">
       <img
         src={image}
         alt={name}
-        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       />
       {tag && (
         <span className="absolute top-3 left-3 text-[10px] uppercase tracking-widest bg-white px-3 py-1 rounded-full shadow-sm font-bold text-[#1A1A1A] z-10">
@@ -40,8 +40,8 @@ const ProductCard = ({ id, name, tastingNotes, price, image, tag, category = 'Or
         <p className="text-lg font-medium text-[#A68A64]">
           {price}
         </p>
-        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-transparent group-hover:border-[#A68A64] transition-all duration-300 py-1">
-          Descubrir origen →
+        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-transparent group-hover:border-[#A68A64] transition-all duration-300 py-1 flex items-center gap-1">
+          Descubrir origen <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
         </span>
       </div>
     </div>
@@ -84,7 +84,7 @@ const AUTOPLAY_DELAY = 5500; // ms between auto-advances
 
 const ProductSlider = ({
   products = [],
-  title = 'SELECCIÓN DE ORIGEN',
+  title = 'CURADURÍA DEL HUILA',
   subtitle = 'Selecciones de',
   subtitleItalic = 'Origen.',
   description = 'Perfiles sensoriales únicos que reflejan el carácter de cada origen, cultivados, tostados y seleccionados para expresar lo mejor del café colombiano.',
@@ -171,7 +171,7 @@ const ProductSlider = ({
 
   return (
     <section
-      className="py-32 bg-[#F5F1EB]"
+      className="py-40 md:py-56 bg-[#F5F1EB]"
       id="coleccion"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -179,16 +179,16 @@ const ProductSlider = ({
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-        <div className="text-center mb-16 px-6">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-[#A68A64] font-bold mb-6">
+        <div className="mx-auto max-w-[720px] mb-16 px-6 text-center">
+          <span className="block text-[11px] tracking-[0.4em] uppercase mb-3 text-[#A68A64] font-bold reveal">
             {title}
-          </p>
-          <h2 className="text-4xl md:text-6xl font-serif text-[#1A1A1A] max-w-3xl mx-auto leading-tight">
+          </span>
+          <h2 className="text-4xl md:text-6xl font-serif text-[#1A1A1A] leading-tight reveal delay-100">
             {subtitle}{' '}
             <span className="italic text-[#A68A64]">{subtitleItalic}</span>
           </h2>
           {description && (
-            <p className="text-[#6B6B6B] max-w-xl mx-auto font-light text-base leading-relaxed mt-8">
+            <p className="text-[#6B6B6B] max-w-[560px] mx-auto font-light text-base leading-[1.7] mt-6 reveal delay-200">
               {description}
             </p>
           )}
@@ -216,16 +216,19 @@ const ProductSlider = ({
             WebkitOverflowScrolling: 'touch',
           }}
         >
-          {products.map((product) => (
-            <div
-              key={product.id}
-              // Intrinsic width: shrink-0 prevents flex shrink; width is responsive
-              className="shrink-0 w-[82vw] sm:w-[46vw] lg:w-[calc((100%-80px)/3)]"
-              style={{ maxWidth: '400px' }}
-            >
-              <ProductCard {...product} />
-            </div>
-          ))}
+          {products.map((product, idx) => {
+            const delayClass = `delay-${((idx % 3) * 100) + 100}`;
+            return (
+              <div
+                key={product.id}
+                // Intrinsic width: shrink-0 prevents flex shrink; width is responsive
+                className={`shrink-0 w-[82vw] sm:w-[46vw] lg:w-[calc((100%-80px)/3)] ${delayClass} reveal`}
+                style={{ maxWidth: '400px' }}
+              >
+                <ProductCard {...product} />
+              </div>
+            );
+          })}
 
           {/* Trailing spacer so last card doesn't flush against viewport edge */}
           <div className="shrink-0 w-4" aria-hidden="true" />

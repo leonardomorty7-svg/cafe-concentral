@@ -1,5 +1,13 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import ProductGrid from '../components/ProductGrid';
+import { getExclusivas } from '../lib/products';
+
+const GRID_PRODUCTS = getExclusivas().map((p) => ({
+  ...p,
+  description: p.tags.join(' · '),
+  tag: p.tags[0] ?? null,
+}));
 ---
 
 <MainLayout title="Productos | Café Concentral">
@@ -7,4 +15,6 @@ import MainLayout from '../layouts/MainLayout.astro';
 		<h1 class="text-5xl font-bold mb-8">Nuestros Productos</h1>
 		<p class="text-neutral-500 text-lg max-w-3xl">Catálogo completo de café en grano, molido y especialidades. Próximamente.</p>
 	</div>
+	
+	<ProductGrid client:load products={GRID_PRODUCTS} />
 </MainLayout>

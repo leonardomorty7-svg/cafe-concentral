@@ -28,7 +28,7 @@ const cafeEspecial340g = {
   name: 'Café Especial 340g',
   category: 'cafe',
   subcategory: 'mezclas',
-  tags: ['Mezcla', 'Especial'],
+  tags: ['Intenso · Mezcla', 'Especial'],
   image: '/assets/products/cafe/mezclas/cafe-especial/340g/cafe-especial-340g-main.png',
   images: [
     '/assets/products/cafe/mezclas/cafe-especial/340g/cafe-especial-340g-main.png',
@@ -46,7 +46,7 @@ const cafeEspecial500g = {
   name: 'Café Especial 500g',
   category: 'cafe',
   subcategory: 'mezclas',
-  tags: ['Mezcla', 'Especial'],
+  tags: ['Intenso · Mezcla', 'Especial'],
   image: '/assets/products/cafe/mezclas/cafe-especial/500g/cafe-especial-500g-main.png',
   images: [
     '/assets/products/cafe/mezclas/cafe-especial/500g/cafe-especial-500g-main.png',
@@ -64,7 +64,7 @@ const cafePremium340g = {
   name: 'Café Premium 340g',
   category: 'cafe',
   subcategory: 'mezclas',
-  tags: ['Mezcla', 'Premium'],
+  tags: ['Premium · Mezcla', 'Premium'],
   image: '/assets/products/cafe/mezclas/cafe-premium/340g/cafe-premium-340g-main.png',
   images: [
     '/assets/products/cafe/mezclas/cafe-premium/340g/cafe-premium-340g-main.png',
@@ -82,7 +82,7 @@ const cafePremium500g = {
   name: 'Café Premium 500g',
   category: 'cafe',
   subcategory: 'mezclas',
-  tags: ['Mezcla', 'Premium'],
+  tags: ['Premium · Mezcla', 'Premium'],
   image: '/assets/products/cafe/mezclas/cafe-premium/500g/cafe-premium-500g-main.png',
   images: [
     '/assets/products/cafe/mezclas/cafe-premium/500g/cafe-premium-500g-main.png',
@@ -100,7 +100,7 @@ const mujeresCafeteras340g = {
   name: 'Mujeres Cafeteras 340g',
   category: 'cafe',
   subcategory: 'mezclas',
-  tags: ['Mezcla', 'Edición Especial'],
+  tags: ['Suave · Mezcla', 'Edición Especial'],
   image: '/assets/products/cafe/mezclas/mujeres-cafeteras/340g/cafe-mujeres-cafeteras-340g-main.png',
   images: [
     '/assets/products/cafe/mezclas/mujeres-cafeteras/340g/cafe-mujeres-cafeteras-340g-main.png',
@@ -118,7 +118,7 @@ const mujeresCafeteras500g = {
   name: 'Mujeres Cafeteras 500g',
   category: 'cafe',
   subcategory: 'mezclas',
-  tags: ['Mezcla', 'Edición Especial'],
+  tags: ['Suave · Mezcla', 'Edición Especial'],
   image: '/assets/products/cafe/mezclas/mujeres-cafeteras/500g/cafe-mujeres-cafeteras-500g-main.png',
   images: [
     '/assets/products/cafe/mezclas/mujeres-cafeteras/500g/cafe-mujeres-cafeteras-500g-main.png',

@@ -29,12 +29,36 @@ const {
 		<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 	</head>
 	<body class="bg-white">
-		<Navbar client:load />
+		<Navbar client:load currentPath={Astro.url.pathname} />
 		<main>
 			<slot />
 		</main>
 		<Footer />
 		<FloatingWhatsApp client:load />
+
+		<script>
+			// Premium Scroll Reveal
+			document.addEventListener('DOMContentLoaded', () => {
+				const observerOptions = {
+					root: null,
+					rootMargin: '0px',
+					threshold: 0.15
+				};
+
+				const observer = new IntersectionObserver((entries, observer) => {
+					entries.forEach(entry => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add('active');
+							// Optional: unobserve after revealing for performance
+							observer.unobserve(entry.target);
+						}
+					});
+				}, observerOptions);
+
+				const revealElements = document.querySelectorAll('.reveal');
+				revealElements.forEach(el => observer.observe(el));
+			});
+		</script>
 	</body>
 </html>
 
