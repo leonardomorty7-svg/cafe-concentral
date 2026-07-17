@@ -2,6 +2,7 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import IntroAnimation from '../components/IntroAnimation';
 import Hero from '../components/Hero';
+import SeedStory from '../components/SeedStory';
 
 import ProcessSection from '../components/ProcessSection';
 import ExperienceSection from '../components/ExperienceSection.jsx';
@@ -43,7 +44,10 @@ const FEATURED_PRODUCTS = getColeccion().map((p) => ({
 	{/* 1 — La tesis */}
 	<Hero client:load />
 
-	{/* 2 — Quiénes somos: el manifiesto narrativo */}
+	{/* 2 — La semilla narra la historia (scrollytelling con scrub) */}
+	<SeedStory client:load />
+
+	{/* 3 — Quiénes somos: el manifiesto narrativo */}
 	<section id="about" class="section-container text-center">
 		<span class="label-premium mx-auto reveal">Quiénes somos</span>
 		<h2 class="text-4xl md:text-6xl mb-10 reveal delay-100">No nacimos para producir café. <br /><span class="italic-serif text-accent-gold">Nacimos para crear oportunidades.</span></h2>
