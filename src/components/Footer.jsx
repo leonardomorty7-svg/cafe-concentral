@@ -70,7 +70,7 @@ const Footer = () => {
             <h5 className="text-[10px] uppercase tracking-[0.2em] text-[#A68A64] font-bold">NUESTRA COOPERATIVA</h5>
             <ul className="space-y-4 text-xs tracking-widest text-white/50 uppercase">
               <li><a href="/nosotros" className="hover:text-white transition-colors">Nuestra historia</a></li>
-              <li><a href="/#about" className="hover:text-white transition-colors">Quiénes somos</a></li>
+              <li><a href="/contacto" className="hover:text-white transition-colors">Contacto</a></li>
               <li><a href="/exportacion" className="hover:text-white transition-colors">Exportación</a></li>
             </ul>
           </div>

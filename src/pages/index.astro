@@ -1,11 +1,9 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import IntroAnimation from '../components/IntroAnimation';
-import Hero from '../components/Hero';
-import SeedStory from '../components/SeedStory';
+import CinematicStory from '../components/CinematicStory';
 
 import ProcessSection from '../components/ProcessSection';
-import ExperienceSection from '../components/ExperienceSection.jsx';
 import ProductGrid from '../components/ProductGrid';
 import ExportSection from '../components/ExportSection';
 import FeaturedProducts from '../components/FeaturedProducts';
@@ -33,39 +31,18 @@ const FEATURED_PRODUCTS = getColeccion().map((p) => ({
 ---
 
 <!--
-  Orden de la home = el recorrido narrativo del brief de marca.
-  Pilar 1: "Siempre hablar de las personas antes que del café."
-  Por eso el catálogo entra en la posición 6, después de la tierra,
-  las familias y el modelo cooperativo. No mover sin releer el brief.
+  Orden de la home: la historia se cuenta COMPLETA dentro del bloque
+  cinemático de apertura (personas antes que el café, pilar 1 del brief),
+  y la tienda entra inmediatamente después para no alejar la compra.
+  Las secciones siguientes profundizan, no repiten.
 -->
 <MainLayout title="Café Coocentral | Cada taza cuenta una historia que transforma vidas">
 	<IntroAnimation client:only="react" />
 
-	{/* 1 — La tesis */}
-	<Hero client:load />
+	{/* 1 — La historia: semilla → finca → oportunidades → tierra (scrub) */}
+	<CinematicStory client:load />
 
-	{/* 2 — La semilla narra la historia (scrollytelling con scrub) */}
-	<SeedStory client:load />
-
-	{/* 3 — Quiénes somos: el manifiesto narrativo */}
-	<section id="about" class="section-container text-center">
-		<span class="label-premium mx-auto reveal">Quiénes somos</span>
-		<h2 class="text-4xl md:text-6xl mb-10 reveal delay-100">No nacimos para producir café. <br /><span class="italic-serif text-accent-gold">Nacimos para crear oportunidades.</span></h2>
-		<p class="text-base-muted max-w-3xl mx-auto leading-[1.7] text-lg font-light reveal delay-200">
-			Somos la expresión de una cooperativa que cree en el trabajo colectivo, en el valor del origen y en la fuerza de las familias caficultoras del Huila. Cada taza reúne historias de esfuerzo, tradición e innovación: historias que conectan el campo con la ciudad y al productor con quien lo disfruta.
-		</p>
-	</section>
-
-	{/* 3 — El territorio como protagonista */}
-	<ExperienceSection client:visible />
-
-	{/* 4 — Las familias y sus caras */}
-	<ArchitecturalSection client:visible />
-
-	{/* 5 — Cómo trabajamos */}
-	<ProcessSection client:visible />
-
-	{/* 6 — Recién acá aparece el café */}
+	{/* 2 — La tienda, sin hacer esperar al cliente */}
 	<ProductGrid
 		client:visible
 		products={GRID_PRODUCTS}
@@ -76,12 +53,18 @@ const FEATURED_PRODUCTS = getColeccion().map((p) => ({
 		description="Viene de las mismas montañas y de las mismas familias que acabas de conocer."
 	/>
 
-	{/* 7 — El catálogo sigue junto, sin partirse */}
+	{/* 3 — Las ediciones, catálogo junto */}
 	<ProductSlider client:visible products={FEATURED_PRODUCTS} />
 
-	{/* 8 — Y de ahí, al mundo */}
+	{/* 4 — Profundidad: las raíces y las familias */}
+	<ArchitecturalSection client:visible />
+
+	{/* 5 — Cómo trabajamos */}
+	<ProcessSection client:visible />
+
+	{/* 6 — Y de ahí, al mundo */}
 	<ExportSection client:visible />
 
-	{/* 9 — La invitación */}
+	{/* 7 — La invitación */}
 	<CTA client:visible />
 </MainLayout>
