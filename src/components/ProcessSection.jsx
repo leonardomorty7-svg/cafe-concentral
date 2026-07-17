@@ -6,16 +6,16 @@ const ProcessSection = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-32 items-center">
         <div className="relative">
           <div className="aspect-[4/5] rounded-sm overflow-hidden shadow-2xl">
-            <img 
-              src="/assets/images/huila-farmers.jpg"
-              alt="Caficultores del Huila cultivando café"
+            <img
+              src="/assets/images/empaque-cafe-especial.jpg"
+              alt="Manos empacando una bolsa de Café Coocentral en la planta"
               className="w-full h-full object-cover"
             />
           </div>
           <div className="absolute -bottom-16 -right-16 hidden xl:block w-80 aspect-square rounded-sm overflow-hidden shadow-2xl border-[16px] border-neutral-cream">
-            <img 
-              src="/assets/images/coffee-processing.png"
-              alt="Selección y secado de café en Huila"
+            <img
+              src="/assets/images/tostion-cafe.jpg"
+              alt="Granos de café en la tostadora de Coocentral"
               className="w-full h-full object-cover"
             />
           </div>

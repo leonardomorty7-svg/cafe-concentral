@@ -44,22 +44,22 @@ const ArchitecturalSection = () => {
             <div className="grid grid-cols-2 gap-8">
               <div className="mt-24 space-y-8 reveal delay-100">
                 <div className="aspect-[4/5] bg-[#F5F1EB] rounded-sm overflow-hidden hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] transition-shadow duration-500">
-                  <img 
-                    src="/assets/images/huila-plantation.png" 
-                    alt="Caficultor caminando entre filas de la plantación en el Huila"
+                  <img
+                    src="/assets/images/finca-huila-detalle.jpg"
+                    alt="Casa de finca cafetera entre cafetales del Huila"
                     className="w-full h-full object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03]"
                   />
                 </div>
                 <div className="text-right">
-                  <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">ORÍGENES</p>
-                  <p className="font-serif italic text-[#1A1A1A]">Familias Caficultoras</p>
+                  <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">ORIGEN</p>
+                  <p className="font-serif italic text-[#1A1A1A]">Finca cafetera, Huila</p>
                 </div>
               </div>
               <div className="space-y-8 reveal delay-200">
                 <div className="aspect-[4/5] bg-[#F5F1EB] rounded-sm overflow-hidden shadow-2xl hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)] transition-shadow duration-500">
-                  <img 
-                    src="/assets/images/huila-landscape.jpg" 
-                    alt="Plantación de café en montañas de Huila"
+                  <img
+                    src="/assets/images/cafes-premium-costales.jpg"
+                    alt="Cafés Coocentral sobre costales de exportación"
                     className="w-full h-full object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03]"
                   />
                 </div>

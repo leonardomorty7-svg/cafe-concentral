@@ -14,9 +14,9 @@ const Hero = () => {
       {/* Background Image with requested overlays */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 z-10" style={{ background: 'linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.65))' }} />
-        <img 
-          src="/assets/images/hero-huila.png"
-          alt="Plantaciones de café en las montañas del Huila, Colombia"
+        <img
+          src="/assets/images/finca-huila.jpg"
+          alt="Finca cafetera de Coocentral entre las montañas del Huila, Colombia"
           className="w-full h-full object-cover object-center"
         />
       </div>
