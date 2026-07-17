@@ -397,6 +397,97 @@ const mugNegroCoocentral = {
   priority: 5,
 };
 
+// ─── CAFÉ — NUEVOS (mockups del cliente, jul-2026) ───────────────────────────
+
+const cafeGeisha340g = {
+  id: 'cafe-geisha-340g',
+  name: 'Café Geisha 340g',
+  category: 'cafe',
+  subcategory: 'cafes-exoticos',
+  // La etiqueta real dice: "Variedad Geisha — Miguel Bohorquez — Edición de Lujo"
+  tags: ['Exótico', 'Varietal', 'Edición de Lujo'],
+  image: '/assets/products/cafe/cafes-exoticos/geisha/cafe-geisha-340g-main.png',
+  images: [
+    '/assets/products/cafe/cafes-exoticos/geisha/cafe-geisha-340g-main.png',
+    '/assets/products/cafe/cafes-exoticos/geisha/cafe-geisha-340g-02.png',
+    '/assets/products/cafe/cafes-exoticos/geisha/cafe-geisha-340g-03.png',
+  ],
+  featuredHome: true,
+  featuredSection: 'coleccion',
+  priority: 22,
+};
+
+const cafeDonMaximo500g = {
+  id: 'cafe-don-maximo-500g',
+  name: 'Café Don Máximo 500g',
+  category: 'cafe',
+  subcategory: 'mezclas',
+  tags: ['Tradicional · Mezcla', 'Don Máximo'],
+  image: '/assets/products/cafe/mezclas/cafe-don-maximo/500g/cafe-don-maximo-500g-main.png',
+  images: [
+    '/assets/products/cafe/mezclas/cafe-don-maximo/500g/cafe-don-maximo-500g-main.png',
+    '/assets/products/cafe/mezclas/cafe-don-maximo/500g/cafe-don-maximo-500g-02.png',
+    '/assets/products/cafe/mezclas/cafe-don-maximo/500g/cafe-don-maximo-500g-03.png',
+  ],
+  featuredHome: false,
+  featuredSection: null,
+  priority: 12,
+};
+
+const cafeClasico340g = {
+  id: 'cafe-clasico-340g',
+  name: 'Café Clásico 340g',
+  category: 'cafe',
+  subcategory: 'mezclas',
+  tags: ['Clásico · Mezcla'],
+  image: '/assets/products/cafe/mezclas/cafe-clasico/340g/cafe-clasico-340g-main.png',
+  images: [
+    '/assets/products/cafe/mezclas/cafe-clasico/340g/cafe-clasico-340g-main.png',
+    '/assets/products/cafe/mezclas/cafe-clasico/340g/cafe-clasico-340g-02.png',
+    '/assets/products/cafe/mezclas/cafe-clasico/340g/cafe-clasico-340g-03.png',
+  ],
+  featuredHome: false,
+  featuredSection: null,
+  priority: 11,
+};
+
+const kitFrutosMontana = {
+  id: 'kit-frutos-montana',
+  name: 'Kit Frutos de Nuestra Montaña',
+  category: 'cafe',
+  subcategory: 'ediciones-especiales',
+  // Caja navideña con los 6 cafés de la casa en empaques de grano
+  tags: ['Kit', 'Edición Navidad'],
+  image: '/assets/products/cafe/ediciones-especiales/kit-frutos-montana/kit-frutos-montana-main.jpg',
+  images: [
+    '/assets/products/cafe/ediciones-especiales/kit-frutos-montana/kit-frutos-montana-main.jpg',
+    '/assets/products/cafe/ediciones-especiales/kit-frutos-montana/kit-frutos-montana-02.jpg',
+    '/assets/products/cafe/ediciones-especiales/kit-frutos-montana/kit-frutos-montana-03.png',
+  ],
+  featuredHome: true,
+  featuredSection: 'coleccion',
+  priority: 26,
+};
+
+// ─── ALIMENTOS ────────────────────────────────────────────────────────────────
+
+const bizcochoAchira = {
+  id: 'bizcocho-de-achira',
+  name: 'Bizcocho de Achira',
+  category: 'alimentos',
+  subcategory: 'achiras',
+  tags: ['Tradición del Huila', 'Bizcocho'],
+  image: '/assets/products/alimentos/achiras/achiras-main.jpg',
+  images: [
+    '/assets/products/alimentos/achiras/achiras-main.jpg',
+    '/assets/products/alimentos/achiras/achiras-02.jpg',
+    '/assets/products/alimentos/achiras/achiras-03.png',
+  ],
+  featuredHome: false,
+  featuredSection: null,
+  priority: 8,
+};
+
 // ─── MASTER LIST ──────────────────────────────────────────────────────────────
 
 /**
@@ -411,15 +502,22 @@ export const products = [
   cafePremium500g,
   mujeresCafeteras340g,
   mujeresCafeteras500g,
+  cafeDonMaximo500g,
+  cafeClasico340g,
 
   // Café — Ediciones Especiales
   cafePremium50Anos,
   cafeEdicionLimitada,
   cafeNotasJuventud,
   cafeSuenosCafe,
+  kitFrutosMontana,
 
   // Café — Exóticos
   cafeBourbonRosado,
+  cafeGeisha340g,
+
+  // Alimentos
+  bizcochoAchira,
 
   // Accesorios — Métodos
   v60CeramicoBlanco,

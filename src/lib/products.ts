@@ -10,7 +10,7 @@ import { products } from '../data/products.js';
 
 // ─── TYPES ────────────────────────────────────────────────────────────────────
 
-export type ProductCategory = 'cafe' | 'accesorios' | 'experiencias';
+export type ProductCategory = 'cafe' | 'accesorios' | 'experiencias' | 'alimentos';
 export type FeaturedSection = 'exclusivas' | 'coleccion' | null;
 
 export interface Product {
