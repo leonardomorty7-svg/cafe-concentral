@@ -27,33 +27,57 @@ const FEATURED_PRODUCTS = getColeccion().map((p) => ({
   tastingNotes: p.tags.join(', '),
   price: null,
   tag: p.tags[0] ?? null,
-  category: 'Café Concentral',
+  category: 'Café Coocentral',
 }));
 ---
 
-<MainLayout title="Café Concentral | El Alma de Colombia">
+<!--
+  Orden de la home = el recorrido narrativo del brief de marca.
+  Pilar 1: "Siempre hablar de las personas antes que del café."
+  Por eso el catálogo entra en la posición 6, después de la tierra,
+  las familias y el modelo cooperativo. No mover sin releer el brief.
+-->
+<MainLayout title="Café Coocentral | Cada taza cuenta una historia que transforma vidas">
 	<IntroAnimation client:only="react" />
+
+	{/* 1 — La tesis */}
 	<Hero client:load />
-	
+
+	{/* 2 — Quiénes somos: el manifiesto narrativo */}
 	<section id="about" class="section-container text-center">
-		<span class="label-premium mx-auto reveal">Nuestra Esencia</span>
-		<h2 class="text-4xl md:text-6xl mb-10 reveal delay-100">Pasión por el origen, <br /><span class="italic-serif text-accent-gold">rigor en el detalle.</span></h2>
+		<span class="label-premium mx-auto reveal">Quiénes somos</span>
+		<h2 class="text-4xl md:text-6xl mb-10 reveal delay-100">No nacimos para producir café. <br /><span class="italic-serif text-accent-gold">Nacimos para crear oportunidades.</span></h2>
 		<p class="text-base-muted max-w-3xl mx-auto leading-[1.7] text-lg font-light reveal delay-200">
-			Café Concentral nació de la necesidad de reconectar al consumidor final con la tierra. No solo vendemos café; entregamos el resultado de generaciones de conocimiento cafetero, procesado bajo los más altos estándares tecnológicos y humanos.
+			Somos la expresión de una cooperativa que cree en el trabajo colectivo, en el valor del origen y en la fuerza de las familias caficultoras del Huila. Cada taza reúne historias de esfuerzo, tradición e innovación: historias que conectan el campo con la ciudad y al productor con quien lo disfruta.
 		</p>
 	</section>
 
-	<ProcessSection client:visible />
-	
+	{/* 3 — El territorio como protagonista */}
 	<ExperienceSection client:visible />
 
-	<ProductGrid client:visible products={GRID_PRODUCTS} limit={3} />
-	
+	{/* 4 — Las familias y sus caras */}
+	<ArchitecturalSection client:visible />
+
+	{/* 5 — Cómo trabajamos */}
+	<ProcessSection client:visible />
+
+	{/* 6 — Recién acá aparece el café */}
+	<ProductGrid
+		client:visible
+		products={GRID_PRODUCTS}
+		limit={3}
+		eyebrow="NUESTROS CAFÉS"
+		heading="Y este es el café"
+		headingItalic="que nace de ahí."
+		description="Viene de las mismas montañas y de las mismas familias que acabas de conocer."
+	/>
+
+	{/* 7 — El catálogo sigue junto, sin partirse */}
+	<ProductSlider client:visible products={FEATURED_PRODUCTS} />
+
+	{/* 8 — Y de ahí, al mundo */}
 	<ExportSection client:visible />
 
-	<ProductSlider client:visible products={FEATURED_PRODUCTS} />
-	
-	<ArchitecturalSection client:visible />
-	
+	{/* 9 — La invitación */}
 	<CTA client:visible />
 </MainLayout>

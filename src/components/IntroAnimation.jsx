@@ -73,7 +73,7 @@ const IntroAnimation = () => {
         <div ref={logoRef} className="w-24 md:w-32 h-auto">
           <img 
             src="/assets/brand/logo-primary-gold.svg" 
-            alt="Café Concentral Logo" 
+            alt="Café Coocentral Logo" 
             className="w-full h-auto"
           />
         </div>
@@ -83,7 +83,7 @@ const IntroAnimation = () => {
             ref={textRef}
             className="text-white text-2xl md:text-3xl font-serif tracking-[0.4em] font-light"
           >
-            CAFÉ <span className="text-[#C6A77D]">CONCENTRAL</span>
+            CAFÉ <span className="text-[#C6A77D]">COOCENTRAL</span>
           </h1>
           
           <p 

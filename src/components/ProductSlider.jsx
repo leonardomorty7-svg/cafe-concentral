@@ -84,10 +84,10 @@ const AUTOPLAY_DELAY = 5500; // ms between auto-advances
 
 const ProductSlider = ({
   products = [],
-  title = 'CURADURÍA DEL HUILA',
-  subtitle = 'Selecciones de',
-  subtitleItalic = 'Origen.',
-  description = 'Perfiles sensoriales únicos que reflejan el carácter de cada origen, cultivados, tostados y seleccionados para expresar lo mejor del café colombiano.',
+  title = 'NUESTRAS EDICIONES',
+  subtitle = 'Cafés con nombre',
+  subtitleItalic = 'y con historia.',
+  description = 'Cada edición nació de una historia real: una celebración, una comunidad, una cosecha que valía la pena contar aparte.',
 }) => {
   const trackRef = useRef(null);
   const autoplayRef = useRef(null);

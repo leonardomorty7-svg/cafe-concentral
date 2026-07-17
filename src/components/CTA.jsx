@@ -11,19 +11,19 @@ const CTA = () => {
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto">
-          <span className="label-premium text-accent-gold mb-10 mx-auto">Únete a nosotros</span>
+          <span className="label-premium text-accent-gold mb-10 mx-auto">Haz parte</span>
           <h2 className="text-base-white mb-12 leading-[1.1]">
-            ¿Listo para elevar tu <br /><span className="italic-serif text-accent-gold underline decoration-accent-gold/20 underline-offset-[12px]">experiencia?</span>
+            Cuando eliges nuestro café, <br /><span className="italic-serif text-accent-gold underline decoration-accent-gold/20 underline-offset-[12px]">eliges a quienes lo cultivan.</span>
           </h2>
           <p className="text-neutral-warm/60 text-xl mb-20 max-w-2xl mx-auto leading-relaxed font-light">
-            Únete a la comunidad de conocedores que eligen Café Concentral por su autenticidad y calidad excepcional en cada origen seleccionado.
+            No te estamos pidiendo que compres café. Te estamos invitando a un modelo que genera bienestar, fortalece comunidades y demuestra que el café puede transformar vidas.
           </p>
           <div className="flex flex-col sm:flex-row gap-8 justify-center">
             <a href="/productos" className="btn-primary">
-              Ir a la Tienda
+              Ver nuestros cafés
             </a>
             <a href="/contacto" className="btn-secondary border-base-white/20 text-base-white hover:bg-base-white/10">
-              Hablar con un Experto
+              Hablar con nosotros
             </a>
           </div>
         </div>

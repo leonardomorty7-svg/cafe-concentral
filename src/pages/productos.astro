@@ -10,10 +10,10 @@ const GRID_PRODUCTS = getAllProducts().map((p) => ({
 }));
 ---
 
-<MainLayout title="Productos | Café Concentral">
+<MainLayout title="Productos | Café Coocentral">
 	<div class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
-		<h1 class="text-5xl font-bold mb-8">Nuestros Productos</h1>
-		<p class="text-neutral-500 text-lg max-w-3xl">Catálogo completo de café en grano, molido y especialidades. Próximamente.</p>
+		<h1 class="text-5xl font-bold mb-8">Nuestros cafés</h1>
+		<p class="text-neutral-500 text-lg max-w-3xl">Cada uno nace en las montañas del Huila, del trabajo de las familias que hacen parte de nuestra cooperativa.</p>
 	</div>
 	
 	<ProductGrid client:load products={GRID_PRODUCTS} />

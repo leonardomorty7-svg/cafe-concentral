@@ -2,7 +2,7 @@ import React from 'react';
 
 const FloatingWhatsApp = () => {
   const phoneNumber = "573000000000";
-  const message = "Hola, me gustaría recibir información sobre Café Concentral.";
+  const message = "Hola, me gustaría saber más sobre Café Coocentral.";
   const waLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
   return (

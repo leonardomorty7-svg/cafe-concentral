@@ -18,7 +18,7 @@ const ArchitecturalSection = () => {
                   Raíces que cultivan futuro.
                 </h2>
                 <p className="mt-4 md:mt-6 text-3xl md:text-4xl font-serif italic text-[#A68A64] tracking-[0.02em] font-light">
-                  Café construido desde el origen.
+                  Un café que nace del trabajo de todos.
                 </p>
               </div>
             </div>
@@ -64,9 +64,9 @@ const ArchitecturalSection = () => {
                   />
                 </div>
                 <div className="bg-[#A68A64] p-8 text-white rounded-sm">
-                  <h3 className="text-xl font-serif mb-3 leading-snug">Impacto desde el origen</h3>
+                  <h3 className="text-xl font-serif mb-3 leading-snug">Cuando el valor regresa</h3>
                   <p className="text-xs text-white/80 leading-relaxed max-w-[280px] font-light">
-                    Trabajamos junto a nuestras comunidades para garantizar prácticas sostenibles, comercio justo y un desarrollo que respeta el territorio.
+                    Cuando eliges Café Coocentral, haces parte de un modelo donde el valor del café regresa a quienes lo cultivan.
                   </p>
                 </div>
               </div>

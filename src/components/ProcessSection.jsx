@@ -29,18 +29,18 @@ const ProcessSection = () => {
             {[
               {
                 num: '01',
-                title: 'Origen Colectivo',
-                desc: 'Más de 3.500 familias caficultoras del Huila cultivan cada grano con tradición, conocimiento y compromiso con la calidad.'
+                title: 'Nuestras manos',
+                desc: 'Más de 3.500 familias del Huila cultivan cada grano con el conocimiento que heredaron de sus padres y el cuidado de quien trabaja su propia tierra.'
               },
               {
                 num: '02',
-                title: 'Transformación y Control',
-                desc: 'Procesos de selección, secado, control de calidad y tostión garantizan consistencia y perfil sensorial en cada lote.'
+                title: 'Nuestro cuidado',
+                desc: 'Seleccionamos, secamos y tostamos cada lote con el mismo rigor con el que fue cultivado. Cuidar el grano es cuidar el trabajo que hay detrás.'
               },
               {
                 num: '03',
-                title: 'Conexión Global',
-                desc: 'Llevamos el café del Huila a mercados internacionales, conectando origen y experiencia en cada taza.'
+                title: 'Nuestro propósito',
+                desc: 'Llevamos el café del Huila al mundo para que el valor regrese a quienes lo cultivan. El café viaja, el bienestar vuelve.'
               }
             ].map((step, index) => (
               <div key={index} className="flex gap-12 group">

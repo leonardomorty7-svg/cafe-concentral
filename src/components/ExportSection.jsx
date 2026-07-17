@@ -3,24 +3,24 @@ import React from 'react';
 const ExportSection = () => {
   const services = [
     {
-      titleLine1: 'Exportación',
-      titleLine2: 'Internacional',
-      desc: 'Llevamos café del Huila a mercados globales con estándares de calidad consistentes.'
+      titleLine1: 'Nuestro',
+      titleLine2: 'origen',
+      desc: 'Llevamos el café del Huila a mercados globales sin que deje de saber a donde nació.'
     },
     {
-      titleLine1: 'Red de',
-      titleLine2: 'Caficultores',
-      desc: 'Más de 3.500 familias que cultivan tradición, sostenibilidad y excelencia.'
+      titleLine1: 'Nuestras',
+      titleLine2: 'familias',
+      desc: 'Más de 3.500 familias que cultivan tradición, sostenibilidad y futuro en el Huila.'
     },
     {
-      titleLine1: 'Calidad',
-      titleLine2: 'Certificada',
+      titleLine1: 'Nuestro',
+      titleLine2: 'cuidado',
       desc: 'Procesos controlados que garantizan trazabilidad y perfil sensorial único.'
     },
     {
-      titleLine1: 'Comercialización',
-      titleLine2: 'Especializada',
-      desc: 'Conectamos origen y mercado con una cadena de valor sólida.'
+      titleLine1: 'Nuestra',
+      titleLine2: 'cooperativa',
+      desc: 'Cada exportación fortalece a la cooperativa que la hace posible.'
     }
   ];
 
@@ -34,13 +34,13 @@ const ExportSection = () => {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="max-w-4xl mb-28">
-          <span className="label-premium text-accent-gold">Global Presence</span>
+          <span className="label-premium text-accent-gold">El Huila en el mundo</span>
           <h2 className="text-base-white mb-10 leading-tight">
-            <span className="block md:whitespace-nowrap">Llevamos lo mejor de Colombia</span>
+            <span className="block md:whitespace-nowrap">Llevamos el trabajo de nuestras familias</span>
             <span className="block italic-serif text-accent-gold">al mundo entero.</span>
           </h2>
           <p className="text-neutral-warm/50 text-xl font-light leading-relaxed max-w-[480px]">
-            Somos aliados estratégicos para distribuidores, cafeterías de especialidad y hoteles que buscan excelencia y consistencia en cada grano.
+            Trabajamos con distribuidores, cafeterías y hoteles que quieren saber de dónde viene su café y quiénes lo cultivan. Cada exportación fortalece a la cooperativa que la hace posible.
           </p>
         </div>
 

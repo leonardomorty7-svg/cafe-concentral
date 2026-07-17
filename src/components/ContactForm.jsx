@@ -23,7 +23,7 @@ const ContactForm = () => {
         </div>
         <h3 className="font-serif text-3xl mb-4 text-base-black">Mensaje Enviado</h3>
         <p className="text-text-muted mb-8 max-w-sm mx-auto">
-          Gracias por contactarnos. Un experto de Café Concentral se comunicará contigo en las próximas 24 horas.
+          Gracias por contactarnos. Un experto de Café Coocentral se comunicará contigo en las próximas 24 horas.
         </p>
         <button 
           onClick={() => setStatus('idle')}
@@ -87,7 +87,7 @@ const ContactForm = () => {
             id="mensaje"
             rows="4"
             className="w-full bg-neutral-cream/30 border-b border-neutral-warm py-4 px-0 focus:outline-none focus:border-accent-gold transition-colors font-light text-base resize-none"
-            placeholder="Cuéntanos sobre tu interés en Café Concentral..."
+            placeholder="Cuéntanos qué buscas y te respondemos."
           />
         </div>
 

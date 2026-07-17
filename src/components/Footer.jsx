@@ -11,7 +11,7 @@ const Footer = () => {
           {/* Newsletter */}
           <div className="space-y-6">
             <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#A68A64] font-bold">NEWSLETTER</h4>
-            <p className="text-xl font-serif leading-tight">Mantente en contacto</p>
+            <p className="text-xl font-serif leading-tight">Mantente cerca de nuestro origen</p>
             <form className="flex gap-4 border-b border-white/20 pb-2 group focus-within:border-[#A68A64] transition-colors">
               <input 
                 type="email" 
@@ -29,7 +29,7 @@ const Footer = () => {
             <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#A68A64] font-bold">CONTACTO</h4>
             <p className="text-xl font-serif leading-tight">¿Quieres trabajar con nosotros?</p>
             <a 
-              href="mailto:hola@cafeconcentral.com" 
+              href="mailto:hola@cafecoocentral.com" 
               className="inline-block px-8 py-3 border border-white/20 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-[#0B0B0B] transition-all rounded-sm"
             >
               ESCRÍBENOS
@@ -38,7 +38,7 @@ const Footer = () => {
 
           {/* Lifestyle / Playlist */}
           <div className="space-y-6 text-right">
-            <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#A68A64] font-bold">TAKE YOUR TIME</h4>
+            <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#A68A64] font-bold">TÓMATE TU TIEMPO</h4>
             <p className="text-xl font-serif leading-tight italic">Disfruta tu café</p>
             <a 
               href="https://open.spotify.com/playlist/0sc2FfgT3UMWrHqu4Napbf" 
@@ -56,27 +56,27 @@ const Footer = () => {
           <div className="col-span-2 space-y-6">
             <a href="/">
               <img 
-                src="/assets/brand/cafe-concentral-logo-primary-gold.svg" 
-                alt="Café Concentral" 
+                src="/assets/brand/coocentral-logo-primary-gold.svg" 
+                alt="Café Coocentral" 
                 className="h-8 md:h-10 w-auto object-contain"
               />
             </a>
             <p className="text-sm text-white/50 leading-relaxed max-w-xs font-light">
-              Elevando el estándar del café colombiano para el mundo. Arquitectura sensorial en cada grano seleccionado a mano.
+              Somos una cooperativa de familias caficultoras del Huila. Cada taza cuenta una historia que transforma vidas.
             </p>
           </div>
 
           <div className="space-y-6">
-            <h5 className="text-[10px] uppercase tracking-[0.2em] text-[#A68A64] font-bold">EMPRESA</h5>
+            <h5 className="text-[10px] uppercase tracking-[0.2em] text-[#A68A64] font-bold">NUESTRA COOPERATIVA</h5>
             <ul className="space-y-4 text-xs tracking-widest text-white/50 uppercase">
-              <li><a href="/nosotros" className="hover:text-white transition-colors">Sobre Nosotros</a></li>
-              <li><a href="/proceso" className="hover:text-white transition-colors">Proceso</a></li>
-              <li><a href="/sostenibilidad" className="hover:text-white transition-colors">Sostenibilidad</a></li>
+              <li><a href="/nosotros" className="hover:text-white transition-colors">Nuestra historia</a></li>
+              <li><a href="/#about" className="hover:text-white transition-colors">Quiénes somos</a></li>
+              <li><a href="/exportacion" className="hover:text-white transition-colors">Exportación</a></li>
             </ul>
           </div>
 
           <div className="space-y-6">
-            <h5 className="text-[10px] uppercase tracking-[0.2em] text-[#A68A64] font-bold">COLECCIÓN</h5>
+            <h5 className="text-[10px] uppercase tracking-[0.2em] text-[#A68A64] font-bold">NUESTROS CAFÉS</h5>
             <ul className="space-y-4 text-xs tracking-widest text-white/50 uppercase">
               <li><a href="/productos" className="hover:text-white transition-colors">Grano Entero</a></li>
               <li><a href="/productos" className="hover:text-white transition-colors">Café Molido</a></li>

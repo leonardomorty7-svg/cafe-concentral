@@ -33,9 +33,9 @@ const Navbar = ({ currentPath = '/' }) => {
         <a href="/" className="flex items-center">
           <img 
             src={(isScrolled || !isHome)
-              ? "/assets/brand/cafe-concentral-logo-primary-black.svg"
-              : "/assets/brand/cafe-concentral-logo-primary-gold.svg"}
-            alt="Café Concentral" 
+              ? "/assets/brand/coocentral-logo-primary-black.svg"
+              : "/assets/brand/coocentral-logo-primary-gold.svg"}
+            alt="Café Coocentral" 
             className="h-10 md:h-12 w-auto object-contain"
           />
         </a>

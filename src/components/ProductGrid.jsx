@@ -45,7 +45,12 @@ const ProductCard = ({ id, name, tag, description, category, subcategory, image 
   </a>
 );
 
-const ProductGrid = ({ title = "Nuestras Categorías", products = [], limit = 0 }) => {
+/**
+ * El encabezado es opcional: en la home la grilla llega después del recorrido
+ * (tierra → familias → modelo) y puede apoyarse en él. En /productos la página
+ * ya trae su propio h1, así que se omite para no duplicarlo.
+ */
+const ProductGrid = ({ products = [], limit = 0, eyebrow, heading, headingItalic, description }) => {
   if (!products || products.length === 0) return null;
 
   // limit=0 means show all; any positive number caps the list
@@ -54,17 +59,24 @@ const ProductGrid = ({ title = "Nuestras Categorías", products = [], limit = 0 
   return (
     <section className="py-32 md:py-48 px-6 bg-[#F5F1EB]" id="productos">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-24 flex flex-col md:flex-row justify-between items-end gap-10">
-          <div className="max-w-2xl">
-            <span className="text-[11px] uppercase tracking-[0.3em] text-[#A68A64] font-bold mb-6 block">NUESTRA COLECCIÓN</span>
-            <h2 className="text-4xl md:text-6xl font-serif text-[#1A1A1A] leading-tight reveal delay-100">
-              Café con <span className="italic text-[#A68A64]">carácter.</span>
-            </h2>
+        {heading && (
+          <div className="mb-24 flex flex-col md:flex-row justify-between items-end gap-10">
+            <div className="max-w-2xl">
+              {eyebrow && (
+                <span className="text-[11px] uppercase tracking-[0.3em] text-[#A68A64] font-bold mb-6 block">{eyebrow}</span>
+              )}
+              <h2 className="text-4xl md:text-6xl font-serif text-[#1A1A1A] leading-tight reveal delay-100">
+                {heading}{' '}
+                {headingItalic && <span className="italic text-[#A68A64]">{headingItalic}</span>}
+              </h2>
+            </div>
+            {description && (
+              <p className="text-[#6B6B6B] max-w-sm font-light text-lg leading-[1.7] reveal delay-200">
+                {description}
+              </p>
+            )}
           </div>
-          <p className="text-[#6B6B6B] max-w-sm font-light text-lg leading-[1.7] reveal delay-200">
-            Perfiles seleccionados para cada forma de disfrutar el origen.
-          </p>
-        </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-20 gap-x-10">
           {displayedProducts.map((product, idx) => {

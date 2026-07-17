@@ -28,35 +28,35 @@ const Hero = () => {
 
           {/* Eyebrow */}
           <p className="tracking-[0.3em] text-xs uppercase mb-4 text-accent-gold">
-            ORIGEN SELECCIONADO
+            HUILA, COLOMBIA
           </p>
 
-          {/* Main Title */}
+          {/* Main Title — el concepto madre del brief de marca */}
           <h1 className="font-serif font-light text-white tracking-tight leading-[0.95] text-5xl md:text-7xl xl:text-[110px] mb-4 text-center">
-            Experiencias sensoriales <br />
+            Cada taza cuenta una historia <br />
             {/* Secondary Title */}
             <span className="italic text-[#C6A47E] text-4xl md:text-6xl xl:text-[90px] block mt-2 text-center">
-              que nacen del café.
+              que transforma vidas.
             </span>
           </h1>
 
           <p className="text-white/80 max-w-xl mx-auto mt-8 font-light text-lg">
-            Café cultivado con paciencia, tostado para revelar su carácter.
+            Detrás de cada grano hay manos que cuidan la tierra del Huila y transforman su esfuerzo en un café que llega hasta tu mesa.
           </p>
 
           {/* CTA Button */}
           <div className="mt-16 flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <a 
-              href="/productos" 
+            <a
+              href="/productos"
               className="inline-block border border-white/40 text-white px-8 py-3 uppercase tracking-wide bg-transparent hover:bg-white/10 transition-all duration-300"
             >
-              Explorar colección
+              Conocer nuestros cafés
             </a>
-            <a 
-              href="/nosotros" 
+            <a
+              href="/nosotros"
               className="inline-block border-b border-transparent text-white px-6 py-3 uppercase tracking-wide bg-transparent hover:border-white/40 transition-all duration-300"
             >
-              Nuestra historia
+              Conoce a nuestras familias
             </a>
           </div>
         </div>
