@@ -8,7 +8,9 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-black">
+    /* pb-36 reserva el carril del indicador de scroll, que va en absolute:
+       sin él, el contenido centrado se le monta encima a ~800px de alto. */
+    <section className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-black pb-36">
       {/* Background Image with requested overlays */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 z-10" style={{ background: 'linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.65))' }} />
@@ -45,7 +47,7 @@ const Hero = () => {
           </p>
 
           {/* CTA Button */}
-          <div className="mt-16 flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <div className="mt-12 flex flex-col sm:flex-row gap-6 justify-center items-center">
             <a
               href="/productos"
               className="inline-block border border-white/40 text-white px-8 py-3 uppercase tracking-wide bg-transparent hover:bg-white/10 transition-all duration-300"
