@@ -10,6 +10,7 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getAllProducts } from '../../lib/products';
 import ProductGallery from '../../components/ProductGallery.jsx';
+import ProductGrid from '../../components/ProductGrid.jsx';
 
 export async function getStaticPaths() {
   const products = getAllProducts();
@@ -53,6 +54,23 @@ const badge = tags[0] ?? null;
 
 // Remaining tags used as sensory / descriptive chips
 const chips = tags.slice(1);
+
+// Intro editorial por categoría, en la voz del brief
+const categoryIntro =
+  category === 'cafe'
+    ? 'Cultivado por familias de nuestra cooperativa en las montañas del Huila, y tostado para que cada sorbo cuente de dónde viene.'
+    : category === 'alimentos'
+      ? 'Tradición del Huila hecha en casa: el acompañante de siempre para nuestro café.'
+      : 'Seleccionado por nosotros para preparar nuestro café en casa como se merece.';
+
+// Relacionados: primero de la misma categoría, luego el resto — nunca el actual
+const allProducts = getAllProducts();
+const related = [
+  ...allProducts.filter((p) => p.category === category && p.id !== id),
+  ...allProducts.filter((p) => p.category !== category && p.id !== id),
+]
+  .slice(0, 3)
+  .map((p) => ({ ...p, description: p.tags.join(' · '), tag: p.tags[0] ?? null }));
 ---
 
 <MainLayout
@@ -67,7 +85,7 @@ const chips = tags.slice(1);
     <div class="max-w-7xl mx-auto px-6">
 
       <!-- Breadcrumb -->
-      <nav class="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#A68A64] font-bold mb-14" aria-label="Breadcrumb">
+      <nav class="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#A68A64] font-bold mb-14" aria-label="Breadcrumb" data-fx="rise">
         <a href="/" class="hover:text-[#1A1A1A] transition-colors duration-300">Inicio</a>
         <span class="text-[#D6D1C9]">—</span>
         <a href="/productos" class="hover:text-[#1A1A1A] transition-colors duration-300">Productos</a>
@@ -78,18 +96,20 @@ const chips = tags.slice(1);
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-24 items-start">
 
         <!-- LEFT — Interactive image gallery -->
-        <ProductGallery
-          client:load
-          images={gallery}
-          name={name}
-          badge={badge}
-        />
+        <div data-fx="rise">
+          <ProductGallery
+            client:load
+            images={gallery}
+            name={name}
+            badge={badge}
+          />
+        </div>
 
         <!-- RIGHT — Product info -->
-        <div class="flex flex-col">
+        <div class="flex flex-col" data-fx="header">
 
           <!-- Category eyebrow -->
-          <span class="text-[10px] uppercase tracking-[0.4em] text-[#A68A64] font-bold mb-4 block">
+          <span class="text-[10px] uppercase tracking-[0.4em] text-[#A68A64] font-bold mb-4 block" data-fx-eyebrow>
             {categoryLabel} <span class="mx-2 text-[#D6D1C9]">/</span> {subcategory}
           </span>
 
@@ -100,7 +120,7 @@ const chips = tags.slice(1);
 
           <!-- Tags / sensory chips -->
           {tags.length > 0 && (
-            <div class="flex flex-wrap gap-2 mb-10">
+            <div class="flex flex-wrap gap-2 mb-10" data-fx="rise">
               {tags.map((tag) => (
                 <span class="text-[10px] uppercase tracking-[0.18em] font-bold text-[#1A1A1A] bg-white border border-[#1A1A1A]/8 px-4 py-2 rounded-full">
                   {tag}
@@ -114,14 +134,11 @@ const chips = tags.slice(1);
 
           <!-- Category description — editorially tailored per category -->
           <p class="text-[#6B6B6B] font-light text-lg leading-[1.8] mb-14 max-w-md">
-            {category === 'cafe'
-              ? `Una selección de origen único, procesada y tostada con rigor para elevar el perfil sensorial natural de la región.`
-              : `Herramienta de precisión diseñada para complementar la experiencia del café de especialidad en cada vertido.`
-            }
+            {categoryIntro}
           </p>
 
           <!-- Primary CTA -->
-          <div class="flex flex-col sm:flex-row gap-5 items-start mt-4">
+          <div class="flex flex-col sm:flex-row gap-5 items-start mt-4" data-fx="rise">
             <a
               href={`https://wa.me/573000000000?text=${encodeURIComponent(`Hola, estoy interesado en el producto ${name}. Me gustaría recibir más información.`)}`}
               target="_blank"
@@ -152,7 +169,7 @@ const chips = tags.slice(1);
       <div class="max-w-7xl mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
 
-          <div>
+          <div data-fx="header">
             <span class="label-premium">Perfil Sensorial</span>
             <h2 class="font-serif text-3xl md:text-4xl text-[#1A1A1A] leading-tight mb-8">
               Notas y <span class="italic text-[#A68A64]">carácter.</span>
@@ -163,7 +180,7 @@ const chips = tags.slice(1);
           </div>
 
           <!-- Chips grid -->
-          <div class="flex flex-wrap gap-3">
+          <div class="flex flex-wrap gap-3" data-fx="stagger">
             {tags.map((note, i) => (
               <div class="group flex items-center gap-3 bg-[#F5F1EB] rounded-sm px-5 py-4 transition-all duration-300 hover:bg-[#A68A64]/10">
                 <span class="text-[#A68A64] font-serif text-lg font-medium">{String(i + 1).padStart(2, '0')}</span>
@@ -181,14 +198,16 @@ const chips = tags.slice(1);
   <section class="py-24 bg-[#F5F1EB]">
     <div class="max-w-7xl mx-auto px-6">
       <div class="max-w-3xl">
-        <span class="label-premium">
-          {category === 'cafe' ? 'Origen & Proceso' : 'Detalles del Producto'}
-        </span>
-        <h2 class="font-serif text-3xl md:text-4xl text-[#1A1A1A] leading-tight mb-12">
-          Lo que hace <span class="italic text-[#A68A64]">especial</span> a esta selección.
-        </h2>
+        <div data-fx="header">
+          <span class="label-premium">
+            {category === 'cafe' ? 'Origen & Proceso' : 'Detalles del Producto'}
+          </span>
+          <h2 class="font-serif text-3xl md:text-4xl text-[#1A1A1A] leading-tight mb-12">
+            Lo que hace <span class="italic text-[#A68A64]">especial</span> a esta selección.
+          </h2>
+        </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8" data-fx="stagger">
           <!-- Categoría -->
           <div class="border-t border-[#1A1A1A]/8 pt-6">
             <p class="text-[10px] uppercase tracking-[0.25em] text-[#A68A64] font-bold mb-2">Categoría</p>
@@ -224,8 +243,8 @@ const chips = tags.slice(1);
     <div class="max-w-7xl mx-auto px-6">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
-        <div>
-          <span class="text-[11px] uppercase tracking-[0.3em] text-[#A68A64] font-bold mb-6 block">
+        <div data-fx="header">
+          <span class="text-[11px] uppercase tracking-[0.3em] text-[#A68A64] font-bold mb-6 block" data-fx-eyebrow>
             Nuestra Promesa
           </span>
           <h2 class="font-serif text-3xl md:text-5xl text-white leading-tight mb-8">
@@ -240,7 +259,7 @@ const chips = tags.slice(1);
         </div>
 
         <!-- Visual accent -->
-        <div class="relative aspect-square rounded-sm overflow-hidden opacity-80">
+        <div class="relative aspect-square rounded-sm overflow-hidden opacity-80" data-fx="parallax">
           <img
             src={image}
             alt={`${name} — Café Coocentral`}
@@ -254,20 +273,33 @@ const chips = tags.slice(1);
     </div>
   </section>
 
+  <!-- ─── RELACIONADOS — que la ficha nunca sea un callejón sin salida ── -->
+  {related.length > 0 && (
+    <ProductGrid
+      client:visible
+      products={related}
+      limit={3}
+      eyebrow="SIGUE EXPLORANDO"
+      heading="También de"
+      headingItalic="nuestra cooperativa."
+      description="Otros frutos de las mismas montañas y de las mismas manos."
+    />
+  )}
+
   <!-- ─── SECONDARY CTA ────────────────────────────────────────────────── -->
-  <section class="py-24 bg-[#F5F1EB]">
-    <div class="max-w-7xl mx-auto px-6 text-center">
+  <section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6 text-center" data-fx="header">
       <span class="label-premium mx-auto">¿Te interesa esta selección?</span>
       <h2 class="font-serif text-3xl md:text-5xl text-[#1A1A1A] leading-tight mb-6 mx-auto">
         Hablemos sobre <span class="italic text-[#A68A64]">tu pedido.</span>
       </h2>
       <p class="text-[#6B6B6B] font-light leading-relaxed mb-12 mx-auto">
-        Nuestro equipo está disponible para guiarte en la selección, preparación y pedido personalizado.
+        Detrás de este botón hay alguien de nuestra cooperativa, listo para ayudarte con tu selección o tu pedido.
       </p>
 
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <div class="flex flex-col sm:flex-row gap-4 justify-center" data-fx="rise">
         <a href="/contacto" class="btn-primary">
-          Hablar con un experto
+          Hablar con nosotros
         </a>
         <a href="/productos" class="btn-secondary">
           Ver más productos
