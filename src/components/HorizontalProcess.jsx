@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { startDust, GRAIN } from '../scripts/atmosphere.js';
+import BeanIcon from './BeanIcon.jsx';
 
 /**
  * HorizontalProcess — "Un proceso guiado por la cooperación" como viaje
@@ -187,8 +188,10 @@ const HorizontalProcess = () => {
           }
         });
 
-        // La flecha del panel título late invitando al viaje.
+        // La flecha del panel título late invitando al viaje, y la semilla
+        // respira igual que en la apertura: el hilo conductor.
         gsap.to('.hp-arrow', { x: 10, duration: 0.9, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+        gsap.to('.hp-bean', { scale: 1.12, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1, transformOrigin: '17px 24px' });
       }, rootRef);
     });
 
@@ -237,9 +240,12 @@ const HorizontalProcess = () => {
 
         {/* La cinta */}
         <div ref={trackRef} className="flex h-full will-change-transform">
-          {/* Panel 0 — el título invita al viaje */}
+          {/* Panel 0 — el título invita al viaje; la semilla del inicio lo recibe */}
           <div className="hp-panel w-screen h-full shrink-0 flex items-center px-8 md:px-24">
             <div className="max-w-3xl">
+              <div className="hp-bean mb-10">
+                <BeanIcon width={34} height={48} />
+              </div>
               <h2 className="font-serif font-light text-4xl md:text-6xl xl:text-7xl text-white leading-[1.08]">
                 Un proceso guiado por la <span className="italic text-[#C6A47E]">cooperación.</span>
               </h2>

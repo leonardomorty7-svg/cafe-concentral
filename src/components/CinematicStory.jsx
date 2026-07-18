@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { startDust, GRAIN } from '../scripts/atmosphere.js';
+import BeanIcon from './BeanIcon.jsx';
 
 /**
  * CinematicStory — el bloque de apertura de la home, con scrub de scroll.
@@ -44,20 +45,6 @@ const CIRCLE_ORIGIN = '50% 46%';
 // Viñeta de cine: centro más luminoso, bordes hundidos.
 const VIGNETTE =
   'radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.62) 95%), linear-gradient(rgba(0,0,0,0.28), rgba(0,0,0,0.45))';
-
-const BeanSVG = () => (
-  <svg
-    width="44"
-    height="62"
-    viewBox="0 0 60 84"
-    fill="none"
-    aria-hidden="true"
-    style={{ filter: 'drop-shadow(0 0 14px rgba(198,164,126,0.4))' }}
-  >
-    <ellipse cx="30" cy="42" rx="24" ry="36" stroke={GOLD} strokeWidth="2.5" fill="rgba(198,164,126,0.08)" />
-    <path d="M30 8 C 16 28, 16 56, 30 76" stroke={GOLD} strokeWidth="2.5" fill="none" />
-  </svg>
-);
 
 const BeatText = ({ eyebrow, title, italic, Tag = 'h2', withCtas = false }) => (
   <div className="max-w-5xl mx-auto px-6 text-center">
@@ -277,7 +264,7 @@ const CinematicStory = () => {
               }}
             />
             <div className="cine-bean-inner relative">
-              <BeanSVG />
+              <BeanIcon />
             </div>
           </div>
           <span className="mt-8 text-[10px] uppercase tracking-[0.35em] text-white/40 font-bold">SCROLL</span>
