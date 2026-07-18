@@ -3,7 +3,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 import IntroAnimation from '../components/IntroAnimation';
 import CinematicStory from '../components/CinematicStory';
 
-import ProcessSection from '../components/ProcessSection';
+import HorizontalProcess from '../components/HorizontalProcess';
 import ProductGrid from '../components/ProductGrid';
 import ExportSection from '../components/ExportSection';
 import FeaturedProducts from '../components/FeaturedProducts';
@@ -59,8 +59,8 @@ const FEATURED_PRODUCTS = getColeccion().map((p) => ({
 	{/* 4 — Profundidad: las raíces y las familias */}
 	<ArchitecturalSection client:visible />
 
-	{/* 5 — Cómo trabajamos */}
-	<ProcessSection client:visible />
+	{/* 5 — Cómo trabajamos: viaje horizontal, la cinta del proceso */}
+	<HorizontalProcess client:load />
 
 	{/* 6 — Y de ahí, al mundo */}
 	<ExportSection client:visible />
