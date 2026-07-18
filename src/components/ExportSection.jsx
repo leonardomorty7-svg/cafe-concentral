@@ -33,7 +33,7 @@ const ExportSection = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="max-w-4xl mb-28">
+        <div className="max-w-4xl mb-28" data-fx="header">
           <span className="label-premium text-accent-gold">El Huila en el mundo</span>
           <h2 className="text-base-white mb-10 leading-tight">
             <span className="block md:whitespace-nowrap">Llevamos el trabajo de nuestras familias</span>
@@ -44,7 +44,7 @@ const ExportSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10" data-fx="stagger">
           {services.map((service, index) => (
             <div 
               key={index} 
@@ -61,9 +61,9 @@ const ExportSection = () => {
           ))}
         </div>
 
-        <div className="mt-28">
-          <a 
-            href="/exportacion" 
+        <div className="mt-28" data-fx="rise">
+          <a
+            href="/exportacion"
             className="inline-flex items-center gap-6 text-accent-gold font-bold uppercase tracking-[0.3em] text-[12px] group"
           >
             <span className="border-b border-accent-gold/20 pb-2 group-hover:border-accent-gold transition-all duration-500">

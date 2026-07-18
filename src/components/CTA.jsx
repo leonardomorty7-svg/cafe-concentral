@@ -10,7 +10,7 @@ const CTA = () => {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-base-white/[0.05] to-transparent" />
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto">
+        <div className="relative z-10 max-w-5xl mx-auto" data-fx="header">
           <span className="label-premium text-accent-gold mb-10 mx-auto">Haz parte</span>
           <h2 className="text-base-white mb-12 leading-[1.1]">
             Cuando eliges nuestro café, <br /><span className="italic-serif text-accent-gold underline decoration-accent-gold/20 underline-offset-[12px]">eliges a quienes lo cultivan.</span>
@@ -18,7 +18,7 @@ const CTA = () => {
           <p className="text-neutral-warm/60 text-xl mb-20 max-w-2xl mx-auto leading-relaxed font-light">
             No te estamos pidiendo que compres café. Te estamos invitando a un modelo que genera bienestar, fortalece comunidades y demuestra que el café puede transformar vidas.
           </p>
-          <div className="flex flex-col sm:flex-row gap-8 justify-center">
+          <div className="flex flex-col sm:flex-row gap-8 justify-center" data-fx="rise">
             <a href="/productos" className="btn-primary">
               Ver nuestros cafés
             </a>

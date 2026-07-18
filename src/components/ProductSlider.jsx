@@ -179,16 +179,16 @@ const ProductSlider = ({
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-        <div className="mx-auto max-w-[720px] mb-16 px-6 text-center">
-          <span className="block text-[11px] tracking-[0.4em] uppercase mb-3 text-[#A68A64] font-bold reveal">
+        <div className="mx-auto max-w-[720px] mb-16 px-6 text-center" data-fx="header">
+          <span className="block text-[11px] tracking-[0.4em] uppercase mb-3 text-[#A68A64] font-bold" data-fx-eyebrow>
             {title}
           </span>
-          <h2 className="text-4xl md:text-6xl font-serif text-[#1A1A1A] leading-tight reveal delay-100">
+          <h2 className="text-4xl md:text-6xl font-serif text-[#1A1A1A] leading-tight">
             {subtitle}{' '}
             <span className="italic text-[#A68A64]">{subtitleItalic}</span>
           </h2>
           {description && (
-            <p className="text-[#6B6B6B] max-w-[560px] mx-auto font-light text-base leading-[1.7] mt-6 reveal delay-200">
+            <p className="text-[#6B6B6B] max-w-[560px] mx-auto font-light text-base leading-[1.7] mt-6">
               {description}
             </p>
           )}

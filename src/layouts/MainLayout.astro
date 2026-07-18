@@ -37,8 +37,11 @@ const {
 		<FloatingWhatsApp client:load />
 
 		<script>
+			import { initScrollFx } from '../scripts/scrollFx.js';
+
 			// Premium Scroll Reveal
 			document.addEventListener('DOMContentLoaded', () => {
+				initScrollFx();
 				const observerOptions = {
 					root: null,
 					rootMargin: '0px',

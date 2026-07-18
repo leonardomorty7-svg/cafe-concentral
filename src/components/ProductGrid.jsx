@@ -5,19 +5,25 @@ const ProductCard = ({ id, name, tag, description, category, subcategory, image 
     href={`/products/${id}`}
     className="group block relative"
   >
-    <div className="relative aspect-[4/5] bg-white rounded-sm overflow-hidden mb-6 flex items-center justify-center p-8 transition-shadow duration-500 group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] border border-black/5">
+    <div className="relative aspect-[4/5] bg-white rounded-sm overflow-hidden mb-6 flex items-center justify-center p-8 transition-all duration-500 ease-out group-hover:-translate-y-1.5 group-hover:shadow-[0_24px_48px_rgba(0,0,0,0.08)] border border-black/5">
       {/* Badge */}
       {tag && (
         <span className="absolute top-4 left-4 text-[9px] uppercase tracking-widest bg-[#F5F1EB]/80 backdrop-blur-md px-3 py-1.5 rounded-sm text-[#1A1A1A] font-bold z-10 border border-black/5">
           {tag}
         </span>
       )}
-      
+
       {/* Image */}
-      <img 
-        src={image} 
+      <img
+        src={image}
         alt={name}
-        className="w-full h-full object-contain transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
+        className="w-full h-full object-contain transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
+      />
+
+      {/* Barrido dorado al pie de la foto */}
+      <span
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#A68A64] scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100 z-10"
       />
     </div>
     
@@ -37,8 +43,9 @@ const ProductCard = ({ id, name, tag, description, category, subcategory, image 
       </div>
       
       <div className="pt-2">
-        <span className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 group-hover:border-[#A68A64] group-hover:text-[#A68A64] transition-all duration-300 group-hover:translate-x-1">
+        <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 group-hover:border-[#A68A64] group-hover:text-[#A68A64] transition-all duration-300">
           Ver producto
+          <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
         </span>
       </div>
     </div>
@@ -60,37 +67,34 @@ const ProductGrid = ({ products = [], limit = 0, eyebrow, heading, headingItalic
     <section className="py-32 md:py-48 px-6 bg-[#F5F1EB]" id="productos">
       <div className="max-w-7xl mx-auto">
         {heading && (
-          <div className="mb-24 flex flex-col md:flex-row justify-between items-end gap-10">
+          <div className="mb-24 flex flex-col md:flex-row justify-between items-end gap-10" data-fx="header">
             <div className="max-w-2xl">
               {eyebrow && (
-                <span className="text-[11px] uppercase tracking-[0.3em] text-[#A68A64] font-bold mb-6 block">{eyebrow}</span>
+                <span className="text-[11px] uppercase tracking-[0.3em] text-[#A68A64] font-bold mb-6 block" data-fx-eyebrow>{eyebrow}</span>
               )}
-              <h2 className="text-4xl md:text-6xl font-serif text-[#1A1A1A] leading-tight reveal delay-100">
+              <h2 className="text-4xl md:text-6xl font-serif text-[#1A1A1A] leading-tight">
                 {heading}{' '}
                 {headingItalic && <span className="italic text-[#A68A64]">{headingItalic}</span>}
               </h2>
             </div>
             {description && (
-              <p className="text-[#6B6B6B] max-w-sm font-light text-lg leading-[1.7] reveal delay-200">
+              <p className="text-[#6B6B6B] max-w-sm font-light text-lg leading-[1.7]">
                 {description}
               </p>
             )}
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-20 gap-x-10">
-          {displayedProducts.map((product, idx) => {
-            const delayClass = `delay-${(idx % 3) * 100 + 100}`;
-            return (
-              <div key={product.id} className={`${delayClass} reveal`}>
-                <ProductCard {...product} />
-              </div>
-            );
-          })}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-20 gap-x-10" data-fx="stagger">
+          {displayedProducts.map((product) => (
+            <div key={product.id}>
+              <ProductCard {...product} />
+            </div>
+          ))}
         </div>
 
         {limit > 0 && (
-          <div className="mt-20 flex justify-center reveal delay-400">
+          <div className="mt-20 flex justify-center" data-fx="rise">
             <a 
               href="/productos" 
               className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1.5 hover:border-[#A68A64] hover:text-[#A68A64] transition-all duration-300 flex items-center gap-2 group"
