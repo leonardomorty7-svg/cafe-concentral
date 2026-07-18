@@ -1,12 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { startDust, GRAIN } from '../scripts/atmosphere.js';
 
 /**
  * HorizontalProcess — "Un proceso guiado por la cooperación" como viaje
  * horizontal: el scroll vertical mueve una cinta de paneles de derecha a
- * izquierda (la banda transportadora del proceso). Cuatro paneles: el
- * título y los tres momentos, cada uno con su fotografía real, número
- * fantasma de fondo, contador arriba y riel de progreso dorado abajo.
+ * izquierda (la banda transportadora del proceso).
+ *
+ * La capa premium comparte el ADN de la apertura: polvo dorado y grano
+ * de película (atmosphere.js), coreografía de llegada por panel (la foto
+ * se revela con un barrido ligado a la cinta, el título sube, la línea
+ * crece), números fantasma con parallax propio, ruta con estaciones que
+ * se encienden al llegar, y un imán suave que asienta la cinta en cada
+ * paso — porque estamos guiando un proceso.
  */
+
+const GOLD = '#C6A47E';
 
 const STEPS = [
   {
@@ -32,27 +40,34 @@ const STEPS = [
   },
 ];
 
+const PANELS = STEPS.length + 1; // título + pasos
+
 const StepPanel = ({ num, title, text, img, alt, flip }) => (
   <div className="hp-panel relative w-screen h-full shrink-0 flex items-center px-8 md:px-24 pt-28 pb-24 md:py-0">
-    {/* Número fantasma de fondo */}
+    {/* Número fantasma de fondo, con parallax propio */}
     <span
       aria-hidden="true"
-      className={`absolute top-1/2 -translate-y-1/2 font-serif italic leading-none select-none pointer-events-none text-white/[0.04] text-[42vw] md:text-[26vw] ${flip ? 'left-[4%]' : 'right-[4%]'}`}
+      className={`hp-ghost absolute top-1/2 -translate-y-1/2 font-serif italic leading-none select-none pointer-events-none text-white/[0.05] text-[42vw] md:text-[26vw] ${flip ? 'left-[4%]' : 'right-[4%]'}`}
     >
       {num}
     </span>
 
     <div className={`relative grid grid-cols-1 md:grid-cols-2 items-center gap-10 md:gap-20 w-full max-w-6xl mx-auto ${flip ? 'md:[direction:rtl]' : ''}`}>
-      <div className="[direction:ltr] relative overflow-hidden rounded-sm w-full aspect-[4/3] md:aspect-[4/5] max-h-[38vh] md:max-h-[62vh]">
+      <div className="hp-photo [direction:ltr] relative overflow-hidden rounded-sm w-full aspect-[4/3] md:aspect-[4/5] max-h-[38vh] md:max-h-[62vh]">
         <img src={img} alt={alt} className="hp-img w-full h-full object-cover" style={{ transform: 'scale(1.12)' }} />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(rgba(0,0,0,0.06), rgba(0,0,0,0.22))' }} />
+        {/* Resplandor de llegada */}
+        <div
+          className="hp-glow absolute -inset-10 pointer-events-none opacity-0"
+          style={{ background: 'radial-gradient(circle at 50% 50%, rgba(198,164,126,0.25) 0%, transparent 60%)' }}
+        />
       </div>
 
       <div className="[direction:ltr]">
-        <span className="font-serif italic text-4xl md:text-6xl text-[#C6A47E]">{num}</span>
-        <h3 className="font-serif text-3xl md:text-5xl text-white leading-[1.1] mt-4">{title}</h3>
-        <div className="w-12 h-px bg-[#A68A64] my-7 md:my-9" />
-        <p className="text-white/60 font-light text-base md:text-lg leading-[1.8] max-w-md">{text}</p>
+        <span className="hp-num font-serif italic text-4xl md:text-6xl text-[#C6A47E] inline-block">{num}</span>
+        <h3 className="hp-title font-serif text-3xl md:text-5xl text-white leading-[1.1] mt-4">{title}</h3>
+        <div className="hp-rule w-12 h-px bg-[#A68A64] my-7 md:my-9 origin-left" />
+        <p className="hp-text text-white/60 font-light text-base md:text-lg leading-[1.8] max-w-md">{text}</p>
       </div>
     </div>
   </div>
@@ -72,6 +87,7 @@ const HorizontalProcess = () => {
 
     let ctx;
     let cancelled = false;
+    const stopDust = startDust(rootRef.current.querySelector('.hp-dust'), { density: 26000 });
 
     // gsap y ScrollTrigger son CJS: importarlos estáticos rompe el SSR de Astro.
     Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(([gsapMod, stMod]) => {
@@ -82,39 +98,103 @@ const HorizontalProcess = () => {
 
       ctx = gsap.context(() => {
         const track = trackRef.current;
+        const nodes = gsap.utils.toArray('.hp-node');
 
-        const st = {
-          trigger: rootRef.current,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: true,
-          invalidateOnRefresh: true,
-        };
-
-        // La cinta: scroll vertical → viaje horizontal derecha a izquierda.
-        gsap.to(track, {
+        // La cinta: scroll vertical → viaje horizontal, con un imán suave
+        // que la asienta en cada estación del proceso.
+        const belt = gsap.to(track, {
           x: () => -(track.scrollWidth - window.innerWidth),
           ease: 'none',
           scrollTrigger: {
-            ...st,
+            trigger: rootRef.current,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: true,
+            invalidateOnRefresh: true,
+            // inertia:false — siempre a la estación más cercana; con la
+            // proyección por velocidad, un flick fuerte salta estaciones.
+            snap: { snapTo: 1 / (PANELS - 1), duration: { min: 0.2, max: 0.6 }, ease: 'power1.inOut', inertia: false },
             onUpdate: (self) => {
-              // Contador del paso visible (el panel 0 es el título).
               const current = Math.min(STEPS.length, Math.max(1, Math.round(self.progress * STEPS.length)));
               if (counterRef.current) counterRef.current.textContent = String(current).padStart(2, '0');
+              // Las estaciones de la ruta se encienden al alcanzarlas.
+              nodes.forEach((node, i) => {
+                const on = self.progress >= i / (PANELS - 1) - 0.02;
+                node.style.backgroundColor = on ? GOLD : 'rgba(255,255,255,0.2)';
+                node.style.boxShadow = on ? '0 0 12px rgba(198,164,126,0.8)' : 'none';
+              });
             },
           },
         });
 
-        // Deriva sutil de las fotos en sentido contrario: profundidad de capa.
-        gsap.fromTo('.hp-img', { xPercent: -5 }, { xPercent: 5, ease: 'none', scrollTrigger: { ...st } });
-
         // El riel dorado se llena con el viaje.
-        gsap.fromTo('.hp-progress', { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { ...st } });
+        gsap.fromTo(
+          '.hp-progress',
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            ease: 'none',
+            scrollTrigger: { trigger: rootRef.current, start: 'top top', end: 'bottom bottom', scrub: true },
+          }
+        );
+
+        // Coreografía de llegada de cada panel, ligada al avance de la
+        // cinta (containerAnimation): nada llega "ya puesto".
+        gsap.utils.toArray('.hp-panel').forEach((panel) => {
+          const enter = {
+            containerAnimation: belt,
+            trigger: panel,
+            start: 'left 75%',
+            end: 'left 15%',
+            scrub: true,
+          };
+          const photo = panel.querySelector('.hp-photo');
+          if (photo) {
+            gsap.fromTo(
+              photo,
+              { clipPath: 'inset(0% 78% 0% 0%)' },
+              { clipPath: 'inset(0% 0% 0% 0%)', ease: 'none', scrollTrigger: { ...enter } }
+            );
+          }
+          const num = panel.querySelector('.hp-num');
+          if (num) gsap.fromTo(num, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, ease: 'none', scrollTrigger: { ...enter, end: 'left 45%' } });
+          const title = panel.querySelector('.hp-title');
+          if (title) gsap.fromTo(title, { autoAlpha: 0, y: 46 }, { autoAlpha: 1, y: 0, ease: 'none', scrollTrigger: { ...enter, start: 'left 70%', end: 'left 38%' } });
+          const rule = panel.querySelector('.hp-rule');
+          if (rule) gsap.fromTo(rule, { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { ...enter, start: 'left 65%', end: 'left 35%' } });
+          const text = panel.querySelector('.hp-text');
+          if (text) gsap.fromTo(text, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, ease: 'none', scrollTrigger: { ...enter, start: 'left 60%', end: 'left 30%' } });
+          const glow = panel.querySelector('.hp-glow');
+          if (glow) {
+            gsap.fromTo(
+              glow,
+              { opacity: 0 },
+              { opacity: 1, ease: 'none', scrollTrigger: { containerAnimation: belt, trigger: panel, start: 'left 45%', end: 'left 5%', scrub: true } }
+            );
+          }
+          // El número fantasma viaja más lento que la cinta: profundidad.
+          const ghost = panel.querySelector('.hp-ghost');
+          if (ghost) {
+            gsap.fromTo(
+              ghost,
+              { xPercent: 26 },
+              {
+                xPercent: -26,
+                ease: 'none',
+                scrollTrigger: { containerAnimation: belt, trigger: panel, start: 'left right', end: 'right left', scrub: true },
+              }
+            );
+          }
+        });
+
+        // La flecha del panel título late invitando al viaje.
+        gsap.to('.hp-arrow', { x: 10, duration: 0.9, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       }, rootRef);
     });
 
     return () => {
       cancelled = true;
+      stopDust();
       if (ctx) ctx.revert();
     };
   }, []);
@@ -165,7 +245,7 @@ const HorizontalProcess = () => {
               </h2>
               <p className="mt-10 text-white/50 font-light text-base md:text-lg flex items-center gap-4">
                 Tres momentos entre la tierra y tu taza. Sigue bajando: el proceso avanza contigo.
-                <span aria-hidden="true" className="inline-block text-[#C6A47E] text-2xl leading-none">→</span>
+                <span aria-hidden="true" className="hp-arrow inline-block text-[#C6A47E] text-2xl leading-none">→</span>
               </p>
             </div>
           </div>
@@ -175,9 +255,25 @@ const HorizontalProcess = () => {
           ))}
         </div>
 
-        {/* Riel de progreso */}
+        {/* Polvo dorado */}
+        <canvas className="hp-dust absolute inset-0 w-full h-full pointer-events-none z-[5]" style={{ mixBlendMode: 'screen', opacity: 0.5 }} />
+
+        {/* Grano de película */}
+        <div
+          className="absolute inset-0 pointer-events-none z-[6]"
+          style={{ backgroundImage: GRAIN, opacity: 0.05, mixBlendMode: 'overlay' }}
+        />
+
+        {/* La ruta: riel con estaciones que se encienden */}
         <div className="absolute bottom-10 left-8 right-8 md:left-24 md:right-24 h-px bg-white/10 z-20">
           <div className="hp-progress h-full bg-[#C6A47E] origin-left" style={{ transform: 'scaleX(0)' }} />
+          {Array.from({ length: PANELS }, (_, i) => (
+            <span
+              key={i}
+              className="hp-node absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full transition-colors duration-300"
+              style={{ left: `${(i / (PANELS - 1)) * 100}%`, marginLeft: '-4px', backgroundColor: 'rgba(255,255,255,0.2)' }}
+            />
+          ))}
         </div>
       </div>
     </section>
