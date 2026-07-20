@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { startDust, GRAIN } from '../scripts/atmosphere.js';
-import BeanIcon from './BeanIcon.jsx';
 
 /**
  * CinematicStory — el bloque de apertura de la home, con scrub de scroll.
@@ -94,10 +93,6 @@ const CinematicStory = () => {
       gsap.registerPlugin(ScrollTrigger);
 
       ctx = gsap.context(() => {
-        // La semilla y su halo respiran por su cuenta; el scrub controla su salida.
-        gsap.to('.cine-bean-inner', { scale: 1.12, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1 });
-        gsap.to('.cine-bean-halo', { scale: 1.25, opacity: 0.5, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1 });
-
         const tl = gsap.timeline({
           defaults: { ease: 'none' },
           scrollTrigger: {
@@ -174,9 +169,6 @@ const CinematicStory = () => {
           }
         });
 
-        // La semilla se disuelve —con blur— cuando la primera foto la alcanza.
-        tl.to('.cine-bean', { autoAlpha: 0, scale: 1.6, filter: 'blur(8px)', duration: 0.3, ease: 'power2.in' }, 0.35);
-
         // El polvo brilla pleno sobre el negro y baja a acento sobre las fotos.
         tl.to('.cine-dust', { opacity: 0.35, duration: 0.5 }, 0.35);
 
@@ -250,26 +242,6 @@ const CinematicStory = () => {
           className="absolute inset-0 pointer-events-none z-[6]"
           style={{ backgroundImage: GRAIN, opacity: 0.055, mixBlendMode: 'overlay' }}
         />
-
-        {/* La semilla, primer plano del arranque en negro */}
-        <div className="cine-bean absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-[7]">
-          <div className="relative flex items-center justify-center">
-            <div
-              className="cine-bean-halo absolute rounded-full"
-              style={{
-                width: '220px',
-                height: '220px',
-                background: 'radial-gradient(circle, rgba(198,164,126,0.22) 0%, transparent 65%)',
-                opacity: 0.35,
-              }}
-            />
-            <div className="cine-bean-inner relative">
-              <BeanIcon />
-            </div>
-          </div>
-          <span className="mt-8 text-[10px] uppercase tracking-[0.35em] text-white/40 font-bold">SCROLL</span>
-          <div className="mt-4 w-px h-10 bg-white/20" />
-        </div>
 
         {/* Frases: una por beat; la primera es el h1 del sitio */}
         {BEATS.map((b, i) => (
