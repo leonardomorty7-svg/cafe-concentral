@@ -26,7 +26,7 @@ export function startDust(canvas, { density = 16000 } = {}) {
     canvas.width = W * dpr;
     canvas.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const n = Math.round(Math.min(90, (W * H) / density));
+    const n = Math.round(Math.min(150, (W * H) / density));
     parts = Array.from({ length: n }, () => ({
       x: Math.random() * W,
       y: Math.random() * H,
@@ -52,12 +52,21 @@ export function startDust(canvas, { density = 16000 } = {}) {
         p.x = Math.random() * W;
       }
       const x = p.x + Math.sin(t * p.tw + p.ph) * p.sway;
-      const a = (p.spark ? 0.75 : 0.4) * (0.55 + 0.45 * Math.sin(t * p.tw * 2 + p.ph));
+      const tw = 0.55 + 0.45 * Math.sin(t * p.tw * 2 + p.ph);
       ctx.beginPath();
-      ctx.arc(x, p.y, p.spark ? p.r * 1.4 : p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(214,181,140,${Math.max(a, 0)})`;
-      ctx.shadowBlur = p.spark ? 12 : 0;
-      ctx.shadowColor = 'rgba(198,164,126,0.9)';
+      if (p.spark) {
+        // Chispa mágica: núcleo cálido casi blanco con halo grande, para
+        // que se lea como punto de luz sobre cualquier fondo (incluidos
+        // los granos brillantes).
+        ctx.arc(x, p.y, p.r * 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,240,208,${Math.max(0.9 * tw, 0)})`;
+        ctx.shadowBlur = 18;
+        ctx.shadowColor = 'rgba(224,184,120,0.95)';
+      } else {
+        ctx.arc(x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(214,181,140,${Math.max(0.4 * tw, 0)})`;
+        ctx.shadowBlur = 0;
+      }
       ctx.fill();
     }
     ctx.shadowBlur = 0;

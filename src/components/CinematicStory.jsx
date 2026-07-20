@@ -16,7 +16,7 @@ import { startDust, GRAIN } from '../scripts/atmosphere.js';
 
 const GOLD = '#C6A47E';
 
-const FRAME_COUNT = 76;
+const FRAME_COUNT = 64;
 const framePath = (i) => `/assets/intro/beans/f_${String(i).padStart(3, '0')}.webp`;
 const LAST_FRAME = framePath(FRAME_COUNT);
 
@@ -92,7 +92,9 @@ const CinematicStory = () => {
 
     let ctx;
     let cancelled = false;
-    const stopDust = startDust(rootRef.current.querySelector('.cine-dust'));
+    // density menor = más partículas; sobre los granos se necesitan más
+    // para que los destellos se lean sobre la textura.
+    const stopDust = startDust(rootRef.current.querySelector('.cine-dust'), { density: 9000 });
 
     // ── Secuencia de granos en canvas (object-cover) ──────────────────
     const canvas = beansRef.current;
@@ -227,8 +229,8 @@ const CinematicStory = () => {
           }
         });
 
-        // El polvo brilla pleno sobre los granos y baja a acento sobre las fotos.
-        tl.to('.cine-dust', { opacity: 0.35, duration: 0.5 }, BEANS_DUR);
+        // El polvo brilla pleno sobre los granos y baja un poco sobre las fotos.
+        tl.to('.cine-dust', { opacity: 0.4, duration: 0.5 }, BEANS_DUR);
 
         // Los puntos aparecen cuando empiezan las fotos.
         tl.to('.cine-dots', { autoAlpha: 1, duration: 0.2 }, BEANS_DUR + 0.1);
@@ -293,8 +295,9 @@ const CinematicStory = () => {
           />
         ))}
 
-        {/* Polvo dorado */}
-        <canvas className="cine-dust absolute inset-0 w-full h-full pointer-events-none z-[5]" style={{ mixBlendMode: 'screen' }} />
+        {/* Polvo dorado: por encima de todo (granos incluidos), z-[9], para
+            que los destellos mágicos acompañen también la entrada de los granos. */}
+        <canvas className="cine-dust absolute inset-0 w-full h-full pointer-events-none z-[9]" style={{ mixBlendMode: 'screen', opacity: 0.55 }} />
 
         {/* Grano de película */}
         <div
