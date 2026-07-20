@@ -109,8 +109,13 @@ const CinematicStory = () => {
         const rings = gsap.utils.toArray('.cine-ring');
         const dots = gsap.utils.toArray('.cine-dot');
 
+        // El puente (logo del intro) se disuelve al arrancar, mientras la
+        // primera foto florece detrás de él.
+        tl.to('.cine-bridge', { autoAlpha: 0, duration: 0.55, ease: 'power1.inOut' }, 0.1);
+
         beats.forEach((beat, i) => {
-          const at = i * 1.5 + (i === 0 ? 0.15 : 0.2);
+          // El primer beat florece desde el arranque, detrás del puente.
+          const at = i * 1.5 + (i === 0 ? 0 : 0.2);
 
           // La foto florece desde el círculo y asienta su escala…
           tl.fromTo(
@@ -242,6 +247,12 @@ const CinematicStory = () => {
           className="absolute inset-0 pointer-events-none z-[6]"
           style={{ backgroundImage: GRAIN, opacity: 0.055, mixBlendMode: 'overlay' }}
         />
+
+        {/* Puente: el logo con que termina el intro persiste aquí y se
+            disuelve mientras la primera foto florece detrás — sin costura. */}
+        <div className="cine-bridge absolute inset-0 z-[7] pointer-events-none">
+          <img src="/assets/intro/beans/f_076.webp" alt="" className="w-full h-full object-cover" />
+        </div>
 
         {/* Frases: una por beat; la primera es el h1 del sitio */}
         {BEATS.map((b, i) => (
