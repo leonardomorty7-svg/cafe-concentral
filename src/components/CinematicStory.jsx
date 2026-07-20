@@ -2,18 +2,26 @@ import React, { useEffect, useRef, useState } from 'react';
 import { startDust, GRAIN } from '../scripts/atmosphere.js';
 
 /**
- * CinematicStory — el bloque de apertura de la home, con scrub de scroll.
+ * CinematicStory — la apertura del sitio como UNA sola animación continua,
+ * dentro de un único pin y un único timeline con scrub de scroll:
  *
- * Arranca en negro con la semilla dorada; cada tramo de scroll hace
- * florecer una fotografía real desde un círculo (clip-path) con una
- * sola frase encima. Tres beats y suelta el pin directo a la tienda.
+ *   granos (secuencia del cliente) → logo → la finca florece detrás del
+ *   logo → oportunidades → la tierra → (suelta el pin hacia la tienda)
  *
- * La atmósfera (polvo dorado, grano de película) viene del módulo
- * compartido atmosphere.js; acá se suman la onda de luz por revelado,
- * la viñeta y los puntos de progreso por beat.
+ * Los granos son 76 fotogramas WebP (render de After Effects del cliente,
+ * 1080p) dibujados en canvas con object-cover y scrubbed por el scroll;
+ * al llegar al logo, el canvas se disuelve mientras la primera foto ya
+ * está floreciendo debajo. Nada se siente como "otra sección".
  */
 
 const GOLD = '#C6A47E';
+
+const FRAME_COUNT = 76;
+const framePath = (i) => `/assets/intro/beans/f_${String(i).padStart(3, '0')}.webp`;
+const LAST_FRAME = framePath(FRAME_COUNT);
+
+// Cuánto del timeline ocupan los granos antes de que empiecen las fotos.
+const BEANS_DUR = 3;
 
 const BEATS = [
   {
@@ -73,6 +81,7 @@ const BeatText = ({ eyebrow, title, italic, Tag = 'h2', withCtas = false }) => (
 
 const CinematicStory = () => {
   const rootRef = useRef(null);
+  const beansRef = useRef(null);
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
@@ -84,6 +93,46 @@ const CinematicStory = () => {
     let ctx;
     let cancelled = false;
     const stopDust = startDust(rootRef.current.querySelector('.cine-dust'));
+
+    // ── Secuencia de granos en canvas (object-cover) ──────────────────
+    const canvas = beansRef.current;
+    const bx = canvas.getContext('2d');
+    const images = new Array(FRAME_COUNT);
+    const beans = { frame: 0 };
+
+    const drawBeans = () => {
+      const idx = Math.min(FRAME_COUNT - 1, Math.max(0, Math.round(beans.frame)));
+      const img = images[idx];
+      if (!img || !img.complete || !img.naturalWidth) return;
+      const cw = canvas.width;
+      const ch = canvas.height;
+      const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+      const dw = img.naturalWidth * scale;
+      const dh = img.naturalHeight * scale;
+      bx.clearRect(0, 0, cw, ch);
+      bx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+    };
+
+    const resizeBeans = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      drawBeans();
+    };
+
+    // Precarga: primer y último frame primero (estados de reposo).
+    const order = [0, FRAME_COUNT - 1, ...Array.from({ length: FRAME_COUNT }, (_, i) => i)];
+    order.forEach((i) => {
+      if (images[i]) return;
+      const im = new Image();
+      im.decoding = 'async';
+      im.src = framePath(i + 1);
+      im.onload = drawBeans;
+      images[i] = im;
+    });
+
+    window.addEventListener('resize', resizeBeans);
+    resizeBeans();
 
     // gsap y ScrollTrigger son CJS: importarlos estáticos rompe el SSR de Astro.
     Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(([gsapMod, stMod]) => {
@@ -109,13 +158,17 @@ const CinematicStory = () => {
         const rings = gsap.utils.toArray('.cine-ring');
         const dots = gsap.utils.toArray('.cine-dot');
 
-        // El puente (logo del intro) se disuelve al arrancar, mientras la
-        // primera foto florece detrás de él.
-        tl.to('.cine-bridge', { autoAlpha: 0, duration: 0.55, ease: 'power1.inOut' }, 0.1);
+        // ── Fase 1: los granos se scrubbean hasta el logo ──────────────
+        tl.to(beans, { frame: FRAME_COUNT - 1, duration: BEANS_DUR, onUpdate: drawBeans }, 0);
+        tl.to('.cine-hint', { autoAlpha: 0, duration: 0.5 }, 0.15);
 
+        // El canvas de granos (con el logo) se disuelve para revelar las
+        // fotos que ya están floreciendo debajo.
+        tl.to('.cine-beans', { autoAlpha: 0, duration: 0.6, ease: 'power1.inOut' }, BEANS_DUR);
+
+        // ── Fase 2: las fotos florecen, una tras otra ──────────────────
         beats.forEach((beat, i) => {
-          // El primer beat florece desde el arranque, detrás del puente.
-          const at = i * 1.5 + (i === 0 ? 0 : 0.2);
+          const at = BEANS_DUR + i * 1.5 + (i === 0 ? 0 : 0.2);
 
           // La foto florece desde el círculo y asienta su escala…
           tl.fromTo(
@@ -174,11 +227,11 @@ const CinematicStory = () => {
           }
         });
 
-        // El polvo brilla pleno sobre el negro y baja a acento sobre las fotos.
-        tl.to('.cine-dust', { opacity: 0.35, duration: 0.5 }, 0.35);
+        // El polvo brilla pleno sobre los granos y baja a acento sobre las fotos.
+        tl.to('.cine-dust', { opacity: 0.35, duration: 0.5 }, BEANS_DUR);
 
-        // Los puntos aparecen al empezar el viaje.
-        tl.to('.cine-dots', { autoAlpha: 1, duration: 0.2 }, 0.4);
+        // Los puntos aparecen cuando empiezan las fotos.
+        tl.to('.cine-dots', { autoAlpha: 1, duration: 0.2 }, BEANS_DUR + 0.1);
 
         // Cola para sostener el beat final antes de soltar el pin.
         tl.to({}, { duration: 0.5 });
@@ -187,6 +240,7 @@ const CinematicStory = () => {
 
     return () => {
       cancelled = true;
+      window.removeEventListener('resize', resizeBeans);
       stopDust();
       if (ctx) ctx.revert();
     };
@@ -207,7 +261,7 @@ const CinematicStory = () => {
   }
 
   return (
-    <section ref={rootRef} className="relative bg-black" style={{ height: '420vh' }} aria-label="Café Coocentral">
+    <section ref={rootRef} className="relative bg-black" style={{ height: '520vh' }} aria-label="Café Coocentral">
       <div className="sticky top-0 h-screen overflow-hidden">
         {/* Fotos: florecen por círculo en orden, cada una tapa la anterior */}
         {BEATS.map((b) => (
@@ -248,10 +302,17 @@ const CinematicStory = () => {
           style={{ backgroundImage: GRAIN, opacity: 0.055, mixBlendMode: 'overlay' }}
         />
 
-        {/* Puente: el logo con que termina el intro persiste aquí y se
-            disuelve mientras la primera foto florece detrás — sin costura. */}
-        <div className="cine-bridge absolute inset-0 z-[7] pointer-events-none">
-          <img src="/assets/intro/beans/f_076.webp" alt="" className="w-full h-full object-cover" />
+        {/* Los granos del cliente: primer plano que se scrubbea hasta el
+            logo y se disuelve para revelar las fotos. Fallback sin JS: el
+            último frame (el logo) como poster. */}
+        <canvas ref={beansRef} className="cine-beans absolute inset-0 w-full h-full z-[7]">
+          <img src={LAST_FRAME} alt="Café Coocentral" />
+        </canvas>
+
+        {/* Aviso de scroll, sobre los granos al arrancar */}
+        <div className="cine-hint absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none z-[8]">
+          <span className="text-[10px] uppercase tracking-[0.35em] text-white/50 font-bold">SCROLL</span>
+          <div className="mt-4 w-px h-10 bg-white/25" />
         </div>
 
         {/* Frases: una por beat; la primera es el h1 del sitio */}

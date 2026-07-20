@@ -1,6 +1,5 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
-import BeansIntro from '../components/BeansIntro';
 import CinematicStory from '../components/CinematicStory';
 
 import HorizontalProcess from '../components/HorizontalProcess';
@@ -37,10 +36,8 @@ const FEATURED_PRODUCTS = getColeccion().map((p) => ({
   Las secciones siguientes profundizan, no repiten.
 -->
 <MainLayout title="Café Coocentral | Cada taza cuenta una historia que transforma vidas">
-	{/* 0 — Apertura: los granos del cliente revelan el logo (scrub de scroll) */}
-	<BeansIntro client:load />
-
-	{/* 1 — La historia: finca → oportunidades → tierra (scrub) */}
+	{/* 1 — La apertura completa, una sola animación continua:
+	       granos → logo → finca → oportunidades → tierra (scrub) */}
 	<CinematicStory client:load />
 
 	{/* 2 — La tienda, sin hacer esperar al cliente */}
