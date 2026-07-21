@@ -101,18 +101,16 @@ const HorizontalProcess = () => {
     const dustCanvas = rootRef.current.querySelector('.hp-dust');
     const stopDust = dustCanvas ? startDust(dustCanvas, { density: 26000 }) : () => {};
 
-    // ── Granos 3D derivando en el fondo (ping-pong, ~10fps) ───────────
+    // ── Granos 3D del fondo: su avance lo manda el scroll (scrub) ─────
     const bgCanvas = bgRef.current;
     const bgx = bgCanvas ? bgCanvas.getContext('2d') : null;
     const bgImgs = new Array(BG_COUNT);
-    let bgFrame = 0;
-    let bgDir = 1;
-    let bgLast = 0;
-    let bgRaf;
+    const bgState = { frame: 0 };
 
     const drawBg = () => {
       if (!bgx) return;
-      const img = bgImgs[Math.round(bgFrame)];
+      const idx = Math.min(BG_COUNT - 1, Math.max(0, Math.round(bgState.frame)));
+      const img = bgImgs[idx];
       if (!img || !img.complete || !img.naturalWidth) return;
       const cw = bgCanvas.width;
       const ch = bgCanvas.height;
@@ -139,18 +137,8 @@ const HorizontalProcess = () => {
       bgImgs[i] = im;
     }
 
-    const bgLoop = (now) => {
-      bgRaf = requestAnimationFrame(bgLoop);
-      if (now - bgLast < 100) return; // ~10fps: deriva lenta y barata
-      bgLast = now;
-      bgFrame += bgDir;
-      if (bgFrame >= BG_COUNT - 1 || bgFrame <= 0) bgDir *= -1; // ping-pong
-      drawBg();
-    };
-
     window.addEventListener('resize', resizeBg);
     resizeBg();
-    bgRaf = requestAnimationFrame(bgLoop);
 
     // gsap y ScrollTrigger son CJS: importarlos estáticos rompe el SSR de Astro.
     Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(([gsapMod, stMod]) => {
@@ -250,8 +238,23 @@ const HorizontalProcess = () => {
           }
         });
 
-        // Los granos del fondo derivan en contra de la cinta: parallax de
-        // profundidad, muy sutil para que no compita con los paneles.
+        // Los granos del fondo avanzan y retroceden CON el scroll (scrub),
+        // igual que la cinta: el usuario los maneja con el dedo.
+        gsap.to(bgState, {
+          frame: BG_COUNT - 1,
+          ease: 'none',
+          onUpdate: drawBg,
+          scrollTrigger: {
+            trigger: rootRef.current,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // Y además derivan en contra de la cinta: parallax de profundidad,
+        // muy sutil para que no compita con los paneles.
         gsap.fromTo(
           '.hp-beans-bg',
           { xPercent: 4 },
@@ -271,7 +274,6 @@ const HorizontalProcess = () => {
 
     return () => {
       cancelled = true;
-      cancelAnimationFrame(bgRaf);
       window.removeEventListener('resize', resizeBg);
       stopDust();
       if (ctx) ctx.revert();
