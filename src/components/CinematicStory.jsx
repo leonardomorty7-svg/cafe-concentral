@@ -16,7 +16,7 @@ import { startDust, GRAIN } from '../scripts/atmosphere.js';
 
 const GOLD = '#C6A47E';
 
-const FRAME_COUNT = 64;
+const FRAME_COUNT = 86;
 const framePath = (i) => `/assets/intro/beans/f_${String(i).padStart(3, '0')}.webp`;
 const LAST_FRAME = framePath(FRAME_COUNT);
 
