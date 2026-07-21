@@ -1,9 +1,9 @@
 import React from 'react';
+import { WHATSAPP_NUMBER } from '../lib/cart.js';
 
 const FloatingWhatsApp = () => {
-  const phoneNumber = "573000000000";
   const message = "Hola, me gustaría saber más sobre Café Coocentral.";
-  const waLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+  const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
   return (
     <a

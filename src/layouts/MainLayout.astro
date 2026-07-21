@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
+import CartDrawer from '../components/CartDrawer';
 
 interface Props {
 	title?: string;
@@ -35,6 +36,7 @@ const {
 		</main>
 		<Footer />
 		<FloatingWhatsApp client:load />
+		<CartDrawer client:load />
 
 		<script>
 			import { initScrollFx } from '../scripts/scrollFx.js';

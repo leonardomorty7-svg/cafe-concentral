@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { getCount, subscribe, openCart } from '../lib/cart.js';
 
 const Navbar = ({ currentPath = '/' }) => {
   const isHome = currentPath === '/' || currentPath === '';
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -11,6 +13,12 @@ const Navbar = ({ currentPath = '/' }) => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Contador del carrito, sincronizado con el store compartido.
+  useEffect(() => {
+    setCartCount(getCount());
+    return subscribe((items) => setCartCount(items.reduce((s, it) => s + it.qty, 0)));
   }, []);
 
   useEffect(() => {
@@ -65,7 +73,27 @@ const Navbar = ({ currentPath = '/' }) => {
             </a>
           </div>
 
-          <button 
+          {/* Carrito */}
+          <button
+            onClick={() => openCart()}
+            aria-label={`Abrir carrito${cartCount > 0 ? ` (${cartCount})` : ''}`}
+            className={`relative flex items-center transition-colors duration-500 hover:opacity-70 ${
+              (isScrolled || !isHome) ? 'text-black' : 'text-white'
+            }`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" strokeWidth={1.5} strokeLinecap="round" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 min-w-[18px] h-[18px] px-1 flex items-center justify-center rounded-full bg-accent-gold text-white text-[10px] font-bold tabular-nums leading-none">
+                {cartCount}
+              </span>
+            )}
+          </button>
+
+          <button
             onClick={() => setIsMenuOpen(true)}
             className={`flex items-center gap-3 transition-colors duration-500 hover:opacity-70 ${
               (isScrolled || !isHome) ? 'text-black' : 'text-white'

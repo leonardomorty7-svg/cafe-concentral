@@ -1,56 +1,84 @@
 import React from 'react';
+import { addItem, openCart } from '../lib/cart.js';
 
-const ProductCard = ({ id, name, tag, description, category, subcategory, image }) => (
-  <a
-    href={`/products/${id}`}
-    className="group block relative"
-  >
-    <div className="relative aspect-[4/5] bg-white rounded-sm overflow-hidden mb-6 flex items-center justify-center p-8 transition-all duration-500 ease-out group-hover:-translate-y-1.5 group-hover:shadow-[0_24px_48px_rgba(0,0,0,0.08)] border border-black/5">
-      {/* Badge */}
-      {tag && (
-        <span className="absolute top-4 left-4 text-[9px] uppercase tracking-widest bg-[#F5F1EB]/80 backdrop-blur-md px-3 py-1.5 rounded-sm text-[#1A1A1A] font-bold z-10 border border-black/5">
-          {tag}
-        </span>
-      )}
+const ProductCard = ({ id, name, tag, description, category, subcategory, image }) => {
+  const handleAdd = (e) => {
+    // El enlace envolvente es un "stretched link"; el botón vive por encima y
+    // no debe navegar al añadir.
+    e.preventDefault();
+    e.stopPropagation();
+    addItem({ id, name, image }, 1);
+    openCart();
+  };
 
-      {/* Image */}
-      <img
-        src={image}
-        alt={name}
-        className="w-full h-full object-contain transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
-      />
+  return (
+    <div className="group relative transition-transform duration-500 ease-out hover:-translate-y-1.5">
+      {/* Enlace estirado: toda la tarjeta navega al producto, salvo el botón.
+          El lift va en la raíz (no en la foto) para que el transform no cree
+          un stacking context que hunda el botón bajo el enlace. */}
+      <a href={`/products/${id}`} className="absolute inset-0 z-[1]" aria-label={`Ver ${name}`} />
 
-      {/* Barrido dorado al pie de la foto */}
-      <span
-        aria-hidden="true"
-        className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#A68A64] scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100 z-10"
-      />
-    </div>
-    
-    <div className="flex flex-col space-y-3 px-1">
-      <div className="flex justify-between items-start gap-4">
-        <div>
-          <h3 className="font-serif text-2xl text-[#1A1A1A] mb-1 group-hover:text-[#A68A64] transition-colors duration-300">
-            {name}
-          </h3>
-          <p className="text-[13px] text-[#8C8C8C] font-light">
-            {description}
-          </p>
+      <div className="relative aspect-[4/5] bg-white rounded-sm overflow-hidden mb-6 flex items-center justify-center p-8 transition-shadow duration-500 ease-out group-hover:shadow-[0_24px_48px_rgba(0,0,0,0.08)] border border-black/5">
+        {/* Badge */}
+        {tag && (
+          <span className="absolute top-4 left-4 text-[9px] uppercase tracking-widest bg-[#F5F1EB]/80 backdrop-blur-md px-3 py-1.5 rounded-sm text-[#1A1A1A] font-bold z-10 border border-black/5">
+            {tag}
+          </span>
+        )}
+
+        {/* Image */}
+        <img
+          src={image}
+          alt={name}
+          className="w-full h-full object-contain transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
+        />
+
+        {/* Añadir rápido — aparece al pasar el mouse, por encima del enlace */}
+        <button
+          type="button"
+          onClick={handleAdd}
+          aria-label={`Añadir ${name} al carrito`}
+          className="absolute bottom-4 right-4 z-[3] inline-flex items-center gap-1.5 bg-[#1A1A1A] text-white text-[10px] font-bold uppercase tracking-[0.18em] px-4 py-2.5 rounded-sm shadow-lg opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-[#A68A64] transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#A68A64] focus-visible:opacity-100 focus-visible:translate-y-0"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Añadir
+        </button>
+
+        {/* Barrido dorado al pie de la foto */}
+        <span
+          aria-hidden="true"
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#A68A64] scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100 z-10"
+        />
+      </div>
+
+      <div className="flex flex-col space-y-3 px-1">
+        <div className="flex justify-between items-start gap-4">
+          <div>
+            <h3 className="font-serif text-2xl text-[#1A1A1A] mb-1 group-hover:text-[#A68A64] transition-colors duration-300">
+              {name}
+            </h3>
+            <p className="text-[13px] text-[#8C8C8C] font-light">
+              {description}
+            </p>
+          </div>
+          <span className="text-[10px] uppercase tracking-widest text-[#6B6B6B] shrink-0 mt-2 font-bold">
+            {category || subcategory || 'Café'}
+          </span>
         </div>
-        <span className="text-[10px] uppercase tracking-widest text-[#6B6B6B] shrink-0 mt-2 font-bold">
-          {category || subcategory || 'Café'}
-        </span>
-      </div>
-      
-      <div className="pt-2">
-        <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 group-hover:border-[#A68A64] group-hover:text-[#A68A64] transition-all duration-300">
-          Ver producto
-          <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
-        </span>
+
+        <div className="pt-2">
+          <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 group-hover:border-[#A68A64] group-hover:text-[#A68A64] transition-all duration-300">
+            Ver producto
+            <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+          </span>
+        </div>
       </div>
     </div>
-  </a>
-);
+  );
+};
 
 /**
  * El encabezado es opcional: en la home la grilla llega después del recorrido

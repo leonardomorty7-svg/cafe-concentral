@@ -1,0 +1,39 @@
+---
+/**
+ * /checkout — Finalizar pedido (Fase 1).
+ *
+ * El resumen del carrito, los datos de contacto y el método de pago viven en
+ * la isla <Checkout>, que lee el store compartido en el cliente. El pedido se
+ * confirma por WhatsApp con la cooperativa. Cuando el cliente conecte una
+ * pasarela, solo cambia el paso final de esa isla.
+ */
+import MainLayout from '../layouts/MainLayout.astro';
+import Checkout from '../components/Checkout.jsx';
+---
+
+<MainLayout title="Finalizar pedido | Café Coocentral" description="Completa tu pedido de Café Coocentral. Confirmamos disponibilidad, envío y total contigo.">
+  <script>window.scrollTo(0, 0);</script>
+
+  <section class="min-h-screen bg-[#F5F1EB] pt-32 md:pt-40 pb-28">
+    <div class="max-w-7xl mx-auto px-6">
+
+      <!-- Migas -->
+      <nav class="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#A68A64] font-bold mb-12" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[#1A1A1A] transition-colors">Inicio</a>
+        <span class="text-[#D6D1C9]">—</span>
+        <a href="/productos" class="hover:text-[#1A1A1A] transition-colors">Productos</a>
+        <span class="text-[#D6D1C9]">—</span>
+        <span class="text-[#1A1A1A]/50">Finalizar pedido</span>
+      </nav>
+
+      <header class="mb-16 max-w-2xl">
+        <span class="label-premium">Tu pedido</span>
+        <h1 class="font-serif text-5xl md:text-6xl text-[#1A1A1A] leading-[1.05] tracking-[-0.03em]">
+          A un paso de <span class="italic text-[#A68A64]">tu café.</span>
+        </h1>
+      </header>
+
+      <Checkout client:load />
+    </div>
+  </section>
+</MainLayout>
