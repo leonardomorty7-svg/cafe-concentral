@@ -23,13 +23,21 @@ const LAST_FRAME = framePath(FRAME_COUNT);
 // Cuánto del timeline ocupan los granos antes de que empiecen las fotos.
 const BEANS_DUR = 3;
 
+// El titular del sitio abre sobre los granos quietos, antes del primer
+// scroll, y se despide cuando arranca el viaje.
+const OPENING = {
+  eyebrow: 'HUILA, COLOMBIA',
+  title: 'Cada taza cuenta una historia',
+  italic: 'que transforma vidas.',
+};
+
 const BEATS = [
   {
     img: '/assets/images/finca-huila.jpg',
     alt: 'Finca cafetera de Coocentral entre las montañas del Huila',
-    eyebrow: 'HUILA, COLOMBIA',
-    title: 'Cada taza cuenta una historia',
-    italic: 'que transforma vidas.',
+    eyebrow: 'NUESTRA TIERRA',
+    title: 'En las montañas del Huila nacen historias',
+    italic: 'que el mundo conoce en una taza.',
   },
   {
     img: '/assets/images/empaque-cafe-especial.jpg',
@@ -37,13 +45,6 @@ const BEATS = [
     eyebrow: 'QUIÉNES SOMOS',
     title: 'No nacimos para producir café.',
     italic: 'Nacimos para crear oportunidades.',
-  },
-  {
-    img: '/assets/images/tostion-cafe.jpg',
-    alt: 'Granos de café en la tostadora de Coocentral',
-    eyebrow: 'NUESTRA TIERRA',
-    title: 'En las montañas del Huila nacen historias',
-    italic: 'que el mundo conoce en una taza.',
   },
 ];
 
@@ -164,6 +165,10 @@ const CinematicStory = () => {
         tl.to(beans, { frame: FRAME_COUNT - 1, duration: BEANS_DUR, onUpdate: drawBeans }, 0);
         tl.to('.cine-hint', { autoAlpha: 0, duration: 0.5 }, 0.15);
 
+        // El titular abre visible sobre los granos quietos (sin fade-in: ya
+        // está ahí antes del primer scroll) y se despide al arrancar el viaje.
+        tl.to('.cine-opening', { autoAlpha: 0, y: -40, duration: 0.7, ease: 'power2.in' }, 0.9);
+
         // El canvas de granos (con el logo) se disuelve para revelar las
         // fotos que ya están floreciendo debajo.
         tl.to('.cine-beans', { autoAlpha: 0, duration: 0.6, ease: 'power1.inOut' }, BEANS_DUR);
@@ -248,7 +253,7 @@ const CinematicStory = () => {
     };
   }, []);
 
-  // Sin animaciones: el primer beat funciona como hero estático.
+  // Sin animaciones: el titular de apertura sobre la finca, como hero estático.
   if (reduced) {
     const b = BEATS[0];
     return (
@@ -256,14 +261,14 @@ const CinematicStory = () => {
         <img src={b.img} alt={b.alt} className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0" style={{ background: VIGNETTE }} />
         <div className="relative z-10 w-full py-32">
-          <BeatText {...b} Tag="h1" withCtas />
+          <BeatText {...OPENING} Tag="h1" withCtas />
         </div>
       </section>
     );
   }
 
   return (
-    <section ref={rootRef} className="relative bg-black" style={{ height: '520vh' }} aria-label="Café Coocentral">
+    <section ref={rootRef} className="relative bg-black" style={{ height: '440vh' }} aria-label="Café Coocentral">
       <div className="sticky top-0 h-screen overflow-hidden">
         {/* Fotos: florecen por círculo en orden, cada una tapa la anterior */}
         {BEATS.map((b) => (
@@ -318,11 +323,18 @@ const CinematicStory = () => {
           <div className="mt-4 w-px h-10 bg-white/25" />
         </div>
 
-        {/* Frases: una por beat; la primera es el h1 del sitio */}
+        {/* Titular de apertura: sobre los granos, visible antes de scrollear */}
+        <div className="cine-opening absolute inset-0 flex items-center z-10">
+          <div className="w-full">
+            <BeatText {...OPENING} Tag="h1" />
+          </div>
+        </div>
+
+        {/* Frases: una por beat */}
         {BEATS.map((b, i) => (
           <div key={b.eyebrow} className="cine-text absolute inset-0 flex items-center opacity-0 z-10">
             <div className="w-full">
-              <BeatText {...b} Tag={i === 0 ? 'h1' : 'h2'} withCtas={i === BEATS.length - 1} />
+              <BeatText {...b} Tag="h2" withCtas={i === BEATS.length - 1} />
             </div>
           </div>
         ))}
