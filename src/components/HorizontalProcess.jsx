@@ -54,7 +54,70 @@ const STEPS = [
 
 const PANELS = STEPS.length + 1; // título + pasos
 
-const StepPanel = ({ num, title, text, img, alt, video, flip }) => (
+/**
+ * VideoLightbox — el video a pantalla completa, con sonido y controles.
+ *
+ * Se renderiza como hijo directo de <section>, FUERA de la cinta: esa lleva
+ * un transform de GSAP, y un position:fixed dentro de un ancestro
+ * transformado se posiciona respecto de ese ancestro y no del viewport.
+ * (Un portal a <body> también serviría, pero importar react-dom en una isla
+ * de Astro rompe la hidratación del componente.)
+ */
+const VideoLightbox = ({ src, title, onClose }) => {
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    // Bloquea el scroll de fondo sin tocar overflow del body: cambiarlo
+    // provoca salto de layout y obliga a ScrollTrigger a recalcular.
+    const block = (e) => e.preventDefault();
+    document.addEventListener('keydown', onKey);
+    window.addEventListener('wheel', block, { passive: false });
+    window.addEventListener('touchmove', block, { passive: false });
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      window.removeEventListener('wheel', block);
+      window.removeEventListener('touchmove', block);
+    };
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[999] flex items-center justify-center p-4 md:p-10"
+      style={{ background: 'rgba(6,6,6,0.94)', backdropFilter: 'blur(6px)' }}
+      role="dialog"
+      aria-modal="true"
+      aria-label={title}
+      onClick={onClose}
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Cerrar el video"
+        className="absolute top-6 right-6 md:top-8 md:right-10 w-12 h-12 rounded-full border border-white/25 text-white/80 hover:text-white hover:border-[#C6A47E] transition-colors duration-300 flex items-center justify-center"
+      >
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <path d="M1 1l16 16M17 1L1 17" stroke="currentColor" strokeWidth="1.5" />
+        </svg>
+      </button>
+
+      <figure className="w-full max-w-6xl" onClick={(e) => e.stopPropagation()}>
+        <video
+          src={src}
+          className="w-full h-auto max-h-[80vh] rounded-sm bg-black"
+          controls
+          autoPlay
+          playsInline
+        />
+        <figcaption className="mt-5 text-center text-[11px] tracking-[0.3em] uppercase text-[#C6A47E] font-bold">
+          {title}
+        </figcaption>
+      </figure>
+    </div>
+  );
+};
+
+const StepPanel = ({ num, title, text, img, alt, video, flip, onOpenVideo }) => (
   <div className="hp-panel relative w-screen h-full shrink-0 flex items-center px-8 md:px-24 pt-28 pb-24 md:py-0">
     {/* Número fantasma de fondo, con parallax propio */}
     <span
@@ -65,16 +128,23 @@ const StepPanel = ({ num, title, text, img, alt, video, flip }) => (
     </span>
 
     <div className={`relative grid grid-cols-1 md:grid-cols-2 items-center gap-10 md:gap-20 w-full max-w-6xl mx-auto ${flip ? 'md:[direction:rtl]' : ''}`}>
-      <div className="hp-photo [direction:ltr] relative overflow-hidden rounded-sm w-full aspect-[4/3] md:aspect-[4/5] max-h-[38vh] md:max-h-[62vh]">
+      {/* El panel con video usa 16:9 — el formato propio del video, que lo
+          hace reconocible entre los paneles de foto (verticales). */}
+      <div
+        className={`hp-photo [direction:ltr] relative overflow-hidden rounded-sm w-full ${
+          video ? 'aspect-video max-h-[52vh]' : 'aspect-[4/3] md:aspect-[4/5] max-h-[38vh] md:max-h-[62vh]'
+        }`}
+      >
         {video ? (
-          // Sin autoplay en el atributo: play/pause lo maneja el scroll,
-          // para no gastar recursos con la sección fuera de pantalla.
+          // Preview silencioso en bucle. Sin autoplay en el atributo:
+          // play/pause lo maneja el scroll, para no gastar recursos con la
+          // sección fuera de pantalla.
           <video
             className="hp-img hp-video w-full h-full object-cover"
             style={{ transform: 'scale(1.12)' }}
             src={video}
             poster={img}
-            aria-label={alt}
+            aria-hidden="true"
             muted
             loop
             playsInline
@@ -84,6 +154,37 @@ const StepPanel = ({ num, title, text, img, alt, video, flip }) => (
           <img src={img} alt={alt} className="hp-img w-full h-full object-cover" style={{ transform: 'scale(1.12)' }} />
         )}
         <div className="absolute inset-0" style={{ background: 'linear-gradient(rgba(0,0,0,0.06), rgba(0,0,0,0.22))' }} />
+
+        {/* Invitación a ver el video completo */}
+        {video && (
+          <button
+            type="button"
+            onClick={() => onOpenVideo({ src: video, title })}
+            aria-label={`Ver el video: ${title}`}
+            className="hp-play group absolute inset-0 flex flex-col items-center justify-center gap-4 cursor-pointer"
+          >
+            <span className="relative flex items-center justify-center">
+              {/* Anillo que respira, para que el play se note */}
+              <span
+                className="absolute w-20 h-20 rounded-full border border-[#C6A47E]/50"
+                style={{ animation: 'hpPulse 2.4s ease-out infinite' }}
+                aria-hidden="true"
+              />
+              <span className="relative w-16 h-16 rounded-full border border-[#C6A47E]/80 bg-black/35 backdrop-blur-sm flex items-center justify-center transition-all duration-500 group-hover:bg-[#C6A47E] group-hover:scale-110">
+                <svg width="15" height="18" viewBox="0 0 15 18" fill="none" aria-hidden="true" className="ml-1">
+                  <path
+                    d="M14 9L0.5 17.2V0.8L14 9z"
+                    className="fill-[#C6A47E] transition-colors duration-500 group-hover:fill-[#0B0B0B]"
+                  />
+                </svg>
+              </span>
+            </span>
+            <span className="text-[10px] uppercase tracking-[0.3em] text-white/70 font-bold transition-colors duration-300 group-hover:text-white">
+              Ver el video
+            </span>
+          </button>
+        )}
+
         {/* Resplandor de llegada */}
         <div
           className="hp-glow absolute -inset-10 pointer-events-none opacity-0"
@@ -107,6 +208,23 @@ const HorizontalProcess = () => {
   const counterRef = useRef(null);
   const bgRef = useRef(null);
   const [reduced, setReduced] = useState(false);
+  const [openVideo, setOpenVideo] = useState(null);
+
+  // Con el lightbox abierto, el preview en bucle del panel se pausa: no
+  // tiene sentido gastar decodificación en un video tapado.
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const previews = root.querySelectorAll('.hp-video');
+    previews.forEach((v) => {
+      if (openVideo) {
+        v.pause();
+      } else {
+        const p = v.play();
+        if (p && p.catch) p.catch(() => {});
+      }
+    });
+  }, [openVideo]);
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -385,7 +503,7 @@ const HorizontalProcess = () => {
           </div>
 
           {STEPS.map((s, i) => (
-            <StepPanel key={s.num} {...s} flip={i % 2 === 1} />
+            <StepPanel key={s.num} {...s} flip={i % 2 === 1} onOpenVideo={setOpenVideo} />
           ))}
         </div>
 
@@ -410,6 +528,21 @@ const HorizontalProcess = () => {
           ))}
         </div>
       </div>
+
+      {openVideo && (
+        <VideoLightbox src={openVideo.src} title={openVideo.title} onClose={() => setOpenVideo(null)} />
+      )}
+
+      <style>{`
+        @keyframes hpPulse {
+          0%   { transform: scale(0.85); opacity: 0.9; }
+          70%  { transform: scale(1.35); opacity: 0; }
+          100% { transform: scale(1.35); opacity: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hp-play span[style*="hpPulse"] { animation: none !important; }
+        }
+      `}</style>
     </section>
   );
 };
