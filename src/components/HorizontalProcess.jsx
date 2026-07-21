@@ -312,7 +312,7 @@ const HorizontalProcess = () => {
         <canvas
           ref={bgRef}
           className="hp-beans-bg absolute inset-0 w-full h-full pointer-events-none z-[1]"
-          style={{ opacity: 0.5 }}
+          style={{ opacity: 0.75 }}
         />
 
         {/* Barra superior: sección y contador */}
