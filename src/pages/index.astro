@@ -51,14 +51,15 @@ const FEATURED_PRODUCTS = getColeccion().map((p) => ({
 		description="Viene de las mismas montañas y de las mismas familias que acabas de conocer."
 	/>
 
-	{/* 3 — Las ediciones, catálogo junto */}
+	{/* 3 — Cómo se hace: el viaje horizontal del proceso. Va justo después
+	       del primer café para que la prueba llegue apenas nace el interés. */}
+	<HorizontalProcess client:load />
+
+	{/* 4 — Las ediciones: de vuelta al producto, ya con el proceso visto */}
 	<ProductSlider client:visible products={FEATURED_PRODUCTS} />
 
-	{/* 4 — Profundidad: las raíces y las familias */}
+	{/* 5 — Profundidad: las raíces y las familias */}
 	<ArchitecturalSection client:visible />
-
-	{/* 5 — Cómo trabajamos: viaje horizontal, la cinta del proceso */}
-	<HorizontalProcess client:load />
 
 	{/* 6 — Y de ahí, al mundo */}
 	<ExportSection client:visible />
