@@ -38,6 +38,10 @@ const STEPS = [
     text: 'Seleccionamos, secamos y tostamos cada lote con el mismo rigor con el que fue cultivado. Cuidar el grano es cuidar el trabajo que hay detrás.',
     img: '/assets/images/tostion-cafe.jpg',
     alt: 'Granos de café en la tostadora de Coocentral',
+    // Ranura de video del panel: cuando llegue el material del cliente,
+    // basta con reemplazar este archivo (mismo nombre) y listo. Mientras
+    // tanto `img` hace de póster, así el panel nunca se ve vacío.
+    video: '/assets/process/proceso-cuidado.mp4',
   },
   {
     num: '03',
@@ -50,7 +54,7 @@ const STEPS = [
 
 const PANELS = STEPS.length + 1; // título + pasos
 
-const StepPanel = ({ num, title, text, img, alt, flip }) => (
+const StepPanel = ({ num, title, text, img, alt, video, flip }) => (
   <div className="hp-panel relative w-screen h-full shrink-0 flex items-center px-8 md:px-24 pt-28 pb-24 md:py-0">
     {/* Número fantasma de fondo, con parallax propio */}
     <span
@@ -62,7 +66,23 @@ const StepPanel = ({ num, title, text, img, alt, flip }) => (
 
     <div className={`relative grid grid-cols-1 md:grid-cols-2 items-center gap-10 md:gap-20 w-full max-w-6xl mx-auto ${flip ? 'md:[direction:rtl]' : ''}`}>
       <div className="hp-photo [direction:ltr] relative overflow-hidden rounded-sm w-full aspect-[4/3] md:aspect-[4/5] max-h-[38vh] md:max-h-[62vh]">
-        <img src={img} alt={alt} className="hp-img w-full h-full object-cover" style={{ transform: 'scale(1.12)' }} />
+        {video ? (
+          // Sin autoplay en el atributo: play/pause lo maneja el scroll,
+          // para no gastar recursos con la sección fuera de pantalla.
+          <video
+            className="hp-img hp-video w-full h-full object-cover"
+            style={{ transform: 'scale(1.12)' }}
+            src={video}
+            poster={img}
+            aria-label={alt}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+          />
+        ) : (
+          <img src={img} alt={alt} className="hp-img w-full h-full object-cover" style={{ transform: 'scale(1.12)' }} />
+        )}
         <div className="absolute inset-0" style={{ background: 'linear-gradient(rgba(0,0,0,0.06), rgba(0,0,0,0.22))' }} />
         {/* Resplandor de llegada */}
         <div
@@ -264,6 +284,29 @@ const HorizontalProcess = () => {
             scrollTrigger: { trigger: rootRef.current, start: 'top top', end: 'bottom bottom', scrub: true },
           }
         );
+
+        // Los videos de los paneles solo corren con la sección en pantalla:
+        // fuera de vista se pausan para no gastar CPU ni batería.
+        const videos = gsap.utils.toArray('.hp-video');
+        if (videos.length) {
+          ScrollTrigger.create({
+            trigger: rootRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            onToggle: (self) => {
+              videos.forEach((v) => {
+                if (self.isActive) {
+                  // play() puede ser rechazado por la política de autoplay;
+                  // si pasa, queda el póster, que es la foto del panel.
+                  const p = v.play();
+                  if (p && p.catch) p.catch(() => {});
+                } else {
+                  v.pause();
+                }
+              });
+            },
+          });
+        }
 
         // La flecha del panel título late invitando al viaje, y la semilla
         // respira igual que en la apertura: el hilo conductor.
