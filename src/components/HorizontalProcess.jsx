@@ -17,6 +17,13 @@ import BeanIcon from './BeanIcon.jsx';
 
 const GOLD = '#C6A47E';
 
+// Granos 3D desenfocados que derivan detrás de los paneles. El desenfoque
+// y el calentado al dorado de marca vienen horneados en los WebP, así no
+// cuesta nada en runtime. Se reproducen en ping-pong (ida y vuelta) para
+// que el bucle no tenga salto.
+const BG_COUNT = 67;
+const bgPath = (i) => `/assets/process/beans-bg/b_${String(i).padStart(3, '0')}.webp`;
+
 const STEPS = [
   {
     num: '01',
@@ -78,6 +85,7 @@ const HorizontalProcess = () => {
   const rootRef = useRef(null);
   const trackRef = useRef(null);
   const counterRef = useRef(null);
+  const bgRef = useRef(null);
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
@@ -88,7 +96,61 @@ const HorizontalProcess = () => {
 
     let ctx;
     let cancelled = false;
-    const stopDust = startDust(rootRef.current.querySelector('.hp-dust'), { density: 26000 });
+    // Los canvas pueden no estar montados aún en un re-render (p. ej. HMR):
+    // sin estas guardas, getContext() lanza y tumba el componente entero.
+    const dustCanvas = rootRef.current.querySelector('.hp-dust');
+    const stopDust = dustCanvas ? startDust(dustCanvas, { density: 26000 }) : () => {};
+
+    // ── Granos 3D derivando en el fondo (ping-pong, ~10fps) ───────────
+    const bgCanvas = bgRef.current;
+    const bgx = bgCanvas ? bgCanvas.getContext('2d') : null;
+    const bgImgs = new Array(BG_COUNT);
+    let bgFrame = 0;
+    let bgDir = 1;
+    let bgLast = 0;
+    let bgRaf;
+
+    const drawBg = () => {
+      if (!bgx) return;
+      const img = bgImgs[Math.round(bgFrame)];
+      if (!img || !img.complete || !img.naturalWidth) return;
+      const cw = bgCanvas.width;
+      const ch = bgCanvas.height;
+      const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+      const dw = img.naturalWidth * scale;
+      const dh = img.naturalHeight * scale;
+      bgx.clearRect(0, 0, cw, ch);
+      bgx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+    };
+
+    const resizeBg = () => {
+      if (!bgCanvas) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      bgCanvas.width = window.innerWidth * dpr;
+      bgCanvas.height = window.innerHeight * dpr;
+      drawBg();
+    };
+
+    for (let i = 0; i < BG_COUNT; i++) {
+      const im = new Image();
+      im.decoding = 'async';
+      im.src = bgPath(i);
+      im.onload = drawBg;
+      bgImgs[i] = im;
+    }
+
+    const bgLoop = (now) => {
+      bgRaf = requestAnimationFrame(bgLoop);
+      if (now - bgLast < 100) return; // ~10fps: deriva lenta y barata
+      bgLast = now;
+      bgFrame += bgDir;
+      if (bgFrame >= BG_COUNT - 1 || bgFrame <= 0) bgDir *= -1; // ping-pong
+      drawBg();
+    };
+
+    window.addEventListener('resize', resizeBg);
+    resizeBg();
+    bgRaf = requestAnimationFrame(bgLoop);
 
     // gsap y ScrollTrigger son CJS: importarlos estáticos rompe el SSR de Astro.
     Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(([gsapMod, stMod]) => {
@@ -188,6 +250,18 @@ const HorizontalProcess = () => {
           }
         });
 
+        // Los granos del fondo derivan en contra de la cinta: parallax de
+        // profundidad, muy sutil para que no compita con los paneles.
+        gsap.fromTo(
+          '.hp-beans-bg',
+          { xPercent: 4 },
+          {
+            xPercent: -4,
+            ease: 'none',
+            scrollTrigger: { trigger: rootRef.current, start: 'top top', end: 'bottom bottom', scrub: true },
+          }
+        );
+
         // La flecha del panel título late invitando al viaje, y la semilla
         // respira igual que en la apertura: el hilo conductor.
         gsap.to('.hp-arrow', { x: 10, duration: 0.9, ease: 'sine.inOut', yoyo: true, repeat: -1 });
@@ -197,6 +271,8 @@ const HorizontalProcess = () => {
 
     return () => {
       cancelled = true;
+      cancelAnimationFrame(bgRaf);
+      window.removeEventListener('resize', resizeBg);
       stopDust();
       if (ctx) ctx.revert();
     };
@@ -230,6 +306,13 @@ const HorizontalProcess = () => {
       aria-label="Nuestro modelo"
     >
       <div className="sticky top-0 h-screen overflow-hidden">
+        {/* Granos 3D desenfocados derivando al fondo, detrás de los paneles */}
+        <canvas
+          ref={bgRef}
+          className="hp-beans-bg absolute inset-0 w-full h-full pointer-events-none z-[1]"
+          style={{ opacity: 0.5 }}
+        />
+
         {/* Barra superior: sección y contador */}
         <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-8 md:px-24 pt-24 md:pt-28 pointer-events-none">
           <span className="text-[11px] tracking-[0.3em] uppercase text-[#C6A47E] font-bold">Nuestro modelo</span>
@@ -238,8 +321,8 @@ const HorizontalProcess = () => {
           </span>
         </div>
 
-        {/* La cinta */}
-        <div ref={trackRef} className="flex h-full will-change-transform">
+        {/* La cinta — z-[2] para quedar por encima de los granos del fondo */}
+        <div ref={trackRef} className="relative z-[2] flex h-full will-change-transform">
           {/* Panel 0 — el título invita al viaje; la semilla del inicio lo recibe */}
           <div className="hp-panel w-screen h-full shrink-0 flex items-center px-8 md:px-24">
             <div className="max-w-3xl">
