@@ -49,7 +49,6 @@ const BEATS = [
   },
 ];
 
-const CIRCLE_ORIGIN = '50% 46%';
 
 // Viñeta de cine: centro más luminoso, bordes hundidos.
 const VIGNETTE =
@@ -159,8 +158,13 @@ const CinematicStory = () => {
 
         const beats = gsap.utils.toArray('.cine-beat');
         const texts = gsap.utils.toArray('.cine-text');
-        const rings = gsap.utils.toArray('.cine-ring');
         const dots = gsap.utils.toArray('.cine-dot');
+
+        // El beat arranca invisible (inline opacity:0, evita flash en carga);
+        // GSAP lo hace visible y el fromTo de abajo lo posiciona/anima. Usamos
+        // fromTo (no .to) porque con invalidateOnRefresh los .to re-leen el
+        // inicio y se quedaban abajo — el fromTo trae el valor explícito.
+        gsap.set(beats, { autoAlpha: 1 });
 
         // ── Fase 1: los granos se scrubbean hasta el logo ──────────────
         tl.to(beans, { frame: FRAME_COUNT - 1, duration: BEANS_DUR, onUpdate: drawBeans }, 0);
@@ -174,26 +178,15 @@ const CinematicStory = () => {
         // fotos que ya están floreciendo debajo.
         tl.to('.cine-beans', { autoAlpha: 0, duration: 0.6, ease: 'power1.inOut' }, BEANS_DUR);
 
-        // ── Fase 2: las fotos florecen, una tras otra ──────────────────
+        // ── Fase 2: las fotos BAJAN una tras otra (scroll-down) ────────
+        // Cada imagen entra desde abajo cubriendo la anterior: la sensación
+        // de ir bajando, como en el proceso y en la referencia (jazeancoffee).
+        // Así el hilo conductor (la semilla que desciende) cobra sentido.
         beats.forEach((beat, i) => {
           const at = BEANS_DUR + i * 1.5 + (i === 0 ? 0 : 0.2);
 
-          // La foto florece desde el círculo y asienta su escala…
-          tl.fromTo(
-            beat,
-            { clipPath: `circle(0% at ${CIRCLE_ORIGIN})` },
-            { clipPath: `circle(120% at ${CIRCLE_ORIGIN})`, duration: 0.8, ease: 'power1.in' },
-            at
-          );
-          tl.fromTo(beat.querySelector('img'), { scale: 1.18 }, { scale: 1, duration: 1.1, ease: 'power1.out' }, at);
-
-          // …escoltada por una onda de luz dorada que se disuelve al expandirse.
-          tl.fromTo(
-            rings[i],
-            { scale: 0, autoAlpha: 0.9 },
-            { scale: 1, autoAlpha: 0, duration: 0.85, ease: 'power1.in' },
-            at
-          );
+          tl.fromTo(beat, { yPercent: 100 }, { yPercent: 0, duration: 1, ease: 'power2.inOut' }, at);
+          tl.fromTo(beat.querySelector('img'), { scale: 1.16 }, { scale: 1, duration: 1.2, ease: 'power1.out' }, at);
 
           // La frase entra coreografiada: eyebrow comprimiendo su tracking,
           // luego la línea principal y por último la itálica.
@@ -286,30 +279,12 @@ const CinematicStory = () => {
         {BEATS.map((b) => (
           <div
             key={b.img}
-            className="cine-beat absolute inset-0"
-            style={{ clipPath: `circle(0% at ${CIRCLE_ORIGIN})` }}
+            className="cine-beat absolute inset-0 z-[8] will-change-transform"
+            style={{ opacity: 0 }}
           >
             <img src={b.img} alt={b.alt} className="w-full h-full object-cover" />
             <div className="absolute inset-0" style={{ background: VIGNETTE }} />
           </div>
-        ))}
-
-        {/* Ondas de luz que escoltan cada revelado */}
-        {BEATS.map((b) => (
-          <div
-            key={`ring-${b.img}`}
-            className="cine-ring absolute rounded-full pointer-events-none z-[4]"
-            style={{
-              width: '165vmax',
-              height: '165vmax',
-              left: '50%',
-              top: '46%',
-              transform: 'translate(-50%, -50%) scale(0)',
-              opacity: 0,
-              border: '1.5px solid rgba(209,170,73,0.8)',
-              boxShadow: '0 0 60px rgba(209,170,73,0.35), inset 0 0 60px rgba(209,170,73,0.2)',
-            }}
-          />
         ))}
 
         {/* Polvo dorado: por encima de todo (granos incluidos), z-[9], para

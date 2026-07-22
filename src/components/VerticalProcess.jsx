@@ -244,8 +244,7 @@ const EditionCard = ({ id, name, image, variants }) => {
         <img
           src={image}
           alt={name}
-          className="absolute inset-0 w-full h-full object-contain p-9 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
-          style={{ filter: 'drop-shadow(0 24px 40px rgba(0,0,0,0.20))' }}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
         />
       </div>
       <div className="flex items-baseline justify-between gap-3 px-1">

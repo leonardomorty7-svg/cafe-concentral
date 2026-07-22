@@ -34,8 +34,7 @@ const ProductCard = ({ id, name, tag, description, category, image, variants = [
         <img
           src={image}
           alt={name}
-          className="absolute inset-0 w-full h-full object-contain p-9 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
-          style={{ filter: 'drop-shadow(0 22px 38px rgba(0,0,0,0.20))' }}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
         />
 
         {/* Añadir rápido — aparece al pasar el mouse, por encima del enlace */}
