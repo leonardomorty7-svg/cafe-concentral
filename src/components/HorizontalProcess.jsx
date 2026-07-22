@@ -498,7 +498,7 @@ const HorizontalProcess = () => {
   // Sin animaciones: los pasos se leen en columna, sin pin ni cinta.
   if (reduced) {
     return (
-      <section className="bg-[#0B0B0B] py-28 px-8" aria-label="Nuestro modelo">
+      <section className="bg-[#160F0B] py-28 px-8" aria-label="Nuestro modelo">
         <div className="max-w-3xl mx-auto space-y-20">
           <h2 className="font-serif text-4xl md:text-6xl text-white leading-[1.1]">
             Un proceso guiado por la <span className="italic text-[#CCA678]">cooperación.</span>
@@ -518,7 +518,7 @@ const HorizontalProcess = () => {
   return (
     <section
       ref={rootRef}
-      className="relative bg-[#0B0B0B]"
+      className="relative bg-[#160F0B]"
       style={{ height: 'calc(100vh + 300vw)' }}
       aria-label="Nuestro modelo"
     >

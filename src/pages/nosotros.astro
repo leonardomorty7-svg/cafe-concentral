@@ -7,12 +7,12 @@ import MainLayout from '../layouts/MainLayout.astro';
 		<div class="grid md:grid-cols-12 gap-16 items-center">
 			{/* Text Column */}
 			<div class="md:col-span-5 space-y-12">
-				<div class="space-y-4 reveal delay-100">
+				<div class="space-y-4" data-fx="header">
 					<h1 class="text-5xl md:text-[4rem] font-serif text-[#1A1A1A] leading-[1.05]">Nuestra historia</h1>
 					<p class="text-2xl md:text-3xl font-light text-[#CCA678] font-serif italic tracking-wide">Una cooperativa que transforma origen en futuro.</p>
 				</div>
-				
-				<div class="space-y-6 text-lg text-[#6B6B6B] font-light leading-[1.75] max-w-[65ch] reveal delay-200">
+
+				<div class="space-y-6 text-lg text-[#6B6B6B] font-light leading-[1.75] max-w-[65ch]" data-fx="rise">
 					<p>Somos una cooperativa cafetera del Huila que agrupa a miles de familias productoras, unidas por la tradición, la calidad y el compromiso con el territorio.</p>
 					<p>A lo largo de los años, hemos consolidado una red que fortalece el trabajo colectivo, mejora los procesos y proyecta el café colombiano hacia mercados nacionales e internacionales.</p>
 				</div>
@@ -20,8 +20,8 @@ import MainLayout from '../layouts/MainLayout.astro';
 
 			{/* Visual Column */}
 			<div class="md:col-span-7 relative">
-				<div class="grid grid-cols-2 gap-6 md:gap-8 items-start">
-					<div class="mt-16 md:mt-24 space-y-4 reveal delay-200">
+				<div class="grid grid-cols-2 gap-6 md:gap-8 items-start" data-fx="stagger">
+					<div class="mt-16 md:mt-24 space-y-4">
 						<div class="aspect-[4/5] overflow-hidden rounded-sm bg-[#F5F1EB] shadow-lg">
 							<img
 								src="/assets/images/finca-huila-detalle.jpg"
@@ -31,8 +31,8 @@ import MainLayout from '../layouts/MainLayout.astro';
 						</div>
 						<p class="text-[10px] uppercase tracking-[0.2em] font-bold text-[#CCA678]">Origen: Huila, Colombia</p>
 					</div>
-					
-					<div class="space-y-4 reveal delay-300">
+
+					<div class="space-y-4">
 						<div class="aspect-[4/5] overflow-hidden rounded-sm bg-[#F5F1EB] shadow-xl">
 							<img
 								src="/assets/images/tostion-cafe.jpg"
