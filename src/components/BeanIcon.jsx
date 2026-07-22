@@ -11,10 +11,10 @@ const BeanIcon = ({ width = 44, height = 62 }) => (
     viewBox="0 0 60 84"
     fill="none"
     aria-hidden="true"
-    style={{ filter: 'drop-shadow(0 0 14px rgba(198,164,126,0.4))' }}
+    style={{ filter: 'drop-shadow(0 0 14px rgba(204,166,120,0.4))' }}
   >
-    <ellipse cx="30" cy="42" rx="24" ry="36" stroke="#C6A47E" strokeWidth="2.5" fill="rgba(198,164,126,0.08)" />
-    <path d="M30 8 C 16 28, 16 56, 30 76" stroke="#C6A47E" strokeWidth="2.5" fill="none" />
+    <ellipse cx="30" cy="42" rx="24" ry="36" stroke="#CCA678" strokeWidth="2.5" fill="rgba(204,166,120,0.08)" />
+    <path d="M30 8 C 16 28, 16 56, 30 76" stroke="#CCA678" strokeWidth="2.5" fill="none" />
   </svg>
 );
 

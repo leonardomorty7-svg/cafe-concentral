@@ -15,8 +15,6 @@ import BeanIcon from './BeanIcon.jsx';
  * paso — porque estamos guiando un proceso.
  */
 
-const GOLD = '#C6A47E';
-
 // Granos 3D desenfocados que derivan detrás de los paneles. El desenfoque
 // y el calentado al dorado de marca vienen horneados en los WebP, así no
 // cuesta nada en runtime. Se reproducen en ping-pong (ida y vuelta) para
@@ -94,7 +92,7 @@ const VideoLightbox = ({ src, title, onClose }) => {
         type="button"
         onClick={onClose}
         aria-label="Cerrar el video"
-        className="absolute top-6 right-6 md:top-8 md:right-10 w-12 h-12 rounded-full border border-white/25 text-white/80 hover:text-white hover:border-[#C6A47E] transition-colors duration-300 flex items-center justify-center"
+        className="absolute top-6 right-6 md:top-8 md:right-10 w-12 h-12 rounded-full border border-white/25 text-white/80 hover:text-white hover:border-[#CCA678] transition-colors duration-300 flex items-center justify-center"
       >
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
           <path d="M1 1l16 16M17 1L1 17" stroke="currentColor" strokeWidth="1.5" />
@@ -109,7 +107,7 @@ const VideoLightbox = ({ src, title, onClose }) => {
           autoPlay
           playsInline
         />
-        <figcaption className="mt-5 text-center text-[11px] tracking-[0.3em] uppercase text-[#C6A47E] font-bold">
+        <figcaption className="mt-5 text-center text-[11px] tracking-[0.3em] uppercase text-[#CCA678] font-bold">
           {title}
         </figcaption>
       </figure>
@@ -166,15 +164,15 @@ const StepPanel = ({ num, title, text, img, alt, video, flip, onOpenVideo }) => 
             <span className="relative flex items-center justify-center">
               {/* Anillo que respira, para que el play se note */}
               <span
-                className="absolute w-20 h-20 rounded-full border border-[#C6A47E]/50"
+                className="hp-pulse-ring absolute w-20 h-20 rounded-full border border-[#CCA678]/50"
                 style={{ animation: 'hpPulse 2.4s ease-out infinite' }}
                 aria-hidden="true"
               />
-              <span className="relative w-16 h-16 rounded-full border border-[#C6A47E]/80 bg-black/35 backdrop-blur-sm flex items-center justify-center transition-all duration-500 group-hover:bg-[#C6A47E] group-hover:scale-110">
+              <span className="relative w-16 h-16 rounded-full border border-[#CCA678]/80 bg-black/35 backdrop-blur-sm flex items-center justify-center transition-all duration-500 group-hover:bg-[#CCA678] group-hover:scale-110">
                 <svg width="15" height="18" viewBox="0 0 15 18" fill="none" aria-hidden="true" className="ml-1">
                   <path
                     d="M14 9L0.5 17.2V0.8L14 9z"
-                    className="fill-[#C6A47E] transition-colors duration-500 group-hover:fill-[#0B0B0B]"
+                    className="fill-[#CCA678] transition-colors duration-500 group-hover:fill-[#0B0B0B]"
                   />
                 </svg>
               </span>
@@ -188,12 +186,12 @@ const StepPanel = ({ num, title, text, img, alt, video, flip, onOpenVideo }) => 
         {/* Resplandor de llegada */}
         <div
           className="hp-glow absolute -inset-10 pointer-events-none opacity-0"
-          style={{ background: 'radial-gradient(circle at 50% 50%, rgba(198,164,126,0.25) 0%, transparent 60%)' }}
+          style={{ background: 'radial-gradient(circle at 50% 50%, rgba(204,166,120,0.25) 0%, transparent 60%)' }}
         />
       </div>
 
       <div className="[direction:ltr]">
-        <span className="hp-num font-serif italic text-4xl md:text-6xl text-[#C6A47E] inline-block">{num}</span>
+        <span className="hp-num font-serif italic text-4xl md:text-6xl text-[#CCA678] inline-block">{num}</span>
         <h3 className="hp-title font-serif text-3xl md:text-5xl text-white leading-[1.1] mt-4">{title}</h3>
         <div className="hp-rule w-12 h-px bg-[#CCA678] my-7 md:my-9 origin-left" />
         <p className="hp-text text-white/60 font-light text-base md:text-lg leading-[1.8] max-w-md">{text}</p>
@@ -278,6 +276,77 @@ const HorizontalProcess = () => {
     window.addEventListener('resize', resizeBg);
     resizeBg();
 
+    // ── El hilo conductor: trazado tejido que la semilla recorre ──────
+    const threadWrap = rootRef.current.querySelector('.hp-thread');
+    const threadSvg = rootRef.current.querySelector('.hp-thread-svg');
+    const threadTrack = rootRef.current.querySelector('.hp-thread-track');
+    const threadLine = rootRef.current.querySelector('.hp-thread-line');
+    const threadNodes = rootRef.current.querySelector('.hp-thread-nodes');
+    const threadSeed = rootRef.current.querySelector('.hp-thread-seed');
+    // Las estaciones (título + pasos) caen en los cruces por el eje.
+    const stationsX = Array.from({ length: PANELS }, (_, i) => i / (PANELS - 1));
+    let threadLen = 0;
+    let lastP = 0;
+
+    const buildThread = () => {
+      if (!threadWrap || !threadSvg || !threadLine || !threadTrack) return;
+      const W = threadWrap.clientWidth;
+      const H = threadWrap.clientHeight;
+      if (!W || !H) return;
+      threadSvg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      const mid = H / 2;
+      const amp = H * 0.34;
+      const humps = PANELS - 1; // una onda entre cada par de estaciones
+      const N = 240;
+      let d = '';
+      for (let i = 0; i <= N; i++) {
+        const t = i / N;
+        const x = t * W;
+        // seno que cruza el eje justo en cada estación (t = k/humps)
+        const y = mid - amp * Math.sin(t * humps * Math.PI);
+        d += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
+      }
+      threadTrack.setAttribute('d', d);
+      threadLine.setAttribute('d', d);
+      threadLen = threadLine.getTotalLength();
+      threadLine.style.strokeDasharray = String(threadLen);
+      threadLine.style.strokeDashoffset = String(threadLen);
+      // Estaciones sobre la línea (en los cruces → y = mid)
+      threadNodes.innerHTML = '';
+      stationsX.forEach((sx) => {
+        const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c.setAttribute('cx', (sx * W).toFixed(1));
+        c.setAttribute('cy', mid.toFixed(1));
+        c.setAttribute('r', '4');
+        c.setAttribute('fill', 'rgba(255,255,255,0.2)');
+        threadNodes.appendChild(c);
+      });
+    };
+
+    const updateThread = (p) => {
+      lastP = p;
+      if (!threadLen || !threadLine) return;
+      threadLine.style.strokeDashoffset = String(threadLen * (1 - p));
+      const pt = threadLine.getPointAtLength(threadLen * p);
+      if (threadSeed) {
+        threadSeed.style.transform = `translate(-50%,-50%) translate(${pt.x.toFixed(1)}px, ${pt.y.toFixed(1)}px)`;
+      }
+      const dots = threadNodes ? threadNodes.children : [];
+      for (let i = 0; i < dots.length; i++) {
+        const on = p >= stationsX[i] - 0.02;
+        dots[i].setAttribute('fill', on ? '#CCA678' : 'rgba(255,255,255,0.2)');
+        dots[i].style.filter = on ? 'drop-shadow(0 0 6px rgba(204,166,120,0.9))' : 'none';
+      }
+    };
+
+    const onResizeThread = () => {
+      buildThread();
+      updateThread(lastP);
+    };
+    window.addEventListener('resize', onResizeThread);
+    buildThread();
+    updateThread(0);
+
     // gsap y ScrollTrigger son CJS: importarlos estáticos rompe el SSR de Astro.
     Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(([gsapMod, stMod]) => {
       if (cancelled) return;
@@ -287,7 +356,6 @@ const HorizontalProcess = () => {
 
       ctx = gsap.context(() => {
         const track = trackRef.current;
-        const nodes = gsap.utils.toArray('.hp-node');
 
         // La cinta: scroll vertical → viaje horizontal, con un imán suave
         // que la asienta en cada estación del proceso.
@@ -306,26 +374,11 @@ const HorizontalProcess = () => {
             onUpdate: (self) => {
               const current = Math.min(STEPS.length, Math.max(1, Math.round(self.progress * STEPS.length)));
               if (counterRef.current) counterRef.current.textContent = String(current).padStart(2, '0');
-              // Las estaciones de la ruta se encienden al alcanzarlas.
-              nodes.forEach((node, i) => {
-                const on = self.progress >= i / (PANELS - 1) - 0.02;
-                node.style.backgroundColor = on ? GOLD : 'rgba(255,255,255,0.2)';
-                node.style.boxShadow = on ? '0 0 12px rgba(198,164,126,0.8)' : 'none';
-              });
+              // El hilo se teje y la semilla viaja con el progreso del viaje.
+              updateThread(self.progress);
             },
           },
         });
-
-        // El riel dorado se llena con el viaje.
-        gsap.fromTo(
-          '.hp-progress',
-          { scaleX: 0 },
-          {
-            scaleX: 1,
-            ease: 'none',
-            scrollTrigger: { trigger: rootRef.current, start: 'top top', end: 'bottom bottom', scrub: true },
-          }
-        );
 
         // Coreografía de llegada de cada panel, ligada al avance de la
         // cinta (containerAnimation): nada llega "ya puesto".
@@ -436,6 +489,7 @@ const HorizontalProcess = () => {
     return () => {
       cancelled = true;
       window.removeEventListener('resize', resizeBg);
+      window.removeEventListener('resize', onResizeThread);
       stopDust();
       if (ctx) ctx.revert();
     };
@@ -447,11 +501,11 @@ const HorizontalProcess = () => {
       <section className="bg-[#0B0B0B] py-28 px-8" aria-label="Nuestro modelo">
         <div className="max-w-3xl mx-auto space-y-20">
           <h2 className="font-serif text-4xl md:text-6xl text-white leading-[1.1]">
-            Un proceso guiado por la <span className="italic text-[#C6A47E]">cooperación.</span>
+            Un proceso guiado por la <span className="italic text-[#CCA678]">cooperación.</span>
           </h2>
           {STEPS.map((s) => (
             <div key={s.num}>
-              <span className="font-serif italic text-4xl text-[#C6A47E]">{s.num}</span>
+              <span className="font-serif italic text-4xl text-[#CCA678]">{s.num}</span>
               <h3 className="font-serif text-3xl text-white mt-3">{s.title}</h3>
               <p className="text-white/60 font-light mt-5 leading-[1.8]">{s.text}</p>
             </div>
@@ -478,9 +532,9 @@ const HorizontalProcess = () => {
 
         {/* Barra superior: sección y contador */}
         <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-8 md:px-24 pt-24 md:pt-28 pointer-events-none">
-          <span className="text-[11px] tracking-[0.3em] uppercase text-[#C6A47E] font-bold">Nuestro modelo</span>
+          <span className="text-[11px] tracking-[0.3em] uppercase text-[#CCA678] font-bold">Nuestro modelo</span>
           <span className="text-[11px] tracking-[0.3em] text-white/50 font-bold">
-            <span ref={counterRef} className="text-[#C6A47E]">01</span> / {String(STEPS.length).padStart(2, '0')}
+            <span ref={counterRef} className="text-[#CCA678]">01</span> / {String(STEPS.length).padStart(2, '0')}
           </span>
         </div>
 
@@ -493,11 +547,11 @@ const HorizontalProcess = () => {
                 <BeanIcon width={34} height={48} />
               </div>
               <h2 className="font-serif font-light text-4xl md:text-6xl xl:text-7xl text-white leading-[1.08]">
-                Un proceso guiado por la <span className="italic text-[#C6A47E]">cooperación.</span>
+                Un proceso guiado por la <span className="italic text-[#CCA678]">cooperación.</span>
               </h2>
               <p className="mt-10 text-white/50 font-light text-base md:text-lg flex items-center gap-4">
                 Tres momentos entre la tierra y tu taza. Sigue bajando: el proceso avanza contigo.
-                <span aria-hidden="true" className="hp-arrow inline-block text-[#C6A47E] text-2xl leading-none">→</span>
+                <span aria-hidden="true" className="hp-arrow inline-block text-[#CCA678] text-2xl leading-none">→</span>
               </p>
             </div>
           </div>
@@ -516,16 +570,38 @@ const HorizontalProcess = () => {
           style={{ backgroundImage: GRAIN, opacity: 0.05, mixBlendMode: 'overlay' }}
         />
 
-        {/* La ruta: riel con estaciones que se encienden */}
-        <div className="absolute bottom-10 left-8 right-8 md:left-24 md:right-24 h-px bg-white/10 z-20">
-          <div className="hp-progress h-full bg-[#C6A47E] origin-left" style={{ transform: 'scaleX(0)' }} />
-          {Array.from({ length: PANELS }, (_, i) => (
-            <span
-              key={i}
-              className="hp-node absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full transition-colors duration-300"
-              style={{ left: `${(i / (PANELS - 1)) * 100}%`, marginLeft: '-4px', backgroundColor: 'rgba(255,255,255,0.2)' }}
+        {/* El hilo conductor: una línea dorada que se teje con el viaje.
+            La semilla viaja en su punta y las estaciones se encienden al
+            pasar. El trazado se genera en JS (misma onda que la posición de
+            la semilla) para que ambos casen exactamente. */}
+        <div
+          className="hp-thread absolute left-8 right-8 md:left-24 md:right-24 bottom-8 z-20 pointer-events-none"
+          style={{ height: '132px' }}
+        >
+          <svg className="hp-thread-svg w-full h-full" style={{ overflow: 'visible' }} aria-hidden="true">
+            <path className="hp-thread-track" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
+            <path
+              className="hp-thread-line"
+              fill="none"
+              stroke="#CCA678"
+              strokeWidth="2"
+              strokeLinecap="round"
+              style={{ filter: 'drop-shadow(0 0 6px rgba(204,166,120,0.55))' }}
             />
-          ))}
+            <g className="hp-thread-nodes" />
+          </svg>
+
+          {/* La semilla viajera, en la punta del hilo */}
+          <div
+            className="hp-thread-seed absolute left-0 top-0 will-change-transform"
+            style={{ transform: 'translate(-50%,-50%)' }}
+          >
+            <div
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full"
+              style={{ background: 'radial-gradient(circle, rgba(204,166,120,0.5) 0%, transparent 70%)' }}
+            />
+            <BeanIcon width={18} height={25} />
+          </div>
         </div>
       </div>
 
@@ -540,7 +616,7 @@ const HorizontalProcess = () => {
           100% { transform: scale(1.35); opacity: 0; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .hp-play span[style*="hpPulse"] { animation: none !important; }
+          .hp-pulse-ring { animation: none !important; }
         }
       `}</style>
     </section>
