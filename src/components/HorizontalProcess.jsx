@@ -277,33 +277,44 @@ const HorizontalProcess = () => {
     resizeBg();
 
     // ── El hilo conductor: trazado tejido que la semilla recorre ──────
-    const threadWrap = rootRef.current.querySelector('.hp-thread');
-    const threadSvg = rootRef.current.querySelector('.hp-thread-svg');
+    // El SVG cubre TODO el viewport para poder cruzar los paneles. Una
+    // máscara viva (un hueco negro por foto, reposicionado cada frame según
+    // su rect real) esconde el hilo justo sobre las fotos: así parece pasar
+    // por detrás y reaparecer al otro lado. La semilla va dentro del grupo
+    // enmascarado, de modo que también se hunde tras la foto y emerge.
+    const SVGNS = 'http://www.w3.org/2000/svg';
+    const threadSvg = rootRef.current.querySelector('.hp-thread');
     const threadTrack = rootRef.current.querySelector('.hp-thread-track');
     const threadLine = rootRef.current.querySelector('.hp-thread-line');
     const threadNodes = rootRef.current.querySelector('.hp-thread-nodes');
     const threadSeed = rootRef.current.querySelector('.hp-thread-seed');
-    // Las estaciones (título + pasos) caen en los cruces por el eje.
+    const threadMaskBg = rootRef.current.querySelector('.hp-thread-mask-bg');
+    const threadHoles = Array.from(rootRef.current.querySelectorAll('.hp-thread-hole'));
     const stationsX = Array.from({ length: PANELS }, (_, i) => i / (PANELS - 1));
     let threadLen = 0;
     let lastP = 0;
 
     const buildThread = () => {
-      if (!threadWrap || !threadSvg || !threadLine || !threadTrack) return;
-      const W = threadWrap.clientWidth;
-      const H = threadWrap.clientHeight;
+      if (!threadSvg || !threadLine || !threadTrack) return;
+      const W = window.innerWidth;
+      const H = window.innerHeight;
       if (!W || !H) return;
       threadSvg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-      const mid = H / 2;
-      const amp = H * 0.34;
+      if (threadMaskBg) {
+        threadMaskBg.setAttribute('width', String(W));
+        threadMaskBg.setAttribute('height', String(H));
+      }
+      // Banda baja-central: los picos suben al tercio de las fotos y los
+      // valles caen a zona despejada, para que el tejido se lea claro.
+      const base = H * 0.62;
+      const amp = H * 0.2;
       const humps = PANELS - 1; // una onda entre cada par de estaciones
-      const N = 240;
+      const N = 260;
       let d = '';
       for (let i = 0; i <= N; i++) {
         const t = i / N;
         const x = t * W;
-        // seno que cruza el eje justo en cada estación (t = k/humps)
-        const y = mid - amp * Math.sin(t * humps * Math.PI);
+        const y = base - amp * Math.sin(t * humps * Math.PI);
         d += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
       }
       threadTrack.setAttribute('d', d);
@@ -311,32 +322,51 @@ const HorizontalProcess = () => {
       threadLen = threadLine.getTotalLength();
       threadLine.style.strokeDasharray = String(threadLen);
       threadLine.style.strokeDashoffset = String(threadLen);
-      // Estaciones sobre la línea (en los cruces → y = mid)
+      // Estaciones en los cruces por el eje (y = base)
       threadNodes.innerHTML = '';
       stationsX.forEach((sx) => {
-        const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        const c = document.createElementNS(SVGNS, 'circle');
         c.setAttribute('cx', (sx * W).toFixed(1));
-        c.setAttribute('cy', mid.toFixed(1));
+        c.setAttribute('cy', base.toFixed(1));
         c.setAttribute('r', '4');
         c.setAttribute('fill', 'rgba(255,255,255,0.2)');
         threadNodes.appendChild(c);
       });
     };
 
+    // Reposiciona los huecos de la máscara sobre las fotos que se deslizan.
+    const updateHoles = () => {
+      const photos = rootRef.current ? rootRef.current.querySelectorAll('.hp-photo') : [];
+      threadHoles.forEach((hole, i) => {
+        const el = photos[i];
+        if (!el) {
+          hole.setAttribute('width', '0');
+          hole.setAttribute('height', '0');
+          return;
+        }
+        const r = el.getBoundingClientRect();
+        const pad = 3; // el hilo se mete un pelín bajo el borde
+        hole.setAttribute('x', (r.left - pad).toFixed(1));
+        hole.setAttribute('y', (r.top - pad).toFixed(1));
+        hole.setAttribute('width', Math.max(0, r.width + pad * 2).toFixed(1));
+        hole.setAttribute('height', Math.max(0, r.height + pad * 2).toFixed(1));
+      });
+    };
+
     const updateThread = (p) => {
       lastP = p;
-      if (!threadLen || !threadLine) return;
-      threadLine.style.strokeDashoffset = String(threadLen * (1 - p));
-      const pt = threadLine.getPointAtLength(threadLen * p);
-      if (threadSeed) {
-        threadSeed.style.transform = `translate(-50%,-50%) translate(${pt.x.toFixed(1)}px, ${pt.y.toFixed(1)}px)`;
+      if (threadLen && threadLine) {
+        threadLine.style.strokeDashoffset = String(threadLen * (1 - p));
+        const pt = threadLine.getPointAtLength(threadLen * p);
+        if (threadSeed) threadSeed.setAttribute('transform', `translate(${pt.x.toFixed(1)} ${pt.y.toFixed(1)})`);
+        const dots = threadNodes ? threadNodes.children : [];
+        for (let i = 0; i < dots.length; i++) {
+          const on = p >= stationsX[i] - 0.02;
+          dots[i].setAttribute('fill', on ? '#CCA678' : 'rgba(255,255,255,0.2)');
+          dots[i].style.filter = on ? 'drop-shadow(0 0 6px rgba(204,166,120,0.9))' : 'none';
+        }
       }
-      const dots = threadNodes ? threadNodes.children : [];
-      for (let i = 0; i < dots.length; i++) {
-        const on = p >= stationsX[i] - 0.02;
-        dots[i].setAttribute('fill', on ? '#CCA678' : 'rgba(255,255,255,0.2)');
-        dots[i].style.filter = on ? 'drop-shadow(0 0 6px rgba(204,166,120,0.9))' : 'none';
-      }
+      updateHoles();
     };
 
     const onResizeThread = () => {
@@ -570,15 +600,23 @@ const HorizontalProcess = () => {
           style={{ backgroundImage: GRAIN, opacity: 0.05, mixBlendMode: 'overlay' }}
         />
 
-        {/* El hilo conductor: una línea dorada que se teje con el viaje.
-            La semilla viaja en su punta y las estaciones se encienden al
-            pasar. El trazado se genera en JS (misma onda que la posición de
-            la semilla) para que ambos casen exactamente. */}
-        <div
-          className="hp-thread absolute left-8 right-8 md:left-24 md:right-24 bottom-8 z-20 pointer-events-none"
-          style={{ height: '132px' }}
-        >
-          <svg className="hp-thread-svg w-full h-full" style={{ overflow: 'visible' }} aria-hidden="true">
+        {/* El hilo conductor: se teje POR DETRÁS de las fotos y sale POR
+            DELANTE en el resto del recorrido. El SVG cubre todo el viewport;
+            una máscara viva (un hueco por foto, actualizado cada frame) lo
+            esconde justo sobre cada foto, así parece pasar tras ella y
+            reaparecer. La semilla va dentro del grupo enmascarado, de modo
+            que también se hunde tras la foto y emerge al otro lado. */}
+        <svg className="hp-thread absolute inset-0 w-full h-full z-30 pointer-events-none" aria-hidden="true">
+          <defs>
+            <mask id="hpThreadMask" maskUnits="userSpaceOnUse">
+              <rect className="hp-thread-mask-bg" x="0" y="0" width="100%" height="100%" fill="white" />
+              {STEPS.map((_, i) => (
+                <rect key={i} className="hp-thread-hole" x="-9999" y="-9999" width="0" height="0" rx="6" fill="black" />
+              ))}
+            </mask>
+          </defs>
+
+          <g mask="url(#hpThreadMask)">
             <path className="hp-thread-track" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
             <path
               className="hp-thread-line"
@@ -589,20 +627,15 @@ const HorizontalProcess = () => {
               style={{ filter: 'drop-shadow(0 0 6px rgba(204,166,120,0.55))' }}
             />
             <g className="hp-thread-nodes" />
-          </svg>
 
-          {/* La semilla viajera, en la punta del hilo */}
-          <div
-            className="hp-thread-seed absolute left-0 top-0 will-change-transform"
-            style={{ transform: 'translate(-50%,-50%)' }}
-          >
-            <div
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full"
-              style={{ background: 'radial-gradient(circle, rgba(204,166,120,0.5) 0%, transparent 70%)' }}
-            />
-            <BeanIcon width={18} height={25} />
-          </div>
-        </div>
+            {/* La semilla viajera, en la punta del hilo */}
+            <g className="hp-thread-seed">
+              <circle r="13" fill="rgba(204,166,120,0.28)" />
+              <ellipse rx="6.5" ry="9.5" fill="rgba(204,166,120,0.14)" stroke="#CCA678" strokeWidth="1.6" />
+              <path d="M0 -8.5 C -5 -3, -5 3, 0 8.5" fill="none" stroke="#CCA678" strokeWidth="1.6" />
+            </g>
+          </g>
+        </svg>
       </div>
 
       {openVideo && (
