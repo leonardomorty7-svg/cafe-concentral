@@ -10,15 +10,15 @@ const Footer = () => {
           
           {/* Newsletter */}
           <div className="space-y-6">
-            <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#A68A64] font-bold">NEWSLETTER</h4>
+            <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#CCA678] font-bold">NEWSLETTER</h4>
             <p className="text-xl font-serif leading-tight">Mantente cerca de nuestro origen</p>
-            <form className="flex gap-4 border-b border-white/20 pb-2 group focus-within:border-[#A68A64] transition-colors">
+            <form className="flex gap-4 border-b border-white/20 pb-2 group focus-within:border-[#CCA678] transition-colors">
               <input 
                 type="email" 
                 placeholder="Tu correo" 
                 className="bg-transparent text-sm w-full focus:outline-none placeholder:text-white/30 font-light"
               />
-              <button className="text-[10px] uppercase tracking-widest hover:text-[#A68A64] transition-colors font-bold">
+              <button className="text-[10px] uppercase tracking-widest hover:text-[#CCA678] transition-colors font-bold">
                 SUSCRIBIRME
               </button>
             </form>
@@ -26,7 +26,7 @@ const Footer = () => {
 
           {/* Contact / Collaborations */}
           <div className="space-y-6 text-center md:border-x md:border-white/10 md:px-12">
-            <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#A68A64] font-bold">CONTACTO</h4>
+            <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#CCA678] font-bold">CONTACTO</h4>
             <p className="text-xl font-serif leading-tight">¿Quieres trabajar con nosotros?</p>
             <a 
               href="mailto:hola@cafecoocentral.com" 
@@ -38,13 +38,13 @@ const Footer = () => {
 
           {/* Lifestyle / Playlist */}
           <div className="space-y-6 text-right">
-            <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#A68A64] font-bold">TÓMATE TU TIEMPO</h4>
+            <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#CCA678] font-bold">TÓMATE TU TIEMPO</h4>
             <p className="text-xl font-serif leading-tight italic">Disfruta tu café</p>
             <a 
               href="https://open.spotify.com/playlist/0sc2FfgT3UMWrHqu4Napbf" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-block px-8 py-3 border border-white/20 text-[10px] uppercase tracking-[0.2em] font-bold hover:border-[#A68A64] hover:text-[#A68A64] transition-all rounded-sm"
+              className="inline-block px-8 py-3 border border-white/20 text-[10px] uppercase tracking-[0.2em] font-bold hover:border-[#CCA678] hover:text-[#CCA678] transition-all rounded-sm"
             >
               ESCUCHAR PLAYLIST
             </a>
@@ -67,7 +67,7 @@ const Footer = () => {
           </div>
 
           <div className="space-y-6">
-            <h5 className="text-[10px] uppercase tracking-[0.2em] text-[#A68A64] font-bold">NUESTRA COOPERATIVA</h5>
+            <h5 className="text-[10px] uppercase tracking-[0.2em] text-[#CCA678] font-bold">NUESTRA COOPERATIVA</h5>
             <ul className="space-y-4 text-xs tracking-widest text-white/50 uppercase">
               <li><a href="/nosotros" className="hover:text-white transition-colors">Nuestra historia</a></li>
               <li><a href="/contacto" className="hover:text-white transition-colors">Contacto</a></li>
@@ -76,7 +76,7 @@ const Footer = () => {
           </div>
 
           <div className="space-y-6">
-            <h5 className="text-[10px] uppercase tracking-[0.2em] text-[#A68A64] font-bold">NUESTROS CAFÉS</h5>
+            <h5 className="text-[10px] uppercase tracking-[0.2em] text-[#CCA678] font-bold">NUESTROS CAFÉS</h5>
             <ul className="space-y-4 text-xs tracking-widest text-white/50 uppercase">
               <li><a href="/productos" className="hover:text-white transition-colors">Grano Entero</a></li>
               <li><a href="/productos" className="hover:text-white transition-colors">Café Molido</a></li>

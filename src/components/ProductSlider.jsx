@@ -28,7 +28,7 @@ const ProductCard = ({ id, name, tastingNotes, price, image, tag, category = 'Or
         {category}
       </p>
 
-      <h3 className="font-serif text-xl text-[#1A1A1A] mb-2 group-hover:text-[#A68A64] transition-colors duration-300">
+      <h3 className="font-serif text-xl text-[#1A1A1A] mb-2 group-hover:text-[#CCA678] transition-colors duration-300">
         {name}
       </h3>
 
@@ -37,10 +37,10 @@ const ProductCard = ({ id, name, tastingNotes, price, image, tag, category = 'Or
       </p>
 
       <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center">
-        <p className="text-lg font-medium text-[#A68A64]">
+        <p className="text-lg font-medium text-[#CCA678]">
           {price}
         </p>
-        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-transparent group-hover:border-[#A68A64] transition-all duration-300 py-1 flex items-center gap-1">
+        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-transparent group-hover:border-[#CCA678] transition-all duration-300 py-1 flex items-center gap-1">
           Descubrir origen <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
         </span>
       </div>
@@ -180,12 +180,12 @@ const ProductSlider = ({
 
         {/* Header */}
         <div className="mx-auto max-w-[720px] mb-16 px-6 text-center" data-fx="header">
-          <span className="block text-[11px] tracking-[0.4em] uppercase mb-3 text-[#A68A64] font-bold" data-fx-eyebrow>
+          <span className="block text-[11px] tracking-[0.4em] uppercase mb-3 text-[#CCA678] font-bold" data-fx-eyebrow>
             {title}
           </span>
           <h2 className="text-4xl md:text-6xl font-serif text-[#1A1A1A] leading-tight">
             {subtitle}{' '}
-            <span className="italic text-[#A68A64]">{subtitleItalic}</span>
+            <span className="italic text-[#CCA678]">{subtitleItalic}</span>
           </h2>
           {description && (
             <p className="text-[#6B6B6B] max-w-[560px] mx-auto font-light text-base leading-[1.7] mt-6">

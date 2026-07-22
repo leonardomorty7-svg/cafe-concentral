@@ -10,11 +10,11 @@ const FloatingWhatsApp = () => {
       href={waLink}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-8 right-8 z-10 group flex items-center justify-center w-16 h-16 bg-[#1A1A1A] rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(166,138,100,0.2)] transition-all duration-500 hover:scale-105 hover:bg-[#A68A64] overflow-hidden"
+      className="fixed bottom-8 right-8 z-10 group flex items-center justify-center w-16 h-16 bg-[#1A1A1A] rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(166,138,100,0.2)] transition-all duration-500 hover:scale-105 hover:bg-[#CCA678] overflow-hidden"
       aria-label="Contactar por WhatsApp"
     >
       {/* Subtle gold glow on hover */}
-      <div className="absolute inset-0 bg-[#A68A64] opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-[#CCA678] opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
       
       <svg 
         xmlns="http://www.w3.org/2000/svg" 

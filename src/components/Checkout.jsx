@@ -102,7 +102,7 @@ const Checkout = () => {
         <section>
           <span className="label-premium">Paso 1 — Tus datos</span>
           <h2 className="font-serif text-3xl md:text-4xl text-[#1A1A1A] leading-tight mb-10">
-            ¿A dónde <span className="italic text-[#A68A64]">enviamos</span> tu café?
+            ¿A dónde <span className="italic text-[#CCA678]">enviamos</span> tu café?
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -136,7 +136,7 @@ const Checkout = () => {
               onChange={set('notas')}
               rows={3}
               placeholder="¿Molido o en grano? ¿Alguna preferencia?"
-              className="w-full bg-white border border-[#1A1A1A]/12 rounded-sm px-4 py-3 text-[#1A1A1A] placeholder:text-[#B5B0A6] focus:outline-none focus:border-[#A68A64] transition-colors font-light"
+              className="w-full bg-white border border-[#1A1A1A]/12 rounded-sm px-4 py-3 text-[#1A1A1A] placeholder:text-[#B5B0A6] focus:outline-none focus:border-[#CCA678] transition-colors font-light"
             />
           </div>
         </section>
@@ -145,7 +145,7 @@ const Checkout = () => {
         <section>
           <span className="label-premium">Paso 2 — Forma de pago</span>
           <h2 className="font-serif text-3xl md:text-4xl text-[#1A1A1A] leading-tight mb-4">
-            Elige cómo <span className="italic text-[#A68A64]">prefieres</span> pagar.
+            Elige cómo <span className="italic text-[#CCA678]">prefieres</span> pagar.
           </h2>
           <p className="text-[#6B6B6B] font-light leading-relaxed mb-8 max-w-md">
             Confirmamos contigo el total y el envío antes de cualquier pago. Nada se cobra en este paso.
@@ -159,8 +159,8 @@ const Checkout = () => {
                   key={m.id}
                   className={`flex items-start gap-4 p-5 rounded-sm border cursor-pointer transition-all duration-300 ${
                     active
-                      ? 'border-[#A68A64] bg-[#A68A64]/8 shadow-sm'
-                      : 'border-[#1A1A1A]/10 bg-white hover:border-[#A68A64]/40'
+                      ? 'border-[#CCA678] bg-[#CCA678]/8 shadow-sm'
+                      : 'border-[#1A1A1A]/10 bg-white hover:border-[#CCA678]/40'
                   }`}
                 >
                   <input
@@ -173,10 +173,10 @@ const Checkout = () => {
                   />
                   <span
                     className={`mt-0.5 w-5 h-5 rounded-full border-2 shrink-0 flex items-center justify-center transition-colors ${
-                      active ? 'border-[#A68A64]' : 'border-[#1A1A1A]/25'
+                      active ? 'border-[#CCA678]' : 'border-[#1A1A1A]/25'
                     }`}
                   >
-                    {active && <span className="w-2.5 h-2.5 rounded-full bg-[#A68A64]" />}
+                    {active && <span className="w-2.5 h-2.5 rounded-full bg-[#CCA678]" />}
                   </span>
                   <span>
                     <span className="block font-serif text-lg text-[#1A1A1A] leading-tight">{m.label}</span>
@@ -192,7 +192,7 @@ const Checkout = () => {
               <span>
                 <span className="block font-serif text-lg text-[#1A1A1A]/60 leading-tight">
                   Pago con tarjeta en línea
-                  <span className="ml-2 text-[9px] uppercase tracking-[0.2em] bg-[#A68A64]/15 text-[#A68A64] font-bold px-2 py-0.5 rounded-full align-middle">
+                  <span className="ml-2 text-[9px] uppercase tracking-[0.2em] bg-[#CCA678]/15 text-[#CCA678] font-bold px-2 py-0.5 rounded-full align-middle">
                     Muy pronto
                   </span>
                 </span>
@@ -225,9 +225,9 @@ const Checkout = () => {
                   <p className="font-serif text-[15px] text-[#1A1A1A] leading-tight truncate m-0">{it.name}</p>
                   <div className="flex items-center gap-2 mt-1.5">
                     <div className="inline-flex items-center border border-[#1A1A1A]/12 rounded-sm">
-                      <button type="button" onClick={() => setQty(it.id, it.qty - 1)} aria-label="Restar" className="w-7 h-7 flex items-center justify-center text-[#1A1A1A] hover:text-[#A68A64]">−</button>
+                      <button type="button" onClick={() => setQty(it.id, it.qty - 1)} aria-label="Restar" className="w-7 h-7 flex items-center justify-center text-[#1A1A1A] hover:text-[#CCA678]">−</button>
                       <span className="w-7 text-center text-xs font-bold tabular-nums">{it.qty}</span>
-                      <button type="button" onClick={() => setQty(it.id, it.qty + 1)} aria-label="Sumar" className="w-7 h-7 flex items-center justify-center text-[#1A1A1A] hover:text-[#A68A64]">+</button>
+                      <button type="button" onClick={() => setQty(it.id, it.qty + 1)} aria-label="Sumar" className="w-7 h-7 flex items-center justify-center text-[#1A1A1A] hover:text-[#CCA678]">+</button>
                     </div>
                     <button type="button" onClick={() => removeItem(it.id)} className="text-[10px] uppercase tracking-[0.12em] text-[#B5B0A6] hover:text-[#1A1A1A] transition-colors">
                       Quitar
@@ -287,14 +287,14 @@ const Checkout = () => {
 const Field = ({ label, value, onChange, type = 'text', required = false, invalid = false, hint }) => (
   <div data-invalid={invalid ? 'true' : 'false'}>
     <label className="block text-[11px] uppercase tracking-[0.2em] font-bold text-[#1A1A1A] mb-3">
-      {label} {required && <span className="text-[#A68A64]">*</span>}
+      {label} {required && <span className="text-[#CCA678]">*</span>}
     </label>
     <input
       type={type}
       value={value}
       onChange={onChange}
       className={`w-full bg-white border rounded-sm px-4 py-3 text-[#1A1A1A] placeholder:text-[#B5B0A6] focus:outline-none transition-colors font-light ${
-        invalid ? 'border-[#B4462F]' : 'border-[#1A1A1A]/12 focus:border-[#A68A64]'
+        invalid ? 'border-[#B4462F]' : 'border-[#1A1A1A]/12 focus:border-[#CCA678]'
       }`}
     />
     {hint && !invalid && <p className="text-[11px] text-[#B5B0A6] font-light mt-1.5">{hint}</p>}

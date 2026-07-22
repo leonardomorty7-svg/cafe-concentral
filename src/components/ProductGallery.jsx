@@ -53,10 +53,10 @@ const ProductGallery = ({ images = [], name = '', badge = null }) => {
                 type="button"
                 onClick={() => handleSelect(src)}
                 aria-label={`Ver imagen ${i + 1} de ${name}`}
-                className={`flex-1 aspect-square rounded-sm overflow-hidden bg-white border-2 transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#A68A64] ${
+                className={`flex-1 aspect-square rounded-sm overflow-hidden bg-white border-2 transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CCA678] ${
                   isActive
-                    ? 'border-[#A68A64] scale-[1.03] shadow-md'
-                    : 'border-transparent opacity-60 hover:opacity-90 hover:border-[#A68A64]/40'
+                    ? 'border-[#CCA678] scale-[1.03] shadow-md'
+                    : 'border-transparent opacity-60 hover:opacity-90 hover:border-[#CCA678]/40'
                 }`}
               >
                 <img

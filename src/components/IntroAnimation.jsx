@@ -83,7 +83,7 @@ const IntroAnimation = () => {
             ref={textRef}
             className="text-white text-2xl md:text-3xl font-serif tracking-[0.4em] font-light"
           >
-            CAFÉ <span className="text-[#C6A77D]">COOCENTRAL</span>
+            CAFÉ <span className="text-[#CCA678]">COOCENTRAL</span>
           </h1>
           
           <p 

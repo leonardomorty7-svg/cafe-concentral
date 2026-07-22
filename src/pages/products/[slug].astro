@@ -86,7 +86,7 @@ const related = [
     <div class="max-w-7xl mx-auto px-6">
 
       <!-- Breadcrumb -->
-      <nav class="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#A68A64] font-bold mb-14" aria-label="Breadcrumb" data-fx="rise">
+      <nav class="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#CCA678] font-bold mb-14" aria-label="Breadcrumb" data-fx="rise">
         <a href="/" class="hover:text-[#1A1A1A] transition-colors duration-300">Inicio</a>
         <span class="text-[#D6D1C9]">—</span>
         <a href="/productos" class="hover:text-[#1A1A1A] transition-colors duration-300">Productos</a>
@@ -110,7 +110,7 @@ const related = [
         <div class="flex flex-col" data-fx="header">
 
           <!-- Category eyebrow -->
-          <span class="text-[10px] uppercase tracking-[0.4em] text-[#A68A64] font-bold mb-4 block" data-fx-eyebrow>
+          <span class="text-[10px] uppercase tracking-[0.4em] text-[#CCA678] font-bold mb-4 block" data-fx-eyebrow>
             {categoryLabel} <span class="mx-2 text-[#D6D1C9]">/</span> {subcategory}
           </span>
 
@@ -131,7 +131,7 @@ const related = [
           )}
 
           <!-- Divider -->
-          <div class="w-12 h-px bg-[#A68A64] mb-10"></div>
+          <div class="w-12 h-px bg-[#CCA678] mb-10"></div>
 
           <!-- Category description — editorially tailored per category -->
           <p class="text-[#6B6B6B] font-light text-lg leading-[1.8] mb-14 max-w-md">
@@ -143,7 +143,7 @@ const related = [
             <AddToCart client:load id={id} name={name} image={image} />
             <a
               href="/productos"
-              class="inline-flex items-center gap-2 mt-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 hover:border-[#A68A64] hover:text-[#A68A64] transition-all"
+              class="inline-flex items-center gap-2 mt-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 hover:border-[#CCA678] hover:text-[#CCA678] transition-all"
             >
               Explorar toda la colección
               <span aria-hidden="true">→</span>
@@ -164,7 +164,7 @@ const related = [
           <div data-fx="header">
             <span class="label-premium">Perfil Sensorial</span>
             <h2 class="font-serif text-3xl md:text-4xl text-[#1A1A1A] leading-tight mb-8">
-              Notas y <span class="italic text-[#A68A64]">carácter.</span>
+              Notas y <span class="italic text-[#CCA678]">carácter.</span>
             </h2>
             <p class="text-[#6B6B6B] font-light leading-relaxed">
               Cada café nuestro sale de un lote real, cultivado y seleccionado por familias de nuestra cooperativa. Estas notas son su identidad.
@@ -174,8 +174,8 @@ const related = [
           <!-- Chips grid -->
           <div class="flex flex-wrap gap-3" data-fx="stagger">
             {tags.map((note, i) => (
-              <div class="group flex items-center gap-3 bg-[#F5F1EB] rounded-sm px-5 py-4 transition-all duration-300 hover:bg-[#A68A64]/10">
-                <span class="text-[#A68A64] font-serif text-lg font-medium">{String(i + 1).padStart(2, '0')}</span>
+              <div class="group flex items-center gap-3 bg-[#F5F1EB] rounded-sm px-5 py-4 transition-all duration-300 hover:bg-[#CCA678]/10">
+                <span class="text-[#CCA678] font-serif text-lg font-medium">{String(i + 1).padStart(2, '0')}</span>
                 <span class="text-[11px] uppercase tracking-[0.2em] font-bold text-[#1A1A1A]">{note}</span>
               </div>
             ))}
@@ -195,34 +195,34 @@ const related = [
             {category === 'cafe' ? 'Origen & Proceso' : 'Detalles del Producto'}
           </span>
           <h2 class="font-serif text-3xl md:text-4xl text-[#1A1A1A] leading-tight mb-12">
-            Lo que hace <span class="italic text-[#A68A64]">especial</span> a esta selección.
+            Lo que hace <span class="italic text-[#CCA678]">especial</span> a esta selección.
           </h2>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-8" data-fx="stagger">
           <!-- Categoría -->
           <div class="border-t border-[#1A1A1A]/8 pt-6">
-            <p class="text-[10px] uppercase tracking-[0.25em] text-[#A68A64] font-bold mb-2">Categoría</p>
+            <p class="text-[10px] uppercase tracking-[0.25em] text-[#CCA678] font-bold mb-2">Categoría</p>
             <p class="font-serif text-lg text-[#1A1A1A]">{categoryLabel}</p>
           </div>
 
           <!-- Tipo -->
           <div class="border-t border-[#1A1A1A]/8 pt-6">
-            <p class="text-[10px] uppercase tracking-[0.25em] text-[#A68A64] font-bold mb-2">Tipo</p>
+            <p class="text-[10px] uppercase tracking-[0.25em] text-[#CCA678] font-bold mb-2">Tipo</p>
             <p class="font-serif text-lg text-[#1A1A1A] capitalize">{subcategory.replace(/-/g, ' ')}</p>
           </div>
 
           <!-- Tags restantes como pares clave-valor -->
           {tags.map((tag) => (
             <div class="border-t border-[#1A1A1A]/8 pt-6">
-              <p class="text-[10px] uppercase tracking-[0.25em] text-[#A68A64] font-bold mb-2">Perfil</p>
+              <p class="text-[10px] uppercase tracking-[0.25em] text-[#CCA678] font-bold mb-2">Perfil</p>
               <p class="font-serif text-lg text-[#1A1A1A]">{tag}</p>
             </div>
           ))}
 
           <!-- País de origen -->
           <div class="border-t border-[#1A1A1A]/8 pt-6">
-            <p class="text-[10px] uppercase tracking-[0.25em] text-[#A68A64] font-bold mb-2">Origen</p>
+            <p class="text-[10px] uppercase tracking-[0.25em] text-[#CCA678] font-bold mb-2">Origen</p>
             <p class="font-serif text-lg text-[#1A1A1A]">Colombia</p>
           </div>
         </div>
@@ -236,11 +236,11 @@ const related = [
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
         <div data-fx="header">
-          <span class="text-[11px] uppercase tracking-[0.3em] text-[#A68A64] font-bold mb-6 block" data-fx-eyebrow>
+          <span class="text-[11px] uppercase tracking-[0.3em] text-[#CCA678] font-bold mb-6 block" data-fx-eyebrow>
             Nuestra Promesa
           </span>
           <h2 class="font-serif text-3xl md:text-5xl text-white leading-tight mb-8">
-            Cultivado con <span class="italic text-[#A68A64]">propósito.</span>
+            Cultivado con <span class="italic text-[#CCA678]">propósito.</span>
           </h2>
           <p class="text-white/60 font-light text-base leading-relaxed mb-6">
             Café Coocentral no nació solo para producir café: nació para crear oportunidades. Cada selección reúne el trabajo de miles de familias del Huila que creen en la cooperación y en el valor de su tierra.
@@ -283,7 +283,7 @@ const related = [
     <div class="max-w-7xl mx-auto px-6 text-center" data-fx="header">
       <span class="label-premium mx-auto">¿Te interesa esta selección?</span>
       <h2 class="font-serif text-3xl md:text-5xl text-[#1A1A1A] leading-tight mb-6 mx-auto">
-        Hablemos sobre <span class="italic text-[#A68A64]">tu pedido.</span>
+        Hablemos sobre <span class="italic text-[#CCA678]">tu pedido.</span>
       </h2>
       <p class="text-[#6B6B6B] font-light leading-relaxed mb-12 mx-auto">
         Detrás de este botón hay alguien de nuestra cooperativa, listo para ayudarte con tu selección o tu pedido.

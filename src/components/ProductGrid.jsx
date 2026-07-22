@@ -38,7 +38,7 @@ const ProductCard = ({ id, name, tag, description, category, subcategory, image 
           type="button"
           onClick={handleAdd}
           aria-label={`Añadir ${name} al carrito`}
-          className="absolute bottom-4 right-4 z-[3] inline-flex items-center gap-1.5 bg-[#1A1A1A] text-white text-[10px] font-bold uppercase tracking-[0.18em] px-4 py-2.5 rounded-sm shadow-lg opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-[#A68A64] transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#A68A64] focus-visible:opacity-100 focus-visible:translate-y-0"
+          className="absolute bottom-4 right-4 z-[3] inline-flex items-center gap-1.5 bg-[#1A1A1A] text-white text-[10px] font-bold uppercase tracking-[0.18em] px-4 py-2.5 rounded-sm shadow-lg opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-[#CCA678] transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CCA678] focus-visible:opacity-100 focus-visible:translate-y-0"
         >
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
             <line x1="12" y1="5" x2="12" y2="19" />
@@ -50,14 +50,14 @@ const ProductCard = ({ id, name, tag, description, category, subcategory, image 
         {/* Barrido dorado al pie de la foto */}
         <span
           aria-hidden="true"
-          className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#A68A64] scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100 z-10"
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#CCA678] scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100 z-10"
         />
       </div>
 
       <div className="flex flex-col space-y-3 px-1">
         <div className="flex justify-between items-start gap-4">
           <div>
-            <h3 className="font-serif text-2xl text-[#1A1A1A] mb-1 group-hover:text-[#A68A64] transition-colors duration-300">
+            <h3 className="font-serif text-2xl text-[#1A1A1A] mb-1 group-hover:text-[#CCA678] transition-colors duration-300">
               {name}
             </h3>
             <p className="text-[13px] text-[#8C8C8C] font-light">
@@ -70,7 +70,7 @@ const ProductCard = ({ id, name, tag, description, category, subcategory, image 
         </div>
 
         <div className="pt-2">
-          <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 group-hover:border-[#A68A64] group-hover:text-[#A68A64] transition-all duration-300">
+          <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 group-hover:border-[#CCA678] group-hover:text-[#CCA678] transition-all duration-300">
             Ver producto
             <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
           </span>
@@ -98,11 +98,11 @@ const ProductGrid = ({ products = [], limit = 0, eyebrow, heading, headingItalic
           <div className="mb-24 flex flex-col md:flex-row justify-between items-end gap-10" data-fx="header">
             <div className="max-w-2xl">
               {eyebrow && (
-                <span className="text-[11px] uppercase tracking-[0.3em] text-[#A68A64] font-bold mb-6 block" data-fx-eyebrow>{eyebrow}</span>
+                <span className="text-[11px] uppercase tracking-[0.3em] text-[#CCA678] font-bold mb-6 block" data-fx-eyebrow>{eyebrow}</span>
               )}
               <h2 className="text-4xl md:text-6xl font-serif text-[#1A1A1A] leading-tight">
                 {heading}{' '}
-                {headingItalic && <span className="italic text-[#A68A64]">{headingItalic}</span>}
+                {headingItalic && <span className="italic text-[#CCA678]">{headingItalic}</span>}
               </h2>
             </div>
             {description && (
@@ -125,7 +125,7 @@ const ProductGrid = ({ products = [], limit = 0, eyebrow, heading, headingItalic
           <div className="mt-20 flex justify-center" data-fx="rise">
             <a 
               href="/productos" 
-              className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1.5 hover:border-[#A68A64] hover:text-[#A68A64] transition-all duration-300 flex items-center gap-2 group"
+              className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1.5 hover:border-[#CCA678] hover:text-[#CCA678] transition-all duration-300 flex items-center gap-2 group"
             >
               Ver toda la colección <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
             </a>

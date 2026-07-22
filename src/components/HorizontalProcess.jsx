@@ -195,7 +195,7 @@ const StepPanel = ({ num, title, text, img, alt, video, flip, onOpenVideo }) => 
       <div className="[direction:ltr]">
         <span className="hp-num font-serif italic text-4xl md:text-6xl text-[#C6A47E] inline-block">{num}</span>
         <h3 className="hp-title font-serif text-3xl md:text-5xl text-white leading-[1.1] mt-4">{title}</h3>
-        <div className="hp-rule w-12 h-px bg-[#A68A64] my-7 md:my-9 origin-left" />
+        <div className="hp-rule w-12 h-px bg-[#CCA678] my-7 md:my-9 origin-left" />
         <p className="hp-text text-white/60 font-light text-base md:text-lg leading-[1.8] max-w-md">{text}</p>
       </div>
     </div>

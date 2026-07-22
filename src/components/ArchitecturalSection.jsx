@@ -10,14 +10,14 @@ const ArchitecturalSection = () => {
           {/* Narrative Content */}
           <div className="md:col-span-5 space-y-16">
             <div className="space-y-6">
-              <span className="text-[11px] uppercase tracking-[0.4em] text-[#A68A64] font-bold block reveal">
+              <span className="text-[11px] uppercase tracking-[0.4em] text-[#CCA678] font-bold block reveal">
                 NUESTRO ORIGEN
               </span>
               <div className="reveal delay-100">
                 <h2 className="text-5xl md:text-7xl font-serif text-[#1A1A1A] leading-[1.05]">
                   Raíces que cultivan futuro.
                 </h2>
-                <p className="mt-4 md:mt-6 text-3xl md:text-4xl font-serif italic text-[#A68A64] tracking-[0.02em] font-light">
+                <p className="mt-4 md:mt-6 text-3xl md:text-4xl font-serif italic text-[#CCA678] tracking-[0.02em] font-light">
                   Un café que nace del trabajo de todos.
                 </p>
               </div>
@@ -33,7 +33,7 @@ const ArchitecturalSection = () => {
             </div>
 
             <div className="pt-12 reveal delay-300">
-              <a href="/nosotros" className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#1A1A1A] border-b border-[#1A1A1A]/10 pb-4 hover:border-[#A68A64] transition-all duration-500 inline-block hover:translate-x-1">
+              <a href="/nosotros" className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#1A1A1A] border-b border-[#1A1A1A]/10 pb-4 hover:border-[#CCA678] transition-all duration-500 inline-block hover:translate-x-1">
                 DESCUBRE NUESTRA HISTORIA
               </a>
             </div>
@@ -63,7 +63,7 @@ const ArchitecturalSection = () => {
                     className="w-full h-full object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03]"
                   />
                 </div>
-                <div className="bg-[#A68A64] p-8 text-white rounded-sm">
+                <div className="bg-[#CCA678] p-8 text-white rounded-sm">
                   <h3 className="text-xl font-serif mb-3 leading-snug">Cuando el valor regresa</h3>
                   <p className="text-xs text-white/80 leading-relaxed max-w-[280px] font-light">
                     Cuando eliges Café Coocentral, haces parte de un modelo donde el valor del café regresa a quienes lo cultivan.

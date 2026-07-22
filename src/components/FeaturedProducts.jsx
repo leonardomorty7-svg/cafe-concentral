@@ -21,7 +21,7 @@ const ProductCard = ({ name, tastingNotes, price, image, tag, category = "Origen
         {category}
       </p>
       
-      <h3 className="font-serif text-xl text-[#1A1A1A] mb-2 group-hover:text-[#A68A64] transition-colors duration-300">
+      <h3 className="font-serif text-xl text-[#1A1A1A] mb-2 group-hover:text-[#CCA678] transition-colors duration-300">
         {name}
       </h3>
       
@@ -30,10 +30,10 @@ const ProductCard = ({ name, tastingNotes, price, image, tag, category = "Origen
       </p>
       
       <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center">
-        <p className="text-lg font-medium text-[#A68A64]">
+        <p className="text-lg font-medium text-[#CCA678]">
           {price}
         </p>
-        <button className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-transparent hover:border-[#A68A64] transition-all duration-300 py-1">
+        <button className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-transparent hover:border-[#CCA678] transition-all duration-300 py-1">
           Descubrir origen →
         </button>
       </div>
@@ -53,11 +53,11 @@ const FeaturedProducts = ({
     <section className="py-32 px-6 bg-[#F5F1EB]" id="featured">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-24">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-[#A68A64] font-bold mb-6">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-[#CCA678] font-bold mb-6">
             {title}
           </p>
           <h2 className="text-4xl md:text-6xl font-serif text-[#1A1A1A] max-w-3xl mx-auto leading-tight">
-            {subtitle} <span className="italic text-[#A68A64]">{subtitleItalic}</span>
+            {subtitle} <span className="italic text-[#CCA678]">{subtitleItalic}</span>
           </h2>
         </div>
 

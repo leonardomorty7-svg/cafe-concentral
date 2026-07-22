@@ -17,7 +17,7 @@ const ContactForm = () => {
     return (
       <div className="bg-white p-12 text-center rounded-sm shadow-sm border border-neutral-cream reveal active">
         <div className="w-16 h-16 bg-accent-gold/10 rounded-full flex items-center justify-center mx-auto mb-8">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#C6A77D" strokeWidth="2">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#CCA678" strokeWidth="2">
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
