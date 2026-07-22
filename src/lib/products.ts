@@ -13,12 +13,20 @@ import { products } from '../data/products.js';
 export type ProductCategory = 'cafe' | 'accesorios' | 'experiencias' | 'alimentos';
 export type FeaturedSection = 'exclusivas' | 'coleccion' | null;
 
+/** Una presentación del producto: gramaje (o null) y su precio en COP. */
+export interface ProductVariant {
+  size: string | null;
+  price: number;
+}
+
 export interface Product {
   id: string;
   name: string;
   category: ProductCategory;
   subcategory: string;
   tags: string[];
+  /** Presentaciones: [{ size, price }]. Más de una → selector de gramaje. */
+  variants: ProductVariant[];
   /** Primary display image — always a real path under /public */
   image: string;
   /** All available images for this product */
