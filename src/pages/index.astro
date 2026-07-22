@@ -2,7 +2,7 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import CinematicStory from '../components/CinematicStory';
 
-import HorizontalProcess from '../components/HorizontalProcess';
+import VerticalProcess from '../components/VerticalProcess';
 import ProductGrid from '../components/ProductGrid';
 import ExportSection from '../components/ExportSection';
 import ArchitecturalSection from '../components/ArchitecturalSection.jsx';
@@ -54,7 +54,7 @@ const FEATURED_PRODUCTS = getColeccion().map((p) => ({
 	       El recorrido NO se corta: su último tramo desemboca —con el mismo
 	       hilo conductor— en las ediciones ("Cafés con nombre y con historia"),
 	       que entran como panel final del viaje antes de soltar el scroll. */}
-	<HorizontalProcess client:load editions={FEATURED_PRODUCTS} />
+	<VerticalProcess client:load editions={FEATURED_PRODUCTS} />
 
 	{/* 5 — Profundidad: las raíces y las familias */}
 	<ArchitecturalSection client:visible />
