@@ -15,10 +15,28 @@ import AddToCart from '../../components/AddToCart.jsx';
 
 export async function getStaticPaths() {
   const products = getAllProducts();
-  return products.map((product) => ({
+  const canonicalPaths = products.map((product) => ({
     params: { slug: product.id },
     props: { product },
   }));
+
+  // Las fichas ahora reúnen los gramajes en un solo producto. Conservamos las
+  // URLs que existían antes de esa consolidación para no romper enlaces ya
+  // enviados al cliente, marcadores o resultados indexados.
+  const legacySlugs = {
+    'cafe-especial-340g': 'cafe-especial',
+    'cafe-especial-500g': 'cafe-especial',
+    'cafe-premium-340g': 'cafe-premium',
+    'cafe-premium-500g': 'cafe-premium',
+    'cafe-mujeres-cafeteras-340g': 'cafe-mujeres-cafeteras',
+    'cafe-mujeres-cafeteras-500g': 'cafe-mujeres-cafeteras',
+  };
+  const legacyPaths = Object.entries(legacySlugs).flatMap(([slug, productId]) => {
+    const product = products.find((item) => item.id === productId);
+    return product ? [{ params: { slug }, props: { product } }] : [];
+  });
+
+  return [...canonicalPaths, ...legacyPaths];
 }
 
 const { product } = Astro.props;
@@ -37,6 +55,7 @@ const {
   tags = [],
   image,
   images = [],
+  variants = [],
 } = product;
 
 // Human-readable category label
@@ -140,7 +159,7 @@ const related = [
 
           <!-- Compra — carrito + WhatsApp directo -->
           <div data-fx="rise">
-            <AddToCart client:load id={id} name={name} image={image} category={category} />
+            <AddToCart client:load id={id} name={name} image={image} category={category} variants={variants} />
             <a
               href="/productos"
               class="inline-flex items-center gap-2 mt-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 hover:border-[#D1AA49] hover:text-[#D1AA49] transition-all"

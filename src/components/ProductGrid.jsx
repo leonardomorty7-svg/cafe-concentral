@@ -1,14 +1,23 @@
 import React from 'react';
-import { addItem, openCart } from '../lib/cart.js';
+import { addItem, formatPrice, openCart } from '../lib/cart.js';
 
-const ProductCard = ({ id, name, tag, description, category, subcategory, image }) => {
+const ProductCard = ({ id, name, tag, description, category, image, variants = [] }) => {
+  const defaultVariant = variants[0] || { size: null, price: null };
+  const lowestPrice = variants.reduce(
+    (lowest, variant) => Math.min(lowest, variant.price),
+    defaultVariant.price ?? Infinity,
+  );
   const handleAdd = (e) => {
     // El enlace envolvente es un "stretched link"; el botón vive por encima y
     // no debe navegar al añadir.
     e.preventDefault();
     e.stopPropagation();
     // El café entra con una molienda por defecto (cambiable en la ficha).
-    addItem({ id, name, image }, 1, category === 'cafe' ? 'En grano' : null);
+    addItem(
+      { id, name, image, size: defaultVariant.size, price: defaultVariant.price },
+      1,
+      category === 'cafe' ? 'En grano' : null,
+    );
     openCart();
   };
 
@@ -64,6 +73,12 @@ const ProductCard = ({ id, name, tag, description, category, subcategory, image 
         </h3>
         {description && (
           <p className="text-[10px] uppercase tracking-[0.2em] text-[#9A9488] font-bold mt-2.5">{description}</p>
+        )}
+        {Number.isFinite(lowestPrice) && (
+          <p className="mt-3 text-sm text-[#6B6B6B] font-light">
+            {variants.length > 1 ? 'Desde ' : ''}
+            <span className="font-medium text-[#1A1A1A]">{formatPrice(lowestPrice)}</span>
+          </p>
         )}
         <span className="inline-flex items-center gap-2 mt-4 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/15 pb-1 group-hover:border-[#D1AA49] group-hover:text-[#D1AA49] transition-all duration-300">
           Descubrir

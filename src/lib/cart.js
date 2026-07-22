@@ -8,10 +8,8 @@
  * isla se suscribe con subscribe() y así todas ven el mismo carrito.
  *
  * Fase 1 (sin pasarela de pago todavía): el carrito arma un PEDIDO que se
- * envía por WhatsApp a la cooperativa. Como los productos aún no tienen
- * precio, el pedido viaja como solicitud/cotización. Cuando el cliente
- * defina la pasarela, solo cambia el paso final del checkout — el resto
- * (canasta, cantidades, datos) ya queda hecho.
+ * envía por WhatsApp a la cooperativa. Los precios son informativos y el
+ * total final (incluido el envío) se confirma con la cooperativa.
  */
 
 // Número de WhatsApp de la cooperativa. Placeholder provisional que nos pasó
@@ -35,10 +33,31 @@ export const GRIND_OPTIONS = [
   { label: 'Molienda fina', hint: 'Espresso · moka' },
 ];
 
-/** Clave única de línea: misma referencia con distinta molienda = línea aparte. */
-const lineKey = (id, grind) => (grind ? `${id}::${grind}` : id);
+/** Clave única: misma referencia, presentación y molienda = misma línea. */
+const lineKey = (id, size, grind) => `${id}::${size || 'unica'}::${grind || 'sin-molienda'}`;
 /** Clave de una línea ya guardada (compat con carritos viejos sin `key`). */
-const keyOf = (it) => it.key || lineKey(it.id, it.grind);
+const keyOf = (it) => it.key || lineKey(it.id, it.size, it.grind);
+
+/** Formato consistente para todos los valores mostrados en COP. */
+export function formatPrice(price) {
+  if (!Number.isFinite(price)) return 'Por confirmar';
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    maximumFractionDigits: 0,
+  }).format(price);
+}
+
+export function getSubtotal(item) {
+  return Number.isFinite(item?.price) ? item.price * (item.qty || 0) : null;
+}
+
+export function getTotal(items = []) {
+  const totals = items.map(getSubtotal);
+  return totals.every((total) => Number.isFinite(total))
+    ? totals.reduce((sum, total) => sum + total, 0)
+    : null;
+}
 
 // ─── LECTURA / ESCRITURA ──────────────────────────────────────────────────────
 
@@ -72,13 +91,13 @@ export function getCount() {
 }
 
 /**
- * Añade un producto. Si ya está (misma referencia y misma molienda), suma.
- * product: { id, name, image }; grind: etiqueta de molienda o null.
+ * Añade un producto. Si ya está (misma referencia, presentación y molienda), suma.
+ * product: { id, name, image, size, price }; grind: etiqueta de molienda o null.
  */
 export function addItem(product, qty = 1, grind = null) {
   if (!product || !product.id) return;
   const items = getItems();
-  const key = lineKey(product.id, grind);
+  const key = lineKey(product.id, product.size, grind);
   const existing = items.find((it) => keyOf(it) === key);
   if (existing) {
     existing.qty += qty;
@@ -88,6 +107,8 @@ export function addItem(product, qty = 1, grind = null) {
       id: product.id,
       name: product.name,
       image: product.image || null,
+      size: product.size || null,
+      price: Number.isFinite(product.price) ? product.price : null,
       grind: grind || null,
       qty,
     });
@@ -178,8 +199,17 @@ export function buildOrderMessage(items, customer = {}) {
 
   items.forEach((it) => {
     const grind = it.grind ? ` — ${it.grind}` : '';
-    lines.push(`• ${it.qty} × ${it.name}${grind}`);
+    const size = it.size ? ` (${it.size})` : '';
+    const subtotal = getSubtotal(it);
+    const price = subtotal === null ? '' : ` — ${formatPrice(subtotal)}`;
+    lines.push(`• ${it.qty} × ${it.name}${size}${grind}${price}`);
   });
+
+  const total = getTotal(items);
+  if (total !== null) {
+    lines.push('');
+    lines.push(`Subtotal de productos: ${formatPrice(total)}`);
+  }
 
   lines.push('');
   if (customer.nombre) lines.push(`Nombre: ${customer.nombre}`);
@@ -192,7 +222,7 @@ export function buildOrderMessage(items, customer = {}) {
   if (customer.notas) lines.push(`Notas: ${customer.notas}`);
 
   lines.push('');
-  lines.push('Quedo atento(a) a la confirmación de disponibilidad y el total. ¡Gracias!');
+  lines.push('Quedo atento(a) a la confirmación de disponibilidad, envío y total final. ¡Gracias!');
 
   return lines.join('\n');
 }

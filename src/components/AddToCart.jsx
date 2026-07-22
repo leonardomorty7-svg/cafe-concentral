@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { addItem, openCart, whatsappUrl, GRIND_OPTIONS } from '../lib/cart.js';
+import { addItem, formatPrice, openCart, whatsappUrl, GRIND_OPTIONS } from '../lib/cart.js';
 
 /**
  * AddToCart — el bloque de compra de la ficha de producto.
@@ -9,16 +9,23 @@ import { addItem, openCart, whatsappUrl, GRIND_OPTIONS } from '../lib/cart.js';
  *   2) cantidad + "Añadir al carrito" (abre el drawer al añadir),
  *   3) enlace directo de WhatsApp por si prefieren preguntar antes.
  *
- * product: { id, name, image, category }
+ * product: { id, name, image, category, variants }
  */
-const AddToCart = ({ id, name, image, category }) => {
+const AddToCart = ({ id, name, image, category, variants = [] }) => {
   const isCoffee = category === 'cafe';
+  const availableVariants = variants.length ? variants : [{ size: null, price: null }];
   const [qty, setQty] = useState(1);
   const [grind, setGrind] = useState(GRIND_OPTIONS[0].label);
+  const [selectedSize, setSelectedSize] = useState(availableVariants[0].size);
   const [added, setAdded] = useState(false);
+  const selectedVariant = availableVariants.find((variant) => variant.size === selectedSize) || availableVariants[0];
 
   const handleAdd = () => {
-    addItem({ id, name, image }, qty, isCoffee ? grind : null);
+    addItem(
+      { id, name, image, size: selectedVariant.size, price: selectedVariant.price },
+      qty,
+      isCoffee ? grind : null,
+    );
     setAdded(true);
     openCart();
     // Restablece el rótulo del botón tras un momento.
@@ -26,11 +33,45 @@ const AddToCart = ({ id, name, image, category }) => {
   };
 
   const waLink = whatsappUrl(
-    `Hola, estoy interesado(a) en ${name}${isCoffee ? ` (${grind})` : ''}. Me gustaría recibir más información.`
+    `Hola, estoy interesado(a) en ${name}${selectedVariant.size ? ` (${selectedVariant.size})` : ''}${isCoffee ? `, ${grind}` : ''}. Me gustaría recibir más información.`
   );
 
   return (
     <div className="flex flex-col gap-7 mt-4">
+      {availableVariants.length > 1 && (
+        <div>
+          <div className="flex items-baseline justify-between mb-4">
+            <span className="text-[11px] uppercase tracking-[0.2em] font-bold text-[#1A1A1A]">Elige la presentación</span>
+            <span className="text-[11px] text-[#9A9488] font-light">El precio cambia según el gramaje</span>
+          </div>
+          <div className="grid grid-cols-2 gap-2.5">
+            {availableVariants.map((variant) => {
+              const active = selectedSize === variant.size;
+              return (
+                <button
+                  key={variant.size || 'unica'}
+                  type="button"
+                  onClick={() => setSelectedSize(variant.size)}
+                  aria-pressed={active}
+                  className={`text-left px-4 py-3 rounded-sm border transition-all duration-300 ${
+                    active ? 'border-[#D1AA49] bg-[#D1AA49]/10 shadow-sm' : 'border-[#1A1A1A]/12 bg-white hover:border-[#D1AA49]/40'
+                  }`}
+                >
+                  <span className="block text-[13px] font-bold text-[#1A1A1A]">{variant.size}</span>
+                  <span className="block text-[12px] text-[#6B6B6B] font-light mt-0.5">{formatPrice(variant.price)}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {Number.isFinite(selectedVariant.price) && (
+        <div className="flex items-baseline justify-between border-y border-[#1A1A1A]/8 py-4">
+          <span className="text-[11px] uppercase tracking-[0.2em] font-bold text-[#6B6B6B]">{selectedVariant.size ? `Precio ${selectedVariant.size}` : 'Precio'}</span>
+          <span className="font-serif text-2xl text-[#1A1A1A]">{formatPrice(selectedVariant.price)}</span>
+        </div>
+      )}
       {/* Molienda — el diferenciador: el cliente elige cómo quiere su café */}
       {isCoffee && (
         <div>

@@ -6,6 +6,9 @@ import {
   subscribe,
   clear,
   buildOrderMessage,
+  formatPrice,
+  getSubtotal,
+  getTotal,
   whatsappUrl,
 } from '../lib/cart.js';
 
@@ -64,6 +67,7 @@ const Checkout = () => {
 
   const isEmpty = items.length === 0;
   const count = items.reduce((sum, it) => sum + it.qty, 0);
+  const total = getTotal(items);
   const nombreOk = form.nombre.trim().length > 1;
   const telOk = form.telefono.replace(/\D/g, '').length >= 7;
   const canSubmit = !isEmpty && nombreOk && telOk;
@@ -226,6 +230,9 @@ const Checkout = () => {
                 <div className="flex-1 min-w-0">
                   <p className="font-serif text-[15px] text-[#1A1A1A] leading-tight truncate m-0">{it.name}</p>
                   {it.grind && <p className="text-[10px] uppercase tracking-[0.15em] text-[#D1AA49] font-bold mt-0.5 m-0">{it.grind}</p>}
+                  <p className="text-[12px] text-[#6B6B6B] font-light mt-0.5 m-0">
+                    {it.size ? `${it.size} · ` : ''}{getSubtotal(it) === null ? 'Precio por confirmar' : formatPrice(getSubtotal(it))}
+                  </p>
                   <div className="flex items-center gap-2 mt-1.5">
                     <div className="inline-flex items-center border border-[#1A1A1A]/12 rounded-sm">
                       <button type="button" onClick={() => setQty(k, it.qty - 1)} aria-label="Restar" className="w-7 h-7 flex items-center justify-center text-[#1A1A1A] hover:text-[#D1AA49]">−</button>
@@ -242,14 +249,14 @@ const Checkout = () => {
             })}
           </ul>
 
-          {/* Nota de precio honesta */}
+          {/* Total de productos; el envío se cotiza con la cooperativa. */}
           <div className="border-t border-[#1A1A1A]/8 pt-5 mb-6">
             <div className="flex items-baseline justify-between">
-              <span className="text-[13px] text-[#6B6B6B] font-light">Total</span>
-              <span className="font-serif text-lg text-[#1A1A1A]">A confirmar</span>
+              <span className="text-[13px] text-[#6B6B6B] font-light">Subtotal de productos</span>
+              <span className="font-serif text-lg text-[#1A1A1A]">{total === null ? 'Por confirmar' : formatPrice(total)}</span>
             </div>
             <p className="text-[12px] text-[#6B6B6B] font-light leading-relaxed mt-2">
-              Te confirmamos el valor y el envío por WhatsApp según tu ciudad y tu pedido.
+              El envío y el total final se confirman por WhatsApp según tu ciudad y tu pedido.
             </p>
           </div>
 

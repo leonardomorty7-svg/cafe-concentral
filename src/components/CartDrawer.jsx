@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getItems, setQty, removeItem, subscribe, onOpen, onClose, closeCart } from '../lib/cart.js';
+import { formatPrice, getSubtotal, getItems, getTotal, setQty, removeItem, subscribe, onOpen, onClose, closeCart } from '../lib/cart.js';
 
 /**
  * CartDrawer — la canasta lateral deslizante.
@@ -9,8 +9,8 @@ import { getItems, setQty, removeItem, subscribe, onOpen, onClose, closeCart } f
  * de las líneas se lee del store compartido (localStorage) y se sincroniza vía
  * subscribe(), así que refleja lo que añaden la ficha, la grilla o el checkout.
  *
- * Fase 1: sin precios ni pago en línea. El drawer lleva al /checkout, donde el
- * pedido se confirma por WhatsApp.
+ * Fase 1: el drawer muestra el subtotal de productos. El pedido se confirma
+ * por WhatsApp y el envío se coordina con la cooperativa.
  */
 const CartDrawer = () => {
   const [items, setItems] = useState([]);
@@ -50,6 +50,7 @@ const CartDrawer = () => {
 
   const count = items.reduce((sum, it) => sum + it.qty, 0);
   const isEmpty = items.length === 0;
+  const total = getTotal(items);
 
   return (
     <>
@@ -140,6 +141,12 @@ const CartDrawer = () => {
                     {it.grind && (
                       <span className="block text-[11px] uppercase tracking-[0.15em] text-[#D1AA49] font-bold mt-1">{it.grind}</span>
                     )}
+                    <div className="flex items-baseline gap-2 mt-1">
+                      {it.size && <span className="text-[11px] uppercase tracking-[0.12em] text-[#6B6B6B]">{it.size}</span>}
+                      <span className="text-[13px] text-[#1A1A1A] font-medium">
+                        {getSubtotal(it) === null ? 'Precio por confirmar' : formatPrice(getSubtotal(it))}
+                      </span>
+                    </div>
 
                     <div className="flex items-center justify-between mt-2.5">
                       {/* Selector de cantidad */}
@@ -179,8 +186,12 @@ const CartDrawer = () => {
         {/* Pie con acción */}
         {!isEmpty && (
           <footer className="border-t border-[#1A1A1A]/8 px-7 py-6 bg-white/40">
+            <div className="flex items-baseline justify-between mb-3">
+              <span className="text-[11px] uppercase tracking-[0.16em] font-bold text-[#6B6B6B]">Subtotal</span>
+              <span className="font-serif text-xl text-[#1A1A1A]">{total === null ? 'Por confirmar' : formatPrice(total)}</span>
+            </div>
             <p className="text-[13px] text-[#6B6B6B] font-light leading-relaxed mb-5">
-              Confirmamos disponibilidad, envío y total contigo al finalizar. El pedido se coordina de forma personal.
+              El envío y el total final se confirman contigo al finalizar. El pedido se coordina de forma personal.
             </p>
             <a
               href="/checkout"
