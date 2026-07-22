@@ -26,7 +26,7 @@ const STEPS = [
     num: '01',
     title: 'Nuestras manos',
     text: 'Más de 3.500 familias del Huila cultivan cada grano con el conocimiento que heredaron de sus padres y el cuidado de quien trabaja su propia tierra.',
-    img: '/assets/images/empaque-cafe-especial.jpg',
+    img: '/assets/images/proceso-nuestras-manos.jpg',
     alt: 'Manos empacando una bolsa de Café Coocentral en la planta',
   },
   {

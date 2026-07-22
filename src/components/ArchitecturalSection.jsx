@@ -58,7 +58,7 @@ const ArchitecturalSection = () => {
               <div className="space-y-8 reveal delay-200">
                 <div className="aspect-[4/5] bg-[#F5F1EB] rounded-sm overflow-hidden shadow-2xl hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)] transition-shadow duration-500">
                   <img
-                    src="/assets/images/cafes-premium-costales.jpg"
+                    src="/assets/images/raices-costales.jpg"
                     alt="Cafés Coocentral sobre costales de exportación"
                     className="w-full h-full object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03]"
                   />

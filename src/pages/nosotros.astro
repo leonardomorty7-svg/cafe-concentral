@@ -9,7 +9,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 	<!-- HERO — primero el territorio y las personas, después el producto. -->
 	<section class="relative min-h-[82vh] flex items-end overflow-hidden bg-[#1A1A1A]">
 		<img
-			src="/assets/images/finca-huila.jpg"
+			src="/assets/images/nosotros/nosotros-hero.jpg"
 			alt="Montañas y cafetales del Huila, Colombia"
 			class="absolute inset-0 h-full w-full object-cover object-center opacity-75"
 		/>
@@ -61,6 +61,43 @@ import MainLayout from '../layouts/MainLayout.astro';
 		</div>
 	</section>
 
+	<!-- FAMILIAS — escena editorial de apoyo para que la historia tenga rostros. -->
+	<section class="bg-[#ECE5D9] py-24 md:py-36 overflow-hidden">
+		<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-14 lg:gap-20 items-center">
+			<div class="lg:col-span-7 relative" data-fx="rise">
+				<div class="aspect-[3/2] overflow-hidden bg-[#D9D0C2]">
+					<img
+						src="/assets/images/nosotros/familia-caficultora-finca.jpg"
+						alt="Familia caficultora en una finca de montaña"
+						class="h-full w-full object-cover"
+						loading="lazy"
+					/>
+				</div>
+				<div class="absolute -bottom-8 right-4 sm:right-10 w-[32%] aspect-[4/5] border-[8px] border-[#ECE5D9] overflow-hidden shadow-xl hidden sm:block">
+					<img
+						src="/assets/images/nosotros/manos-cosecha-cafe.jpg"
+						alt="Manos recolectando cerezas de café"
+						class="h-full w-full object-cover"
+						loading="lazy"
+					/>
+				</div>
+			</div>
+
+			<div class="lg:col-span-5 lg:py-10" data-fx="header">
+				<p class="label-premium">Una comunidad que se cultiva</p>
+				<h2 class="font-serif text-4xl md:text-5xl leading-[1.08] text-[#1A1A1A]">
+					Nuestra historia también tiene <span class="italic text-[#D1AA49]">rostros.</span>
+				</h2>
+				<p class="mt-7 text-lg leading-[1.8] font-light text-[#5F5A52]">
+					En cada finca habita una forma de entender el café: con paciencia, conocimiento y respeto por una tierra que ha sostenido a generaciones enteras.
+				</p>
+				<p class="mt-5 text-lg leading-[1.8] font-light text-[#5F5A52]">
+					Nos une la certeza de que cuando una familia avanza, toda nuestra comunidad encuentra nuevas posibilidades.
+				</p>
+			</div>
+		</div>
+	</section>
+
 	<!-- TRES PILARES — evidencia narrativa, no tarjetas corporativas. -->
 	<section class="bg-white py-24 md:py-36">
 		<div class="max-w-7xl mx-auto px-6">
@@ -97,15 +134,15 @@ import MainLayout from '../layouts/MainLayout.astro';
 			<div class="relative" data-fx="rise">
 				<div class="aspect-[4/5] overflow-hidden bg-[#25211C]">
 					<img
-						src="/assets/images/finca-huila-detalle.jpg"
-						alt="Finca cafetera en las montañas del Huila"
+						src="/assets/images/nosotros/caficultores-cafetales.jpg"
+						alt="Caficultores recorriendo los cafetales del Huila"
 						class="h-full w-full object-cover"
 						loading="lazy"
 					/>
 				</div>
 				<div class="absolute -bottom-8 -right-3 sm:-right-10 w-[55%] aspect-[4/5] border-[10px] border-[#1A1A1A] overflow-hidden shadow-2xl">
 					<img
-						src="/assets/images/tostion-cafe.jpg"
+						src="/assets/images/nosotros/nosotros-cuidado.jpg"
 						alt="Café en proceso de tostión"
 						class="h-full w-full object-cover"
 						loading="lazy"

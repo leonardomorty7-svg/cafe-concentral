@@ -1,31 +1,47 @@
 import React from 'react';
 
+/**
+ * CTA — el cierre y manifiesto de marca ("Haz parte"). Full-bleed sobre una
+ * imagen de fondo (el territorio y las familias), con overlay para que el
+ * dorado y el blanco se lean. La imagen es un placeholder único
+ * (cta-manifiesto.jpg) que el cliente reemplaza por la suya en su sitio.
+ */
 const CTA = () => {
   return (
-    <section className="px-6 py-32 sm:py-48 bg-neutral-cream">
-      <div className="max-w-7xl mx-auto bg-base-black rounded-sm p-16 md:p-40 text-center relative overflow-hidden">
-        {/* Artistic background background */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-accent-gold/20 via-transparent to-accent-gold/10" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-base-white/[0.05] to-transparent" />
-        </div>
+    <section className="relative overflow-hidden px-6 py-40 md:py-56">
+      {/* Fondo — imagen del manifiesto (reemplazable) */}
+      <img
+        src="/assets/images/cta-manifiesto.jpg"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      {/* Overlays: base oscura + viñeta para legibilidad y calidez cinematográfica */}
+      <div className="absolute inset-0 bg-[#0B0B0B]/72" />
+      <div
+        className="absolute inset-0"
+        style={{ background: 'radial-gradient(ellipse at 50% 42%, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.72) 95%)' }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{ background: 'linear-gradient(to bottom, rgba(11,11,11,0.55), transparent 30%, transparent 70%, rgba(11,11,11,0.6))' }}
+      />
 
-        <div className="relative z-10 max-w-5xl mx-auto" data-fx="header">
-          <span className="label-premium text-accent-gold mb-10 mx-auto">Haz parte</span>
-          <h2 className="text-base-white mb-12 leading-[1.1]">
-            Cuando eliges nuestro café, <br /><span className="italic-serif text-accent-gold underline decoration-accent-gold/20 underline-offset-[12px]">eliges a quienes lo cultivan.</span>
-          </h2>
-          <p className="text-neutral-warm/60 text-xl mb-20 max-w-2xl mx-auto leading-relaxed font-light">
-            No te estamos pidiendo que compres café. Te estamos invitando a un modelo que genera bienestar, fortalece comunidades y demuestra que el café puede transformar vidas.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-8 justify-center" data-fx="rise">
-            <a href="/productos" className="btn-primary">
-              Ver nuestros cafés
-            </a>
-            <a href="/contacto" className="btn-secondary border-base-white/20 text-base-white hover:bg-base-white/10">
-              Hablar con nosotros
-            </a>
-          </div>
+      <div className="relative z-10 max-w-4xl mx-auto text-center" data-fx="header">
+        <span className="label-premium text-[#D1AA49] mx-auto mb-8">Haz parte</span>
+        <h2 className="font-serif font-light text-white text-4xl md:text-6xl xl:text-7xl leading-[1.08] tracking-[-0.02em]">
+          Cuando eliges nuestro café,{' '}
+          <span className="italic text-[#D1AA49]">eliges a quienes lo cultivan.</span>
+        </h2>
+        <p className="text-white/65 text-lg md:text-xl mt-10 mb-14 max-w-2xl mx-auto font-light leading-relaxed">
+          No te estamos pidiendo que compres café. Te estamos invitando a un modelo que
+          genera bienestar, fortalece comunidades y demuestra que el café puede transformar vidas.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-5 justify-center" data-fx="rise">
+          <a href="/productos" className="btn-primary">Ver nuestros cafés</a>
+          <a href="/contacto" className="btn-secondary border-white/25 text-white hover:bg-white/10">
+            Hablar con nosotros
+          </a>
         </div>
       </div>
     </section>
