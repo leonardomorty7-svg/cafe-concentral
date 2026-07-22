@@ -4,7 +4,6 @@ import CinematicStory from '../components/CinematicStory';
 
 import VerticalProcess from '../components/VerticalProcess';
 import ProductGrid from '../components/ProductGrid';
-import ExportSection from '../components/ExportSection';
 import ArchitecturalSection from '../components/ArchitecturalSection.jsx';
 import CTA from '../components/CTA';
 
@@ -56,12 +55,11 @@ const FEATURED_PRODUCTS = getColeccion().map((p) => ({
 	       que entran como panel final del viaje antes de soltar el scroll. */}
 	<VerticalProcess client:load editions={FEATURED_PRODUCTS} />
 
-	{/* 5 — Profundidad: las raíces y las familias */}
+	{/* 4 — Profundidad: las raíces y las familias */}
 	<ArchitecturalSection client:visible />
 
-	{/* 6 — Y de ahí, al mundo */}
-	<ExportSection client:visible />
-
-	{/* 7 — La invitación */}
+	{/* 5 — El cierre: el manifiesto de marca ("Haz parte"). La exportación
+	       (B2B) vive en su propia página /exportacion para no repetir aquí
+	       el mismo mensaje de "familias / al mundo". */}
 	<CTA client:visible />
 </MainLayout>

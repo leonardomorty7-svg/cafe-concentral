@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { startDust, GRAIN } from '../scripts/atmosphere.js';
+import BeanIcon from './BeanIcon.jsx';
 
 /**
  * CinematicStory — la apertura del sitio como UNA sola animación continua,
@@ -242,6 +243,10 @@ const CinematicStory = () => {
 
         // Cola para sostener el beat final antes de soltar el pin.
         tl.to({}, { duration: 0.5 });
+
+        // La semilla del hilo respira, igual que en el proceso: el hilo
+        // conductor nace en la apertura y sigue por toda la web.
+        gsap.to('.cine-seed', { y: 6, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       }, rootRef);
     });
 
@@ -317,10 +322,14 @@ const CinematicStory = () => {
           <img src={LAST_FRAME} alt="Café Coocentral" />
         </canvas>
 
-        {/* Aviso de scroll, sobre los granos al arrancar */}
-        <div className="cine-hint absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none z-[8]">
-          <span className="text-[10px] uppercase tracking-[0.35em] text-white/50 font-bold">SCROLL</span>
-          <div className="mt-4 w-px h-10 bg-white/25" />
+        {/* El hilo conductor nace aquí: la semilla dorada y un hilo que baja,
+            el mismo que recorrerá el proceso. También hace de aviso de scroll. */}
+        <div className="cine-hint absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none z-[8]">
+          <span className="cine-seed inline-block mb-3">
+            <BeanIcon width={22} height={31} />
+          </span>
+          <span className="text-[10px] uppercase tracking-[0.35em] text-white/50 font-bold">Sigue el hilo</span>
+          <div className="mt-3 w-px h-12" style={{ background: 'linear-gradient(to bottom, #D1AA49, transparent)' }} />
         </div>
 
         {/* Titular de apertura: sobre los granos, visible antes de scrollear */}
