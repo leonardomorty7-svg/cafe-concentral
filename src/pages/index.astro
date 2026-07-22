@@ -5,8 +5,6 @@ import CinematicStory from '../components/CinematicStory';
 import HorizontalProcess from '../components/HorizontalProcess';
 import ProductGrid from '../components/ProductGrid';
 import ExportSection from '../components/ExportSection';
-import FeaturedProducts from '../components/FeaturedProducts';
-import ProductSlider from '../components/ProductSlider';
 import ArchitecturalSection from '../components/ArchitecturalSection.jsx';
 import CTA from '../components/CTA';
 
@@ -52,11 +50,11 @@ const FEATURED_PRODUCTS = getColeccion().map((p) => ({
 	/>
 
 	{/* 3 — Cómo se hace: el viaje horizontal del proceso. Va justo después
-	       del primer café para que la prueba llegue apenas nace el interés. */}
-	<HorizontalProcess client:load />
-
-	{/* 4 — Las ediciones: de vuelta al producto, ya con el proceso visto */}
-	<ProductSlider client:visible products={FEATURED_PRODUCTS} />
+	       del primer café para que la prueba llegue apenas nace el interés.
+	       El recorrido NO se corta: su último tramo desemboca —con el mismo
+	       hilo conductor— en las ediciones ("Cafés con nombre y con historia"),
+	       que entran como panel final del viaje antes de soltar el scroll. */}
+	<HorizontalProcess client:load editions={FEATURED_PRODUCTS} />
 
 	{/* 5 — Profundidad: las raíces y las familias */}
 	<ArchitecturalSection client:visible />

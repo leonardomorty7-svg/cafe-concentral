@@ -50,7 +50,11 @@ const STEPS = [
   },
 ];
 
-const PANELS = STEPS.length + 1; // título + pasos
+// El recorrido no termina en el proceso: su último tramo desemboca —con el
+// mismo hilo conductor— en las ediciones, que entran como panel final en
+// horizontal (fondo crema, "llegada a la luz") antes de soltar el scroll.
+const EDITIONS_SHOWN = 3;
+const PANELS = STEPS.length + 2; // título + pasos + ediciones
 
 /**
  * VideoLightbox — el video a pantalla completa, con sonido y controles.
@@ -129,7 +133,7 @@ const StepPanel = ({ num, title, text, img, alt, video, flip, onOpenVideo }) => 
       {/* El panel con video usa 16:9 — el formato propio del video, que lo
           hace reconocible entre los paneles de foto (verticales). */}
       <div
-        className={`hp-photo [direction:ltr] relative overflow-hidden rounded-sm w-full ${
+        className={`hp-photo hp-weave [direction:ltr] relative overflow-hidden rounded-sm w-full ${
           video ? 'aspect-video max-h-[52vh]' : 'aspect-[4/3] md:aspect-[4/5] max-h-[38vh] md:max-h-[62vh]'
         }`}
       >
@@ -200,7 +204,31 @@ const StepPanel = ({ num, title, text, img, alt, video, flip, onOpenVideo }) => 
   </div>
 );
 
-const HorizontalProcess = () => {
+/**
+ * EditionCard — ficha de café para el panel final "llegada a la luz".
+ * Su foto lleva .hp-weave, así el hilo conductor también se teje por detrás.
+ */
+const EditionCard = ({ id, name, image, tag }) => (
+  <a href={`/products/${id}`} className="group block shrink-0 w-[clamp(180px,24vw,300px)]">
+    <div className="hp-weave relative aspect-[4/5] rounded-sm overflow-hidden bg-white border border-[#1A1A1A]/8 mb-5 shadow-[0_20px_50px_rgba(0,0,0,0.06)]">
+      <img
+        src={image}
+        alt={name}
+        className="w-full h-full object-contain p-6 transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+      />
+      {tag && (
+        <span className="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest bg-[#F5F1EB]/85 backdrop-blur-sm px-3 py-1.5 rounded-sm font-bold text-[#1A1A1A]">
+          {tag}
+        </span>
+      )}
+    </div>
+    <h4 className="font-serif text-xl md:text-2xl text-[#1A1A1A] group-hover:text-[#CCA678] transition-colors duration-300">{name}</h4>
+  </a>
+);
+
+const HorizontalProcess = ({ editions = [] }) => {
+  const shownEditions = editions.slice(0, EDITIONS_SHOWN);
+  const weaveCount = STEPS.length + shownEditions.length;
   const rootRef = useRef(null);
   const trackRef = useRef(null);
   const counterRef = useRef(null);
@@ -283,6 +311,7 @@ const HorizontalProcess = () => {
     // por detrás y reaparecer al otro lado. La semilla va dentro del grupo
     // enmascarado, de modo que también se hunde tras la foto y emerge.
     const SVGNS = 'http://www.w3.org/2000/svg';
+    const topbar = rootRef.current.querySelector('.hp-topbar');
     const threadSvg = rootRef.current.querySelector('.hp-thread');
     const threadTrack = rootRef.current.querySelector('.hp-thread-track');
     const threadLine = rootRef.current.querySelector('.hp-thread-line');
@@ -334,9 +363,10 @@ const HorizontalProcess = () => {
       });
     };
 
-    // Reposiciona los huecos de la máscara sobre las fotos que se deslizan.
+    // Reposiciona los huecos de la máscara sobre los elementos tejidos
+    // (fotos de los pasos + fichas de las ediciones) que se deslizan.
     const updateHoles = () => {
-      const photos = rootRef.current ? rootRef.current.querySelectorAll('.hp-photo') : [];
+      const photos = rootRef.current ? rootRef.current.querySelectorAll('.hp-weave') : [];
       threadHoles.forEach((hole, i) => {
         const el = photos[i];
         if (!el) {
@@ -395,17 +425,25 @@ const HorizontalProcess = () => {
           scrollTrigger: {
             trigger: rootRef.current,
             start: 'top top',
-            end: 'bottom bottom',
+            // La cinta completa el viaje en (PANELS-1) viewports; los 60vh
+            // extra de la sección son la zona de reposo del panel final de
+            // ediciones, que queda fijo antes de soltar el scroll.
+            end: () => '+=' + (PANELS - 1) * window.innerWidth,
             scrub: true,
             invalidateOnRefresh: true,
             // inertia:false — siempre a la estación más cercana; con la
             // proyección por velocidad, un flick fuerte salta estaciones.
             snap: { snapTo: 1 / (PANELS - 1), duration: { min: 0.2, max: 0.6 }, ease: 'power1.inOut', inertia: false },
             onUpdate: (self) => {
-              const current = Math.min(STEPS.length, Math.max(1, Math.round(self.progress * STEPS.length)));
+              // El contador sigue las estaciones (título=0, pasos=1..3,
+              // ediciones=4), acotado a los pasos reales.
+              const current = Math.min(STEPS.length, Math.max(1, Math.round(self.progress * (PANELS - 1))));
               if (counterRef.current) counterRef.current.textContent = String(current).padStart(2, '0');
               // El hilo se teje y la semilla viaja con el progreso del viaje.
               updateThread(self.progress);
+              // La barra superior (oscura) se desvanece al entrar al panel
+              // crema de ediciones, para no chocar con el fondo claro.
+              if (topbar) topbar.style.opacity = String(gsap.utils.clamp(0, 1, (0.86 - self.progress) / 0.1));
             },
           },
         });
@@ -525,23 +563,40 @@ const HorizontalProcess = () => {
     };
   }, []);
 
-  // Sin animaciones: los pasos se leen en columna, sin pin ni cinta.
+  // Sin animaciones: los pasos se leen en columna y las ediciones en grilla.
   if (reduced) {
     return (
-      <section className="bg-[#160F0B] py-28 px-8" aria-label="Nuestro modelo">
-        <div className="max-w-3xl mx-auto space-y-20">
-          <h2 className="font-serif text-4xl md:text-6xl text-white leading-[1.1]">
-            Un proceso guiado por la <span className="italic text-[#CCA678]">cooperación.</span>
-          </h2>
-          {STEPS.map((s) => (
-            <div key={s.num}>
-              <span className="font-serif italic text-4xl text-[#CCA678]">{s.num}</span>
-              <h3 className="font-serif text-3xl text-white mt-3">{s.title}</h3>
-              <p className="text-white/60 font-light mt-5 leading-[1.8]">{s.text}</p>
+      <>
+        <section className="bg-[#160F0B] py-28 px-8" aria-label="Nuestro modelo">
+          <div className="max-w-3xl mx-auto space-y-20">
+            <h2 className="font-serif text-4xl md:text-6xl text-white leading-[1.1]">
+              Un proceso guiado por la <span className="italic text-[#CCA678]">cooperación.</span>
+            </h2>
+            {STEPS.map((s) => (
+              <div key={s.num}>
+                <span className="font-serif italic text-4xl text-[#CCA678]">{s.num}</span>
+                <h3 className="font-serif text-3xl text-white mt-3">{s.title}</h3>
+                <p className="text-white/60 font-light mt-5 leading-[1.8]">{s.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+        {shownEditions.length > 0 && (
+          <section className="bg-[#F5F1EB] py-28 px-8" aria-label="Nuestras ediciones">
+            <div className="max-w-6xl mx-auto">
+              <span className="text-[11px] uppercase tracking-[0.3em] text-[#CCA678] font-bold mb-5 block">Nuestras ediciones</span>
+              <h2 className="font-serif text-4xl md:text-5xl text-[#1A1A1A] leading-tight mb-12">
+                Cafés con nombre <span className="italic text-[#CCA678]">y con historia.</span>
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+                {shownEditions.map((p) => (
+                  <EditionCard key={p.id} id={p.id} name={p.name} image={p.image} tag={p.tag} />
+                ))}
+              </div>
             </div>
-          ))}
-        </div>
-      </section>
+          </section>
+        )}
+      </>
     );
   }
 
@@ -549,7 +604,7 @@ const HorizontalProcess = () => {
     <section
       ref={rootRef}
       className="relative bg-[#160F0B]"
-      style={{ height: 'calc(100vh + 300vw)' }}
+      style={{ height: `calc(100vh + ${(PANELS - 1) * 100}vw + 60vh)` }}
       aria-label="Nuestro modelo"
     >
       <div className="sticky top-0 h-screen overflow-hidden">
@@ -561,7 +616,7 @@ const HorizontalProcess = () => {
         />
 
         {/* Barra superior: sección y contador */}
-        <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-8 md:px-24 pt-24 md:pt-28 pointer-events-none">
+        <div className="hp-topbar absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-8 md:px-24 pt-24 md:pt-28 pointer-events-none">
           <span className="text-[11px] tracking-[0.3em] uppercase text-[#CCA678] font-bold">Nuestro modelo</span>
           <span className="text-[11px] tracking-[0.3em] text-white/50 font-bold">
             <span ref={counterRef} className="text-[#CCA678]">01</span> / {String(STEPS.length).padStart(2, '0')}
@@ -589,6 +644,33 @@ const HorizontalProcess = () => {
           {STEPS.map((s, i) => (
             <StepPanel key={s.num} {...s} flip={i % 2 === 1} onOpenVideo={setOpenVideo} />
           ))}
+
+          {/* Panel final — "llegada a la luz": el recorrido desemboca en las
+              ediciones. Fondo crema; el hilo se teje tras las fichas y luego
+              el scroll se suelta a la página normal. */}
+          {shownEditions.length > 0 && (
+            <div className="hp-panel hp-panel-editions relative w-screen h-full shrink-0 flex items-center px-8 md:px-24 bg-[#F5F1EB]">
+              <div className="w-full max-w-6xl mx-auto">
+                <div className="mb-10 md:mb-14 max-w-2xl">
+                  <span className="text-[11px] uppercase tracking-[0.3em] text-[#CCA678] font-bold mb-5 block">Nuestras ediciones</span>
+                  <h2 className="font-serif text-4xl md:text-6xl text-[#1A1A1A] leading-[1.05]">
+                    Cafés con nombre <span className="italic text-[#CCA678]">y con historia.</span>
+                  </h2>
+                </div>
+                <div className="flex gap-6 md:gap-10 items-start">
+                  {shownEditions.map((p) => (
+                    <EditionCard key={p.id} id={p.id} name={p.name} image={p.image} tag={p.tag} />
+                  ))}
+                </div>
+                <a
+                  href="/productos"
+                  className="inline-flex items-center gap-2 mt-10 md:mt-12 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 hover:border-[#CCA678] hover:text-[#CCA678] transition-all"
+                >
+                  Ver toda la colección <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Polvo dorado */}
@@ -610,7 +692,7 @@ const HorizontalProcess = () => {
           <defs>
             <mask id="hpThreadMask" maskUnits="userSpaceOnUse">
               <rect className="hp-thread-mask-bg" x="0" y="0" width="100%" height="100%" fill="white" />
-              {STEPS.map((_, i) => (
+              {Array.from({ length: weaveCount }).map((_, i) => (
                 <rect key={i} className="hp-thread-hole" x="-9999" y="-9999" width="0" height="0" rx="6" fill="black" />
               ))}
             </mask>
