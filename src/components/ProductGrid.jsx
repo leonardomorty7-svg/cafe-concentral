@@ -23,26 +23,18 @@ const ProductCard = ({ id, name, tag, description, category, image, variants = [
 
   return (
     <div className="group relative transition-transform duration-500 ease-out hover:-translate-y-2">
-      {/* Enlace estirado: toda la tarjeta navega al producto, salvo el botón.
-          El lift va en la raíz (no en la foto) para que el transform no cree
-          un stacking context que hunda el botón bajo el enlace. */}
+      {/* Enlace estirado: toda la tarjeta navega al producto, salvo el botón. */}
       <a href={`/products/${id}`} className="absolute inset-0 z-[1]" aria-label={`Ver ${name}`} />
 
-      {/* La bolsa flota con sombra sobre un fondo tonal cálido: editorial. */}
+      {/* Minimalista: la bolsa flota sobre un tono cálido, sin adornos. */}
       <div
         className="relative aspect-[4/5] rounded-sm overflow-hidden mb-6"
-        style={{ background: 'linear-gradient(155deg, #FFFFFF 0%, #F1EADC 100%)' }}
+        style={{ background: 'linear-gradient(160deg, #FFFFFF 0%, #F1EADC 100%)' }}
       >
-        {tag && (
-          <span className="absolute top-5 left-5 z-[2] text-[9px] uppercase tracking-[0.2em] text-[#1A1A1A]/55 font-bold">
-            {tag}
-          </span>
-        )}
-
         <img
           src={image}
           alt={name}
-          className="absolute inset-0 w-full h-full object-contain p-9 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
+          className="absolute inset-0 w-full h-full object-contain p-9 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
           style={{ filter: 'drop-shadow(0 22px 38px rgba(0,0,0,0.20))' }}
         />
 
@@ -59,31 +51,20 @@ const ProductCard = ({ id, name, tag, description, category, image, variants = [
           </svg>
           Añadir
         </button>
-
-        {/* Barrido dorado al pie de la foto */}
-        <span
-          aria-hidden="true"
-          className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#D1AA49] scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100 z-[2]"
-        />
       </div>
 
-      <div className="px-1">
-        <h3 className="font-serif text-2xl text-[#1A1A1A] leading-tight group-hover:text-[#D1AA49] transition-colors duration-300">
+      <div className="flex items-baseline justify-between gap-3 px-1">
+        <h3 className="font-serif text-xl md:text-2xl text-[#1A1A1A] leading-tight group-hover:text-[#D1AA49] transition-colors duration-300">
           {name}
         </h3>
-        {description && (
-          <p className="text-[10px] uppercase tracking-[0.2em] text-[#9A9488] font-bold mt-2.5">{description}</p>
-        )}
         {Number.isFinite(lowestPrice) && (
-          <p className="mt-3 text-sm text-[#6B6B6B] font-light">
-            {variants.length > 1 ? 'Desde ' : ''}
-            <span className="font-medium text-[#1A1A1A]">{formatPrice(lowestPrice)}</span>
-          </p>
+          <span className="font-serif text-base md:text-lg text-[#1A1A1A]/70 shrink-0 whitespace-nowrap tabular-nums">
+            {variants.length > 1 && (
+              <span className="font-sans text-[10px] uppercase tracking-wide text-[#9A9488] mr-1">desde</span>
+            )}
+            {formatPrice(lowestPrice)}
+          </span>
         )}
-        <span className="inline-flex items-center gap-2 mt-4 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/15 pb-1 group-hover:border-[#D1AA49] group-hover:text-[#D1AA49] transition-all duration-300">
-          Descubrir
-          <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
-        </span>
       </div>
     </div>
   );

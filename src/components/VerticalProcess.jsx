@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { startDust, GRAIN } from '../scripts/atmosphere.js';
+import { formatPrice } from '../lib/cart.js';
 import BeanIcon from './BeanIcon.jsx';
 
 /**
@@ -28,6 +29,7 @@ const STEPS = [
     text: 'Más de 3.500 familias del Huila cultivan cada grano con el conocimiento que heredaron de sus padres y el cuidado de quien trabaja su propia tierra.',
     img: '/assets/images/proceso-nuestras-manos.jpg',
     alt: 'Manos empacando una bolsa de Café Coocentral en la planta',
+    illustration: 'branch',
   },
   {
     num: '02',
@@ -38,6 +40,7 @@ const STEPS = [
     // Cuando llegue el material del cliente, se reemplaza este archivo (mismo
     // nombre) y listo. Mientras tanto `img` hace de póster.
     video: '/assets/process/proceso-cuidado.mp4',
+    illustration: 'hands',
   },
   {
     num: '03',
@@ -45,8 +48,59 @@ const STEPS = [
     text: 'Llevamos el café del Huila al mundo para que el valor regrese a quienes lo cultivan. El café viaja, el bienestar vuelve.',
     img: '/assets/images/cafes-premium-costales.jpg',
     alt: 'Cafés Coocentral sobre costales de exportación',
+    illustration: 'world',
   },
 ];
+
+/**
+ * Illustration — motivos monoline (línea) tenues detrás de cada momento, al
+ * estilo de la referencia (jazeancoffee.com). Dorado, muy baja opacidad: son
+ * acento de fondo, nunca protagonista. Vectoriales, dibujados a mano.
+ */
+const Illustration = ({ kind }) => {
+  const s = { fill: 'none', stroke: '#D1AA49', strokeWidth: 1.3, strokeLinecap: 'round', strokeLinejoin: 'round' };
+  if (kind === 'branch') {
+    return (
+      <svg viewBox="0 0 220 260" className="w-full h-auto" aria-hidden="true">
+        <path d="M110 252 C 108 200, 100 152, 96 112 C 92 80, 96 50, 112 18" {...s} />
+        <path d="M98 192 C 60 180, 48 152, 70 140 C 96 152, 104 178, 98 192 Z" {...s} />
+        <path d="M104 150 C 144 140, 158 112, 136 100 C 110 112, 100 138, 104 150 Z" {...s} />
+        <path d="M96 108 C 60 98, 50 72, 72 60 C 96 72, 102 96, 96 108 Z" {...s} />
+        <circle cx="120" cy="206" r="8" {...s} />
+        <circle cx="86" cy="126" r="8" {...s} />
+        <circle cx="128" cy="84" r="8" {...s} />
+      </svg>
+    );
+  }
+  if (kind === 'hands') {
+    return (
+      <svg viewBox="0 0 260 220" className="w-full h-auto" aria-hidden="true">
+        <path d="M38 118 C 38 172, 90 202, 130 202 C 170 202, 222 172, 222 118" {...s} />
+        <path d="M38 118 C 54 116, 70 124, 80 138" {...s} />
+        <path d="M222 118 C 206 116, 190 124, 180 138" {...s} />
+        <path d="M80 138 C 92 128, 108 126, 122 132" {...s} />
+        <path d="M180 138 C 168 128, 152 126, 138 132" {...s} />
+        <line x1="130" y1="58" x2="130" y2="78" {...s} />
+        <ellipse cx="130" cy="92" rx="6" ry="9" {...s} />
+        <ellipse cx="106" cy="104" rx="5" ry="8" transform="rotate(-16 106 104)" {...s} />
+        <ellipse cx="154" cy="106" rx="5" ry="8" transform="rotate(16 154 106)" {...s} />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 240 240" className="w-full h-auto" aria-hidden="true">
+      <circle cx="120" cy="120" r="82" {...s} />
+      <ellipse cx="120" cy="120" rx="34" ry="82" {...s} />
+      <line x1="38" y1="120" x2="202" y2="120" {...s} />
+      <path d="M50 82 C 90 96, 150 96, 190 82" {...s} />
+      <path d="M50 158 C 90 144, 150 144, 190 158" {...s} />
+      <path d="M92 152 C 120 92, 168 82, 198 60" strokeDasharray="1.5 7" {...s} />
+      <circle cx="92" cy="152" r="4" fill="#D1AA49" stroke="none" />
+      <path d="M198 52 c -9 0 -16 7 -16 16 c 0 11 16 24 16 24 c 0 0 16 -13 16 -24 c 0 -9 -7 -16 -16 -16 Z" {...s} />
+      <circle cx="198" cy="68" r="4.5" {...s} />
+    </svg>
+  );
+};
 
 /**
  * VideoLightbox — el video a pantalla completa, con sonido y controles.
@@ -140,9 +194,19 @@ const OvalMedia = ({ img, video, alt, title, onOpenVideo }) => (
 /**
  * Beat — un momento del proceso: óvalo a un lado, texto al otro (alternando).
  */
-const Beat = ({ num, title, text, img, video, alt, flip, onOpenVideo }) => (
-  <div className="vp-beat relative min-h-screen flex items-center px-6 md:px-16 py-24">
-    <div className={`grid grid-cols-1 md:grid-cols-2 items-center gap-12 md:gap-20 w-full max-w-6xl mx-auto ${flip ? 'md:[direction:rtl]' : ''}`}>
+const Beat = ({ num, title, text, img, video, alt, flip, illustration, onOpenVideo }) => (
+  <div className="vp-beat relative min-h-screen flex items-center px-6 md:px-16 py-24 overflow-hidden">
+    {/* Ilustración monoline de fondo: acento tenue, del lado del texto */}
+    {illustration && (
+      <div
+        aria-hidden="true"
+        className={`hidden md:block absolute top-1/2 -translate-y-1/2 w-[min(40vw,520px)] pointer-events-none ${flip ? 'left-[3%]' : 'right-[3%]'}`}
+        style={{ opacity: 0.08 }}
+      >
+        <Illustration kind={illustration} />
+      </div>
+    )}
+    <div className={`relative grid grid-cols-1 md:grid-cols-2 items-center gap-12 md:gap-20 w-full max-w-6xl mx-auto ${flip ? 'md:[direction:rtl]' : ''}`}>
       <div className="[direction:ltr]">
         <OvalMedia img={img} video={video} alt={alt} title={title} onOpenVideo={onOpenVideo} />
       </div>
@@ -160,36 +224,37 @@ const Beat = ({ num, title, text, img, video, alt, flip, onOpenVideo }) => (
  * EditionCard — ficha del panel final "llegada a la luz". Lleva .vp-card:
  * el hilo se recoge detrás de ellas.
  */
-const EditionCard = ({ id, name, image, tag, notes, index }) => (
-  <a href={`/products/${id}`} className="vp-card group block shrink-0 w-[clamp(250px,26vw,350px)]">
-    {/* La bolsa flota sobre un fondo tonal cálido: editorial, de catálogo. */}
-    <div
-      className="relative aspect-[4/5] rounded-sm overflow-hidden mb-7 transition-transform duration-500 ease-out group-hover:-translate-y-2"
-      style={{ background: 'linear-gradient(155deg, #FCFAF5 0%, #EFE7D8 100%)' }}
-    >
-      <span className="absolute top-5 left-6 font-serif italic text-3xl text-[#D1AA49]/60 select-none pointer-events-none">
-        {String(index).padStart(2, '0')}
-      </span>
-      {tag && (
-        <span className="absolute top-6 right-6 text-[9px] uppercase tracking-[0.22em] text-[#1A1A1A]/55 font-bold">{tag}</span>
-      )}
-      <img
-        src={image}
-        alt={name}
-        className="absolute inset-0 w-full h-full object-contain p-10 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.07]"
-        style={{ filter: 'drop-shadow(0 26px 40px rgba(0,0,0,0.22))' }}
-      />
-      <span aria-hidden="true" className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#D1AA49] scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100" />
-    </div>
-    <div className="px-1">
-      <h4 className="font-serif text-2xl md:text-[1.6rem] text-[#1A1A1A] leading-tight group-hover:text-[#D1AA49] transition-colors duration-300">{name}</h4>
-      {notes && <p className="text-[10px] uppercase tracking-[0.2em] text-[#9A9488] font-bold mt-3">{notes}</p>}
-      <span className="inline-flex items-center gap-2 mt-5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/15 pb-1 group-hover:border-[#D1AA49] group-hover:text-[#D1AA49] transition-all duration-300">
-        Descubrir <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
-      </span>
-    </div>
-  </a>
-);
+/** Etiqueta de precio de un producto según sus variantes (Desde $X si varía). */
+const priceLabel = (variants = []) => {
+  const prices = variants.map((v) => v.price).filter((n) => Number.isFinite(n));
+  if (!prices.length) return '';
+  const min = Math.min(...prices);
+  return min !== Math.max(...prices) ? `Desde ${formatPrice(min)}` : formatPrice(min);
+};
+
+const EditionCard = ({ id, name, image, variants }) => {
+  const price = priceLabel(variants);
+  return (
+    <a href={`/products/${id}`} className="vp-card group block shrink-0 w-[clamp(250px,26vw,340px)]">
+      {/* Minimalista: la bolsa flota sobre un tono cálido, sin adornos. */}
+      <div
+        className="relative aspect-[4/5] rounded-sm overflow-hidden mb-6 transition-transform duration-500 ease-out group-hover:-translate-y-2"
+        style={{ background: 'linear-gradient(160deg, #FCFAF5 0%, #EFE7D8 100%)' }}
+      >
+        <img
+          src={image}
+          alt={name}
+          className="absolute inset-0 w-full h-full object-contain p-9 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
+          style={{ filter: 'drop-shadow(0 24px 40px rgba(0,0,0,0.20))' }}
+        />
+      </div>
+      <div className="flex items-baseline justify-between gap-3 px-1">
+        <h4 className="font-serif text-xl md:text-2xl text-[#1A1A1A] leading-tight group-hover:text-[#D1AA49] transition-colors duration-300">{name}</h4>
+        {price && <span className="font-serif text-lg text-[#1A1A1A]/70 shrink-0 tabular-nums">{price}</span>}
+      </div>
+    </a>
+  );
+};
 
 /** Catmull-Rom → polyline suave que pasa por todos los puntos ancla. */
 function smoothPath(points) {
@@ -439,7 +504,7 @@ const VerticalProcess = ({ editions = [] }) => {
               </h2>
               <div className="flex flex-wrap justify-center gap-10">
                 {shownEditions.map((p, i) => (
-                  <EditionCard key={p.id} index={i + 1} id={p.id} name={p.name} image={p.image} tag={p.tag} notes={(p.tags || []).slice(1).join(' · ')} />
+                  <EditionCard key={p.id} id={p.id} name={p.name} image={p.image} variants={p.variants} />
                 ))}
               </div>
             </div>
@@ -516,7 +581,7 @@ const VerticalProcess = ({ editions = [] }) => {
             </div>
             <div className="flex justify-center items-start gap-8 md:gap-14">
               {shownEditions.map((p, i) => (
-                <EditionCard key={p.id} index={i + 1} id={p.id} name={p.name} image={p.image} tag={p.tag} notes={(p.tags || []).slice(1).join(' · ')} />
+                <EditionCard key={p.id} id={p.id} name={p.name} image={p.image} variants={p.variants} />
               ))}
             </div>
             <a href="/productos" className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 hover:border-[#D1AA49] hover:text-[#D1AA49] transition-all">

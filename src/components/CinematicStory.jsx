@@ -241,6 +241,13 @@ const CinematicStory = () => {
         // Los puntos aparecen cuando empiezan las fotos.
         tl.to('.cine-dots', { autoAlpha: 1, duration: 0.2 }, BEANS_DUR + 0.1);
 
+        // El hilo conductor acompaña las fotos del cliente: aparece con ellas,
+        // su semilla baja por el riel y se despide justo antes de soltar el pin.
+        const beatsSpan = beats.length * 1.5 + 0.6;
+        tl.fromTo('.cine-thread', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, BEANS_DUR - 0.1);
+        tl.fromTo('.cine-thread-seed', { top: '0%' }, { top: '100%', ease: 'none', duration: beatsSpan }, BEANS_DUR);
+        tl.to('.cine-thread', { autoAlpha: 0, duration: 0.4 }, BEANS_DUR + beatsSpan);
+
         // Cola para sostener el beat final antes de soltar el pin.
         tl.to({}, { duration: 0.5 });
 
@@ -330,6 +337,18 @@ const CinematicStory = () => {
           </span>
           <span className="text-[10px] uppercase tracking-[0.35em] text-white/50 font-bold">Sigue el hilo</span>
           <div className="mt-3 w-px h-12" style={{ background: 'linear-gradient(to bottom, #D1AA49, transparent)' }} />
+        </div>
+
+        {/* El hilo conductor NO se pierde en las fotos: un riel dorado por el
+            margen, con la semilla que baja mientras las imágenes del cliente
+            entran. Al soltar el pin, se desvanece y el proceso lo retoma. */}
+        <div
+          className="cine-thread absolute left-6 md:left-14 top-[16vh] bottom-[13vh] w-px z-[8] pointer-events-none opacity-0"
+          style={{ background: 'linear-gradient(to bottom, transparent, #D1AA49 12%, rgba(209,170,73,0.3) 86%, transparent)' }}
+        >
+          <span className="cine-thread-seed absolute left-1/2 -translate-x-1/2 top-0 -translate-y-1/2">
+            <BeanIcon width={18} height={25} />
+          </span>
         </div>
 
         {/* Titular de apertura: sobre los granos, visible antes de scrollear */}
