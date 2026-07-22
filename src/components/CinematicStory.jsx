@@ -14,7 +14,7 @@ import { startDust, GRAIN } from '../scripts/atmosphere.js';
  * está floreciendo debajo. Nada se siente como "otra sección".
  */
 
-const GOLD = '#C6A47E';
+const GOLD = '#D1AA49';
 
 const FRAME_COUNT = 86;
 const framePath = (i) => `/assets/intro/beans/f_${String(i).padStart(3, '0')}.webp`;
@@ -56,10 +56,10 @@ const VIGNETTE =
 
 const BeatText = ({ eyebrow, title, italic, Tag = 'h2', withCtas = false }) => (
   <div className="max-w-5xl mx-auto px-6 text-center">
-    <p className="cine-eyebrow tracking-[0.3em] text-xs uppercase mb-6 text-[#C6A47E] font-bold">{eyebrow}</p>
+    <p className="cine-eyebrow tracking-[0.3em] text-xs uppercase mb-6 text-[#D1AA49] font-bold">{eyebrow}</p>
     <Tag className="font-serif font-light text-white tracking-tight leading-[1.05] text-4xl md:text-6xl xl:text-7xl">
       <span className="cine-title-main block">{title}</span>{' '}
-      <span className="cine-title-italic italic text-[#C6A47E] block mt-2">{italic}</span>
+      <span className="cine-title-italic italic text-[#D1AA49] block mt-2">{italic}</span>
     </Tag>
     {withCtas && (
       <div className="cine-ctas mt-12 flex flex-col sm:flex-row gap-6 justify-center items-center">
@@ -294,8 +294,8 @@ const CinematicStory = () => {
               top: '46%',
               transform: 'translate(-50%, -50%) scale(0)',
               opacity: 0,
-              border: '1.5px solid rgba(198,164,126,0.8)',
-              boxShadow: '0 0 60px rgba(198,164,126,0.35), inset 0 0 60px rgba(198,164,126,0.2)',
+              border: '1.5px solid rgba(209,170,73,0.8)',
+              boxShadow: '0 0 60px rgba(209,170,73,0.35), inset 0 0 60px rgba(209,170,73,0.2)',
             }}
           />
         ))}

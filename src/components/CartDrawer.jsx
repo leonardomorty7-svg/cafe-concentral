@@ -115,8 +115,10 @@ const CartDrawer = () => {
             </div>
           ) : (
             <ul className="space-y-5">
-              {items.map((it) => (
-                <li key={it.id} className="flex gap-4 items-center">
+              {items.map((it) => {
+                const k = it.key || it.id;
+                return (
+                <li key={k} className="flex gap-4 items-center">
                   <a
                     href={`/products/${it.id}`}
                     onClick={() => closeCart()}
@@ -135,12 +137,15 @@ const CartDrawer = () => {
                     >
                       {it.name}
                     </a>
+                    {it.grind && (
+                      <span className="block text-[11px] uppercase tracking-[0.15em] text-[#D1AA49] font-bold mt-1">{it.grind}</span>
+                    )}
 
                     <div className="flex items-center justify-between mt-2.5">
                       {/* Selector de cantidad */}
                       <div className="inline-flex items-center border border-[#1A1A1A]/15 rounded-sm">
                         <button
-                          onClick={() => setQty(it.id, it.qty - 1)}
+                          onClick={() => setQty(k, it.qty - 1)}
                           aria-label="Restar uno"
                           className="w-8 h-8 flex items-center justify-center text-[#1A1A1A] hover:text-[#D1AA49] transition-colors"
                         >
@@ -148,7 +153,7 @@ const CartDrawer = () => {
                         </button>
                         <span className="w-8 text-center text-sm font-bold text-[#1A1A1A] tabular-nums">{it.qty}</span>
                         <button
-                          onClick={() => setQty(it.id, it.qty + 1)}
+                          onClick={() => setQty(k, it.qty + 1)}
                           aria-label="Sumar uno"
                           className="w-8 h-8 flex items-center justify-center text-[#1A1A1A] hover:text-[#D1AA49] transition-colors"
                         >
@@ -157,7 +162,7 @@ const CartDrawer = () => {
                       </div>
 
                       <button
-                        onClick={() => removeItem(it.id)}
+                        onClick={() => removeItem(k)}
                         className="text-[10px] uppercase tracking-[0.15em] text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors"
                       >
                         Quitar
@@ -165,7 +170,8 @@ const CartDrawer = () => {
                     </div>
                   </div>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           )}
         </div>

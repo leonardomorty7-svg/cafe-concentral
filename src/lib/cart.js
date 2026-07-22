@@ -25,6 +25,21 @@ const CLOSE_EVENT = 'cart:close';
 
 const hasWindow = () => typeof window !== 'undefined';
 
+// ─── MOLIENDA ─────────────────────────────────────────────────────────────────
+// El diferenciador de Café Coocentral: el cliente elige cómo quiere su café.
+// Se guarda la etiqueta tal cual (legible en el pedido de WhatsApp).
+export const GRIND_OPTIONS = [
+  { label: 'En grano', hint: 'Muele en casa a tu gusto' },
+  { label: 'Molienda gruesa', hint: 'Prensa francesa · cold brew' },
+  { label: 'Molienda media', hint: 'Goteo · V60 · greca' },
+  { label: 'Molienda fina', hint: 'Espresso · moka' },
+];
+
+/** Clave única de línea: misma referencia con distinta molienda = línea aparte. */
+const lineKey = (id, grind) => (grind ? `${id}::${grind}` : id);
+/** Clave de una línea ya guardada (compat con carritos viejos sin `key`). */
+const keyOf = (it) => it.key || lineKey(it.id, it.grind);
+
 // ─── LECTURA / ESCRITURA ──────────────────────────────────────────────────────
 
 /** Lee el carrito desde localStorage. Nunca lanza: ante cualquier error, [] */
@@ -57,41 +72,44 @@ export function getCount() {
 }
 
 /**
- * Añade un producto. Si ya está en el carrito, suma la cantidad.
- * product: { id, name, image }
+ * Añade un producto. Si ya está (misma referencia y misma molienda), suma.
+ * product: { id, name, image }; grind: etiqueta de molienda o null.
  */
-export function addItem(product, qty = 1) {
+export function addItem(product, qty = 1, grind = null) {
   if (!product || !product.id) return;
   const items = getItems();
-  const existing = items.find((it) => it.id === product.id);
+  const key = lineKey(product.id, grind);
+  const existing = items.find((it) => keyOf(it) === key);
   if (existing) {
     existing.qty += qty;
   } else {
     items.push({
+      key,
       id: product.id,
       name: product.name,
       image: product.image || null,
+      grind: grind || null,
       qty,
     });
   }
   write(items);
 }
 
-/** Fija la cantidad exacta de una línea. Si baja a 0, la elimina. */
-export function setQty(id, qty) {
+/** Fija la cantidad exacta de una línea (por su clave). Si baja a 0, la elimina. */
+export function setQty(key, qty) {
   let items = getItems();
   if (qty <= 0) {
-    items = items.filter((it) => it.id !== id);
+    items = items.filter((it) => keyOf(it) !== key);
   } else {
-    const target = items.find((it) => it.id === id);
+    const target = items.find((it) => keyOf(it) === key);
     if (target) target.qty = qty;
   }
   write(items);
 }
 
-/** Elimina una línea del carrito. */
-export function removeItem(id) {
-  write(getItems().filter((it) => it.id !== id));
+/** Elimina una línea del carrito (por su clave). */
+export function removeItem(key) {
+  write(getItems().filter((it) => keyOf(it) !== key));
 }
 
 /** Vacía el carrito por completo. */
@@ -159,7 +177,8 @@ export function buildOrderMessage(items, customer = {}) {
   lines.push('');
 
   items.forEach((it) => {
-    lines.push(`• ${it.qty} × ${it.name}`);
+    const grind = it.grind ? ` — ${it.grind}` : '';
+    lines.push(`• ${it.qty} × ${it.name}${grind}`);
   });
 
   lines.push('');

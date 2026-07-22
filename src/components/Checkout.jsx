@@ -216,26 +216,30 @@ const Checkout = () => {
           </div>
 
           <ul className="space-y-4 mb-6">
-            {items.map((it) => (
-              <li key={it.id} className="flex gap-3 items-center">
+            {items.map((it) => {
+              const k = it.key || it.id;
+              return (
+              <li key={k} className="flex gap-3 items-center">
                 <div className="shrink-0 w-14 h-14 rounded-sm bg-[#F5F1EB] overflow-hidden flex items-center justify-center p-1.5">
                   {it.image && <img src={it.image} alt={it.name} className="w-full h-full object-contain" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-serif text-[15px] text-[#1A1A1A] leading-tight truncate m-0">{it.name}</p>
+                  {it.grind && <p className="text-[10px] uppercase tracking-[0.15em] text-[#D1AA49] font-bold mt-0.5 m-0">{it.grind}</p>}
                   <div className="flex items-center gap-2 mt-1.5">
                     <div className="inline-flex items-center border border-[#1A1A1A]/12 rounded-sm">
-                      <button type="button" onClick={() => setQty(it.id, it.qty - 1)} aria-label="Restar" className="w-7 h-7 flex items-center justify-center text-[#1A1A1A] hover:text-[#D1AA49]">−</button>
+                      <button type="button" onClick={() => setQty(k, it.qty - 1)} aria-label="Restar" className="w-7 h-7 flex items-center justify-center text-[#1A1A1A] hover:text-[#D1AA49]">−</button>
                       <span className="w-7 text-center text-xs font-bold tabular-nums">{it.qty}</span>
-                      <button type="button" onClick={() => setQty(it.id, it.qty + 1)} aria-label="Sumar" className="w-7 h-7 flex items-center justify-center text-[#1A1A1A] hover:text-[#D1AA49]">+</button>
+                      <button type="button" onClick={() => setQty(k, it.qty + 1)} aria-label="Sumar" className="w-7 h-7 flex items-center justify-center text-[#1A1A1A] hover:text-[#D1AA49]">+</button>
                     </div>
-                    <button type="button" onClick={() => removeItem(it.id)} className="text-[10px] uppercase tracking-[0.12em] text-[#B5B0A6] hover:text-[#1A1A1A] transition-colors">
+                    <button type="button" onClick={() => removeItem(k)} className="text-[10px] uppercase tracking-[0.12em] text-[#B5B0A6] hover:text-[#1A1A1A] transition-colors">
                       Quitar
                     </button>
                   </div>
                 </div>
               </li>
-            ))}
+              );
+            })}
           </ul>
 
           {/* Nota de precio honesta */}

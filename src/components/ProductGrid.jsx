@@ -7,30 +7,34 @@ const ProductCard = ({ id, name, tag, description, category, subcategory, image 
     // no debe navegar al añadir.
     e.preventDefault();
     e.stopPropagation();
-    addItem({ id, name, image }, 1);
+    // El café entra con una molienda por defecto (cambiable en la ficha).
+    addItem({ id, name, image }, 1, category === 'cafe' ? 'En grano' : null);
     openCart();
   };
 
   return (
-    <div className="group relative transition-transform duration-500 ease-out hover:-translate-y-1.5">
+    <div className="group relative transition-transform duration-500 ease-out hover:-translate-y-2">
       {/* Enlace estirado: toda la tarjeta navega al producto, salvo el botón.
           El lift va en la raíz (no en la foto) para que el transform no cree
           un stacking context que hunda el botón bajo el enlace. */}
       <a href={`/products/${id}`} className="absolute inset-0 z-[1]" aria-label={`Ver ${name}`} />
 
-      <div className="relative aspect-[4/5] bg-white rounded-sm overflow-hidden mb-6 flex items-center justify-center p-8 transition-shadow duration-500 ease-out group-hover:shadow-[0_24px_48px_rgba(0,0,0,0.08)] border border-black/5">
-        {/* Badge */}
+      {/* La bolsa flota con sombra sobre un fondo tonal cálido: editorial. */}
+      <div
+        className="relative aspect-[4/5] rounded-sm overflow-hidden mb-6"
+        style={{ background: 'linear-gradient(155deg, #FFFFFF 0%, #F1EADC 100%)' }}
+      >
         {tag && (
-          <span className="absolute top-4 left-4 text-[9px] uppercase tracking-widest bg-[#F5F1EB]/80 backdrop-blur-md px-3 py-1.5 rounded-sm text-[#1A1A1A] font-bold z-10 border border-black/5">
+          <span className="absolute top-5 left-5 z-[2] text-[9px] uppercase tracking-[0.2em] text-[#1A1A1A]/55 font-bold">
             {tag}
           </span>
         )}
 
-        {/* Image */}
         <img
           src={image}
           alt={name}
-          className="w-full h-full object-contain transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
+          className="absolute inset-0 w-full h-full object-contain p-9 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
+          style={{ filter: 'drop-shadow(0 22px 38px rgba(0,0,0,0.20))' }}
         />
 
         {/* Añadir rápido — aparece al pasar el mouse, por encima del enlace */}
@@ -50,31 +54,21 @@ const ProductCard = ({ id, name, tag, description, category, subcategory, image 
         {/* Barrido dorado al pie de la foto */}
         <span
           aria-hidden="true"
-          className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#D1AA49] scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100 z-10"
+          className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#D1AA49] scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100 z-[2]"
         />
       </div>
 
-      <div className="flex flex-col space-y-3 px-1">
-        <div className="flex justify-between items-start gap-4">
-          <div>
-            <h3 className="font-serif text-2xl text-[#1A1A1A] mb-1 group-hover:text-[#D1AA49] transition-colors duration-300">
-              {name}
-            </h3>
-            <p className="text-[13px] text-[#8C8C8C] font-light">
-              {description}
-            </p>
-          </div>
-          <span className="text-[10px] uppercase tracking-widest text-[#6B6B6B] shrink-0 mt-2 font-bold">
-            {category || subcategory || 'Café'}
-          </span>
-        </div>
-
-        <div className="pt-2">
-          <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 group-hover:border-[#D1AA49] group-hover:text-[#D1AA49] transition-all duration-300">
-            Ver producto
-            <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
-          </span>
-        </div>
+      <div className="px-1">
+        <h3 className="font-serif text-2xl text-[#1A1A1A] leading-tight group-hover:text-[#D1AA49] transition-colors duration-300">
+          {name}
+        </h3>
+        {description && (
+          <p className="text-[10px] uppercase tracking-[0.2em] text-[#9A9488] font-bold mt-2.5">{description}</p>
+        )}
+        <span className="inline-flex items-center gap-2 mt-4 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/15 pb-1 group-hover:border-[#D1AA49] group-hover:text-[#D1AA49] transition-all duration-300">
+          Descubrir
+          <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+        </span>
       </div>
     </div>
   );

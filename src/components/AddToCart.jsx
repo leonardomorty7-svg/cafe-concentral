@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
-import { addItem, openCart, whatsappUrl } from '../lib/cart.js';
+import { addItem, openCart, whatsappUrl, GRIND_OPTIONS } from '../lib/cart.js';
 
 /**
  * AddToCart — el bloque de compra de la ficha de producto.
  *
- * Isla de React montada dentro de [slug].astro. Recibe el producto y ofrece:
- *   1) selector de cantidad + "Añadir al carrito" (abre el drawer al añadir),
- *   2) un enlace directo de WhatsApp por si prefieren preguntar antes.
+ * Isla de React montada dentro de [slug].astro. Ofrece:
+ *   1) selector de MOLIENDA (solo café) — el diferenciador de la marca,
+ *   2) cantidad + "Añadir al carrito" (abre el drawer al añadir),
+ *   3) enlace directo de WhatsApp por si prefieren preguntar antes.
  *
- * product: { id, name, image }
+ * product: { id, name, image, category }
  */
-const AddToCart = ({ id, name, image }) => {
+const AddToCart = ({ id, name, image, category }) => {
+  const isCoffee = category === 'cafe';
   const [qty, setQty] = useState(1);
+  const [grind, setGrind] = useState(GRIND_OPTIONS[0].label);
   const [added, setAdded] = useState(false);
 
   const handleAdd = () => {
-    addItem({ id, name, image }, qty);
+    addItem({ id, name, image }, qty, isCoffee ? grind : null);
     setAdded(true);
     openCart();
     // Restablece el rótulo del botón tras un momento.
@@ -23,11 +26,42 @@ const AddToCart = ({ id, name, image }) => {
   };
 
   const waLink = whatsappUrl(
-    `Hola, estoy interesado(a) en ${name}. Me gustaría recibir más información.`
+    `Hola, estoy interesado(a) en ${name}${isCoffee ? ` (${grind})` : ''}. Me gustaría recibir más información.`
   );
 
   return (
-    <div className="flex flex-col gap-6 mt-4">
+    <div className="flex flex-col gap-7 mt-4">
+      {/* Molienda — el diferenciador: el cliente elige cómo quiere su café */}
+      {isCoffee && (
+        <div>
+          <div className="flex items-baseline justify-between mb-4">
+            <span className="text-[11px] uppercase tracking-[0.2em] font-bold text-[#1A1A1A]">Elige tu molienda</span>
+            <span className="text-[11px] text-[#9A9488] font-light hidden sm:block">La preparamos como la prefieras</span>
+          </div>
+          <div className="grid grid-cols-2 gap-2.5">
+            {GRIND_OPTIONS.map((g) => {
+              const active = grind === g.label;
+              return (
+                <button
+                  key={g.label}
+                  type="button"
+                  onClick={() => setGrind(g.label)}
+                  aria-pressed={active}
+                  className={`text-left px-4 py-3 rounded-sm border transition-all duration-300 ${
+                    active
+                      ? 'border-[#D1AA49] bg-[#D1AA49]/10 shadow-sm'
+                      : 'border-[#1A1A1A]/12 bg-white hover:border-[#D1AA49]/40'
+                  }`}
+                >
+                  <span className="block text-[13px] font-bold text-[#1A1A1A]">{g.label}</span>
+                  <span className="block text-[11px] text-[#9A9488] font-light mt-0.5">{g.hint}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-col sm:flex-row gap-5 items-stretch sm:items-center">
         {/* Selector de cantidad */}
         <div className="inline-flex items-center border border-[#1A1A1A]/15 rounded-sm self-start bg-white">

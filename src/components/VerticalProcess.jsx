@@ -317,6 +317,16 @@ const VerticalProcess = ({ editions = [] }) => {
         h.setAttribute('width', (c.rx * 2 + 4).toFixed(1));
         h.setAttribute('height', (c.ry * 2 + 4).toFixed(1));
       });
+      // El título final teje el hilo por detrás.
+      const headEl = root.querySelector('.vp-headmask');
+      const headHole = root.querySelector('.vp-hole-head');
+      if (headEl && headHole) {
+        const h = toLocal(headEl);
+        headHole.setAttribute('x', (h.cx - h.rx - 6).toFixed(1));
+        headHole.setAttribute('y', (h.cy - h.ry - 2).toFixed(1));
+        headHole.setAttribute('width', (h.rx * 2 + 12).toFixed(1));
+        headHole.setAttribute('height', (h.ry * 2 + 4).toFixed(1));
+      }
     };
 
     const updateThread = (p) => {
@@ -458,6 +468,8 @@ const VerticalProcess = ({ editions = [] }) => {
             {shownEditions.map((_, i) => (
               <rect key={`c${i}`} className="vp-hole-card" x="-9999" y="-9999" width="0" height="0" rx="6" fill="black" />
             ))}
+            {/* El título final también teje el hilo por detrás */}
+            <rect className="vp-hole-head" x="-9999" y="-9999" width="0" height="0" fill="black" />
           </mask>
         </defs>
         <g mask="url(#vpThreadMask)">
@@ -473,16 +485,16 @@ const VerticalProcess = ({ editions = [] }) => {
 
       {/* Contenido */}
       <div className="relative z-10">
-        {/* Título — arranque del hilo */}
-        <div className="min-h-screen flex items-center px-6 md:px-16">
-          <div className="max-w-3xl mx-auto md:mx-0 text-center md:text-left">
+        {/* Título — arranque del hilo, centrado en el viewport */}
+        <div className="min-h-screen flex items-center justify-center px-6 md:px-16">
+          <div className="max-w-3xl mx-auto text-center">
             <div className="vp-bean vp-start inline-block mb-10">
-              <BeanIcon width={38} height={54} />
+              <BeanIcon width={40} height={56} />
             </div>
             <h2 className="font-serif font-light text-4xl md:text-6xl xl:text-7xl text-white leading-[1.08]">
               Un proceso guiado por la <span className="italic text-[#D1AA49]">cooperación.</span>
             </h2>
-            <p className="mt-10 text-white/50 font-light text-base md:text-lg max-w-md mx-auto md:mx-0">
+            <p className="mt-10 text-white/50 font-light text-base md:text-lg max-w-md mx-auto">
               Tres momentos entre la tierra y tu taza. Baja despacio: el hilo te lleva.
             </p>
           </div>
@@ -498,7 +510,7 @@ const VerticalProcess = ({ editions = [] }) => {
           <div className="relative min-h-screen flex flex-col items-center justify-center gap-10 md:gap-14 px-6 md:px-16 py-24 bg-[#F5F1EB]">
             <div className="text-center">
               <span className="text-[11px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold mb-4 block">Nuestras ediciones</span>
-              <h2 className="font-serif text-4xl md:text-5xl text-[#1A1A1A] leading-[1.05] md:whitespace-nowrap">
+              <h2 className="vp-headmask font-serif text-4xl md:text-5xl text-[#1A1A1A] leading-[1.05] md:whitespace-nowrap">
                 Cafés con nombre <span className="italic text-[#D1AA49]">y con historia.</span>
               </h2>
             </div>
