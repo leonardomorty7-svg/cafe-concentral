@@ -19,7 +19,7 @@ export default {
           dark: "#3E2C23",
         },
         accent: {
-          gold: "#CCA678",
+          gold: "#D1AA49",
         }
       },
       fontFamily: {

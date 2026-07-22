@@ -10,7 +10,7 @@
     --neutral-warm: #D6D1C9;
     --coffee-light: #6B4F3A;
     --coffee-dark: #3E2C23;
-    --accent-gold: #CCA678;
+    --accent-gold: #D1AA49;
     --text-muted: #6B6B6B;
   }
 
@@ -48,7 +48,7 @@
 
 @layer components {
   .btn-primary {
-    @apply px-10 py-5 bg-accent-gold text-base-white font-bold uppercase tracking-[0.2em] text-[11px] rounded-sm transition-all duration-300 ease-out hover:bg-[#B8935F] hover:scale-[1.01] hover:shadow-md active:scale-[0.98] shadow-sm;
+    @apply px-10 py-5 bg-accent-gold text-base-white font-bold uppercase tracking-[0.2em] text-[11px] rounded-sm transition-all duration-300 ease-out hover:bg-[#B8933A] hover:scale-[1.01] hover:shadow-md active:scale-[0.98] shadow-sm;
   }
 
   .btn-secondary {

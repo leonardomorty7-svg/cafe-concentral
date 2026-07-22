@@ -96,7 +96,7 @@ const VideoLightbox = ({ src, title, onClose }) => {
         type="button"
         onClick={onClose}
         aria-label="Cerrar el video"
-        className="absolute top-6 right-6 md:top-8 md:right-10 w-12 h-12 rounded-full border border-white/25 text-white/80 hover:text-white hover:border-[#CCA678] transition-colors duration-300 flex items-center justify-center"
+        className="absolute top-6 right-6 md:top-8 md:right-10 w-12 h-12 rounded-full border border-white/25 text-white/80 hover:text-white hover:border-[#D1AA49] transition-colors duration-300 flex items-center justify-center"
       >
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
           <path d="M1 1l16 16M17 1L1 17" stroke="currentColor" strokeWidth="1.5" />
@@ -111,7 +111,7 @@ const VideoLightbox = ({ src, title, onClose }) => {
           autoPlay
           playsInline
         />
-        <figcaption className="mt-5 text-center text-[11px] tracking-[0.3em] uppercase text-[#CCA678] font-bold">
+        <figcaption className="mt-5 text-center text-[11px] tracking-[0.3em] uppercase text-[#D1AA49] font-bold">
           {title}
         </figcaption>
       </figure>
@@ -168,15 +168,15 @@ const StepPanel = ({ num, title, text, img, alt, video, flip, onOpenVideo }) => 
             <span className="relative flex items-center justify-center">
               {/* Anillo que respira, para que el play se note */}
               <span
-                className="hp-pulse-ring absolute w-20 h-20 rounded-full border border-[#CCA678]/50"
+                className="hp-pulse-ring absolute w-20 h-20 rounded-full border border-[#D1AA49]/50"
                 style={{ animation: 'hpPulse 2.4s ease-out infinite' }}
                 aria-hidden="true"
               />
-              <span className="relative w-16 h-16 rounded-full border border-[#CCA678]/80 bg-black/35 backdrop-blur-sm flex items-center justify-center transition-all duration-500 group-hover:bg-[#CCA678] group-hover:scale-110">
+              <span className="relative w-16 h-16 rounded-full border border-[#D1AA49]/80 bg-black/35 backdrop-blur-sm flex items-center justify-center transition-all duration-500 group-hover:bg-[#D1AA49] group-hover:scale-110">
                 <svg width="15" height="18" viewBox="0 0 15 18" fill="none" aria-hidden="true" className="ml-1">
                   <path
                     d="M14 9L0.5 17.2V0.8L14 9z"
-                    className="fill-[#CCA678] transition-colors duration-500 group-hover:fill-[#0B0B0B]"
+                    className="fill-[#D1AA49] transition-colors duration-500 group-hover:fill-[#0B0B0B]"
                   />
                 </svg>
               </span>
@@ -190,14 +190,14 @@ const StepPanel = ({ num, title, text, img, alt, video, flip, onOpenVideo }) => 
         {/* Resplandor de llegada */}
         <div
           className="hp-glow absolute -inset-10 pointer-events-none opacity-0"
-          style={{ background: 'radial-gradient(circle at 50% 50%, rgba(204,166,120,0.25) 0%, transparent 60%)' }}
+          style={{ background: 'radial-gradient(circle at 50% 50%, rgba(209,170,73,0.25) 0%, transparent 60%)' }}
         />
       </div>
 
       <div className="[direction:ltr]">
-        <span className="hp-num font-serif italic text-4xl md:text-6xl text-[#CCA678] inline-block">{num}</span>
+        <span className="hp-num font-serif italic text-4xl md:text-6xl text-[#D1AA49] inline-block">{num}</span>
         <h3 className="hp-title font-serif text-3xl md:text-5xl text-white leading-[1.1] mt-4">{title}</h3>
-        <div className="hp-rule w-12 h-px bg-[#CCA678] my-7 md:my-9 origin-left" />
+        <div className="hp-rule w-12 h-px bg-[#D1AA49] my-7 md:my-9 origin-left" />
         <p className="hp-text text-white/60 font-light text-base md:text-lg leading-[1.8] max-w-md">{text}</p>
       </div>
     </div>
@@ -222,7 +222,7 @@ const EditionCard = ({ id, name, image, tag }) => (
         </span>
       )}
     </div>
-    <h4 className="font-serif text-xl md:text-2xl text-[#1A1A1A] group-hover:text-[#CCA678] transition-colors duration-300 leading-tight">{name}</h4>
+    <h4 className="font-serif text-xl md:text-2xl text-[#1A1A1A] group-hover:text-[#D1AA49] transition-colors duration-300 leading-tight">{name}</h4>
   </a>
 );
 
@@ -394,8 +394,8 @@ const HorizontalProcess = ({ editions = [] }) => {
         const dots = threadNodes ? threadNodes.children : [];
         for (let i = 0; i < dots.length; i++) {
           const on = p >= stationsX[i] - 0.02;
-          dots[i].setAttribute('fill', on ? '#CCA678' : 'rgba(255,255,255,0.2)');
-          dots[i].style.filter = on ? 'drop-shadow(0 0 6px rgba(204,166,120,0.9))' : 'none';
+          dots[i].setAttribute('fill', on ? '#D1AA49' : 'rgba(255,255,255,0.2)');
+          dots[i].style.filter = on ? 'drop-shadow(0 0 6px rgba(209,170,73,0.9))' : 'none';
         }
       }
       updateHoles();
@@ -608,11 +608,11 @@ const HorizontalProcess = ({ editions = [] }) => {
         <section className="bg-[#160F0B] py-28 px-8" aria-label="Nuestro modelo">
           <div className="max-w-3xl mx-auto space-y-20">
             <h2 className="font-serif text-4xl md:text-6xl text-white leading-[1.1]">
-              Un proceso guiado por la <span className="italic text-[#CCA678]">cooperación.</span>
+              Un proceso guiado por la <span className="italic text-[#D1AA49]">cooperación.</span>
             </h2>
             {STEPS.map((s) => (
               <div key={s.num}>
-                <span className="font-serif italic text-4xl text-[#CCA678]">{s.num}</span>
+                <span className="font-serif italic text-4xl text-[#D1AA49]">{s.num}</span>
                 <h3 className="font-serif text-3xl text-white mt-3">{s.title}</h3>
                 <p className="text-white/60 font-light mt-5 leading-[1.8]">{s.text}</p>
               </div>
@@ -622,9 +622,9 @@ const HorizontalProcess = ({ editions = [] }) => {
         {shownEditions.length > 0 && (
           <section className="bg-[#F5F1EB] py-28 px-8" aria-label="Nuestras ediciones">
             <div className="max-w-6xl mx-auto">
-              <span className="text-[11px] uppercase tracking-[0.3em] text-[#CCA678] font-bold mb-5 block">Nuestras ediciones</span>
+              <span className="text-[11px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold mb-5 block">Nuestras ediciones</span>
               <h2 className="font-serif text-4xl md:text-5xl text-[#1A1A1A] leading-tight mb-12">
-                Cafés con nombre <span className="italic text-[#CCA678]">y con historia.</span>
+                Cafés con nombre <span className="italic text-[#D1AA49]">y con historia.</span>
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
                 {shownEditions.map((p) => (
@@ -655,9 +655,9 @@ const HorizontalProcess = ({ editions = [] }) => {
 
         {/* Barra superior: sección y contador */}
         <div className="hp-topbar absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-8 md:px-24 pt-24 md:pt-28 pointer-events-none">
-          <span className="text-[11px] tracking-[0.3em] uppercase text-[#CCA678] font-bold">Nuestro modelo</span>
+          <span className="text-[11px] tracking-[0.3em] uppercase text-[#D1AA49] font-bold">Nuestro modelo</span>
           <span className="text-[11px] tracking-[0.3em] text-white/50 font-bold">
-            <span ref={counterRef} className="text-[#CCA678]">01</span> / {String(STEPS.length).padStart(2, '0')}
+            <span ref={counterRef} className="text-[#D1AA49]">01</span> / {String(STEPS.length).padStart(2, '0')}
           </span>
         </div>
 
@@ -670,11 +670,11 @@ const HorizontalProcess = ({ editions = [] }) => {
                 <BeanIcon width={34} height={48} />
               </div>
               <h2 className="font-serif font-light text-4xl md:text-6xl xl:text-7xl text-white leading-[1.08]">
-                Un proceso guiado por la <span className="italic text-[#CCA678]">cooperación.</span>
+                Un proceso guiado por la <span className="italic text-[#D1AA49]">cooperación.</span>
               </h2>
               <p className="mt-10 text-white/50 font-light text-base md:text-lg flex items-center gap-4">
                 Tres momentos entre la tierra y tu taza. Sigue bajando: el proceso avanza contigo.
-                <span aria-hidden="true" className="hp-arrow inline-block text-[#CCA678] text-2xl leading-none">→</span>
+                <span aria-hidden="true" className="hp-arrow inline-block text-[#D1AA49] text-2xl leading-none">→</span>
               </p>
             </div>
           </div>
@@ -690,9 +690,9 @@ const HorizontalProcess = ({ editions = [] }) => {
             <div className="hp-panel hp-panel-editions relative w-screen h-full shrink-0 flex flex-col items-center justify-center gap-10 md:gap-14 px-6 md:px-16 bg-[#F5F1EB]">
               {/* Titular en un solo renglón, centrado */}
               <div className="text-center">
-                <span className="text-[11px] uppercase tracking-[0.3em] text-[#CCA678] font-bold mb-4 block">Nuestras ediciones</span>
+                <span className="text-[11px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold mb-4 block">Nuestras ediciones</span>
                 <h2 className="font-serif text-4xl md:text-5xl text-[#1A1A1A] leading-[1.05] md:whitespace-nowrap">
-                  Cafés con nombre <span className="italic text-[#CCA678]">y con historia.</span>
+                  Cafés con nombre <span className="italic text-[#D1AA49]">y con historia.</span>
                 </h2>
               </div>
 
@@ -705,7 +705,7 @@ const HorizontalProcess = ({ editions = [] }) => {
 
               <a
                 href="/productos"
-                className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 hover:border-[#CCA678] hover:text-[#CCA678] transition-all"
+                className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 hover:border-[#D1AA49] hover:text-[#D1AA49] transition-all"
               >
                 Ver toda la colección <span aria-hidden="true">→</span>
               </a>
@@ -746,18 +746,18 @@ const HorizontalProcess = ({ editions = [] }) => {
             <path
               className="hp-thread-line"
               fill="none"
-              stroke="#CCA678"
+              stroke="#D1AA49"
               strokeWidth="2"
               strokeLinecap="round"
-              style={{ filter: 'drop-shadow(0 0 6px rgba(204,166,120,0.55))' }}
+              style={{ filter: 'drop-shadow(0 0 6px rgba(209,170,73,0.55))' }}
             />
             <g className="hp-thread-nodes" />
 
             {/* La semilla viajera, en la punta del hilo */}
             <g className="hp-thread-seed">
-              <circle r="13" fill="rgba(204,166,120,0.28)" />
-              <ellipse rx="6.5" ry="9.5" fill="rgba(204,166,120,0.14)" stroke="#CCA678" strokeWidth="1.6" />
-              <path d="M0 -8.5 C -5 -3, -5 3, 0 8.5" fill="none" stroke="#CCA678" strokeWidth="1.6" />
+              <circle r="13" fill="rgba(209,170,73,0.28)" />
+              <ellipse rx="6.5" ry="9.5" fill="rgba(209,170,73,0.14)" stroke="#D1AA49" strokeWidth="1.6" />
+              <path d="M0 -8.5 C -5 -3, -5 3, 0 8.5" fill="none" stroke="#D1AA49" strokeWidth="1.6" />
             </g>
           </g>
         </svg>

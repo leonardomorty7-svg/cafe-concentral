@@ -74,15 +74,15 @@ const CartDrawer = () => {
         {/* Encabezado */}
         <header className="flex items-center justify-between px-7 py-6 border-b border-[#1A1A1A]/8">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-[#CCA678] font-bold mb-1">Tu selección</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold mb-1">Tu selección</p>
             <h2 className="font-serif text-2xl text-[#1A1A1A] leading-none m-0">
-              Pedido {count > 0 && <span className="text-[#CCA678]">({count})</span>}
+              Pedido {count > 0 && <span className="text-[#D1AA49]">({count})</span>}
             </h2>
           </div>
           <button
             onClick={() => closeCart()}
             aria-label="Cerrar"
-            className="p-2 text-[#1A1A1A] hover:text-[#CCA678] transition-colors"
+            className="p-2 text-[#1A1A1A] hover:text-[#D1AA49] transition-colors"
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
               <path d="M6 18L18 6M6 6l12 12" />
@@ -95,7 +95,7 @@ const CartDrawer = () => {
           {isEmpty ? (
             <div className="h-full flex flex-col items-center justify-center text-center px-4">
               <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-6 shadow-sm">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#CCA678" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#D1AA49" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
                   <line x1="3" y1="6" x2="21" y2="6" />
                   <path d="M16 10a4 4 0 0 1-8 0" />
@@ -108,7 +108,7 @@ const CartDrawer = () => {
               <a
                 href="/productos"
                 onClick={() => closeCart()}
-                className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 hover:border-[#CCA678] hover:text-[#CCA678] transition-all"
+                className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 hover:border-[#D1AA49] hover:text-[#D1AA49] transition-all"
               >
                 Ver nuestros cafés
               </a>
@@ -131,7 +131,7 @@ const CartDrawer = () => {
                     <a
                       href={`/products/${it.id}`}
                       onClick={() => closeCart()}
-                      className="font-serif text-[17px] text-[#1A1A1A] leading-tight hover:text-[#CCA678] transition-colors block truncate"
+                      className="font-serif text-[17px] text-[#1A1A1A] leading-tight hover:text-[#D1AA49] transition-colors block truncate"
                     >
                       {it.name}
                     </a>
@@ -142,7 +142,7 @@ const CartDrawer = () => {
                         <button
                           onClick={() => setQty(it.id, it.qty - 1)}
                           aria-label="Restar uno"
-                          className="w-8 h-8 flex items-center justify-center text-[#1A1A1A] hover:text-[#CCA678] transition-colors"
+                          className="w-8 h-8 flex items-center justify-center text-[#1A1A1A] hover:text-[#D1AA49] transition-colors"
                         >
                           −
                         </button>
@@ -150,7 +150,7 @@ const CartDrawer = () => {
                         <button
                           onClick={() => setQty(it.id, it.qty + 1)}
                           aria-label="Sumar uno"
-                          className="w-8 h-8 flex items-center justify-center text-[#1A1A1A] hover:text-[#CCA678] transition-colors"
+                          className="w-8 h-8 flex items-center justify-center text-[#1A1A1A] hover:text-[#D1AA49] transition-colors"
                         >
                           +
                         </button>

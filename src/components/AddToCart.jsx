@@ -34,7 +34,7 @@ const AddToCart = ({ id, name, image }) => {
           <button
             onClick={() => setQty((q) => Math.max(1, q - 1))}
             aria-label="Restar uno"
-            className="w-12 h-14 flex items-center justify-center text-xl text-[#1A1A1A] hover:text-[#CCA678] transition-colors"
+            className="w-12 h-14 flex items-center justify-center text-xl text-[#1A1A1A] hover:text-[#D1AA49] transition-colors"
           >
             −
           </button>
@@ -42,7 +42,7 @@ const AddToCart = ({ id, name, image }) => {
           <button
             onClick={() => setQty((q) => q + 1)}
             aria-label="Sumar uno"
-            className="w-12 h-14 flex items-center justify-center text-xl text-[#1A1A1A] hover:text-[#CCA678] transition-colors"
+            className="w-12 h-14 flex items-center justify-center text-xl text-[#1A1A1A] hover:text-[#D1AA49] transition-colors"
           >
             +
           </button>

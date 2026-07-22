@@ -80,7 +80,7 @@ const VideoLightbox = ({ src, title, onClose }) => {
         type="button"
         onClick={onClose}
         aria-label="Cerrar el video"
-        className="absolute top-6 right-6 md:top-8 md:right-10 w-12 h-12 rounded-full border border-white/25 text-white/80 hover:text-white hover:border-[#CCA678] transition-colors duration-300 flex items-center justify-center"
+        className="absolute top-6 right-6 md:top-8 md:right-10 w-12 h-12 rounded-full border border-white/25 text-white/80 hover:text-white hover:border-[#D1AA49] transition-colors duration-300 flex items-center justify-center"
       >
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
           <path d="M1 1l16 16M17 1L1 17" stroke="currentColor" strokeWidth="1.5" />
@@ -88,7 +88,7 @@ const VideoLightbox = ({ src, title, onClose }) => {
       </button>
       <figure className="w-full max-w-6xl" onClick={(e) => e.stopPropagation()}>
         <video src={src} className="w-full h-auto max-h-[80vh] rounded-sm bg-black" controls autoPlay playsInline />
-        <figcaption className="mt-5 text-center text-[11px] tracking-[0.3em] uppercase text-[#CCA678] font-bold">{title}</figcaption>
+        <figcaption className="mt-5 text-center text-[11px] tracking-[0.3em] uppercase text-[#D1AA49] font-bold">{title}</figcaption>
       </figure>
     </div>
   );
@@ -124,10 +124,10 @@ const OvalMedia = ({ img, video, alt, title, onOpenVideo }) => (
         className="group absolute inset-0 flex flex-col items-center justify-center gap-3 cursor-pointer"
       >
         <span className="relative flex items-center justify-center">
-          <span className="hp-pulse-ring absolute w-20 h-20 rounded-full border border-[#CCA678]/50" style={{ animation: 'hpPulse 2.4s ease-out infinite' }} aria-hidden="true" />
-          <span className="relative w-16 h-16 rounded-full border border-[#CCA678]/80 bg-black/35 backdrop-blur-sm flex items-center justify-center transition-all duration-500 group-hover:bg-[#CCA678] group-hover:scale-110">
+          <span className="hp-pulse-ring absolute w-20 h-20 rounded-full border border-[#D1AA49]/50" style={{ animation: 'hpPulse 2.4s ease-out infinite' }} aria-hidden="true" />
+          <span className="relative w-16 h-16 rounded-full border border-[#D1AA49]/80 bg-black/35 backdrop-blur-sm flex items-center justify-center transition-all duration-500 group-hover:bg-[#D1AA49] group-hover:scale-110">
             <svg width="15" height="18" viewBox="0 0 15 18" fill="none" aria-hidden="true" className="ml-1">
-              <path d="M14 9L0.5 17.2V0.8L14 9z" className="fill-[#CCA678] transition-colors duration-500 group-hover:fill-[#0B0B0B]" />
+              <path d="M14 9L0.5 17.2V0.8L14 9z" className="fill-[#D1AA49] transition-colors duration-500 group-hover:fill-[#0B0B0B]" />
             </svg>
           </span>
         </span>
@@ -147,9 +147,9 @@ const Beat = ({ num, title, text, img, video, alt, flip, onOpenVideo }) => (
         <OvalMedia img={img} video={video} alt={alt} title={title} onOpenVideo={onOpenVideo} />
       </div>
       <div className="[direction:ltr] max-w-md">
-        <span className="font-serif italic text-5xl md:text-7xl text-[#CCA678] inline-block">{num}</span>
+        <span className="font-serif italic text-5xl md:text-7xl text-[#D1AA49] inline-block">{num}</span>
         <h3 className="font-serif text-3xl md:text-5xl text-white leading-[1.1] mt-4">{title}</h3>
-        <div className="w-12 h-px bg-[#CCA678] my-7 md:my-9" />
+        <div className="w-12 h-px bg-[#D1AA49] my-7 md:my-9" />
         <p className="text-white/60 font-light text-base md:text-lg leading-[1.8]">{text}</p>
       </div>
     </div>
@@ -160,15 +160,34 @@ const Beat = ({ num, title, text, img, video, alt, flip, onOpenVideo }) => (
  * EditionCard — ficha del panel final "llegada a la luz". Lleva .vp-card:
  * el hilo se recoge detrás de ellas.
  */
-const EditionCard = ({ id, name, image, tag }) => (
-  <a href={`/products/${id}`} className="vp-card group block shrink-0 w-[clamp(220px,25vw,340px)] text-center">
-    <div className="relative aspect-[4/5] rounded-sm overflow-hidden bg-white border border-[#1A1A1A]/8 mb-6 shadow-[0_30px_70px_rgba(0,0,0,0.10)] transition-all duration-500 ease-out group-hover:-translate-y-1.5 group-hover:shadow-[0_40px_90px_rgba(0,0,0,0.14)]">
-      <img src={image} alt={name} className="w-full h-full object-contain p-7 transition-transform duration-500 ease-out group-hover:scale-[1.05]" />
+const EditionCard = ({ id, name, image, tag, notes, index }) => (
+  <a href={`/products/${id}`} className="vp-card group block shrink-0 w-[clamp(250px,26vw,350px)]">
+    {/* La bolsa flota sobre un fondo tonal cálido: editorial, de catálogo. */}
+    <div
+      className="relative aspect-[4/5] rounded-sm overflow-hidden mb-7 transition-transform duration-500 ease-out group-hover:-translate-y-2"
+      style={{ background: 'linear-gradient(155deg, #FCFAF5 0%, #EFE7D8 100%)' }}
+    >
+      <span className="absolute top-5 left-6 font-serif italic text-3xl text-[#D1AA49]/60 select-none pointer-events-none">
+        {String(index).padStart(2, '0')}
+      </span>
       {tag && (
-        <span className="absolute top-4 left-4 z-10 text-[9px] uppercase tracking-widest bg-[#F5F1EB]/85 backdrop-blur-sm px-3 py-1.5 rounded-sm font-bold text-[#1A1A1A]">{tag}</span>
+        <span className="absolute top-6 right-6 text-[9px] uppercase tracking-[0.22em] text-[#1A1A1A]/55 font-bold">{tag}</span>
       )}
+      <img
+        src={image}
+        alt={name}
+        className="absolute inset-0 w-full h-full object-contain p-10 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.07]"
+        style={{ filter: 'drop-shadow(0 26px 40px rgba(0,0,0,0.22))' }}
+      />
+      <span aria-hidden="true" className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#D1AA49] scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100" />
     </div>
-    <h4 className="font-serif text-xl md:text-2xl text-[#1A1A1A] group-hover:text-[#CCA678] transition-colors duration-300 leading-tight">{name}</h4>
+    <div className="px-1">
+      <h4 className="font-serif text-2xl md:text-[1.6rem] text-[#1A1A1A] leading-tight group-hover:text-[#D1AA49] transition-colors duration-300">{name}</h4>
+      {notes && <p className="text-[10px] uppercase tracking-[0.2em] text-[#9A9488] font-bold mt-3">{notes}</p>}
+      <span className="inline-flex items-center gap-2 mt-5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/15 pb-1 group-hover:border-[#D1AA49] group-hover:text-[#D1AA49] transition-all duration-300">
+        Descubrir <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+      </span>
+    </div>
   </a>
 );
 
@@ -387,14 +406,14 @@ const VerticalProcess = ({ editions = [] }) => {
         <section className="bg-[#160F0B] py-28 px-8" aria-label="Nuestro modelo">
           <div className="max-w-3xl mx-auto space-y-24">
             <h2 className="font-serif text-4xl md:text-6xl text-white leading-[1.1]">
-              Un proceso guiado por la <span className="italic text-[#CCA678]">cooperación.</span>
+              Un proceso guiado por la <span className="italic text-[#D1AA49]">cooperación.</span>
             </h2>
             {STEPS.map((s) => (
               <div key={s.num}>
                 <div className="w-[clamp(220px,60vw,360px)] aspect-[4/5] rounded-[50%] overflow-hidden mb-8">
                   <img src={s.img} alt={s.alt} className="w-full h-full object-cover" />
                 </div>
-                <span className="font-serif italic text-4xl text-[#CCA678]">{s.num}</span>
+                <span className="font-serif italic text-4xl text-[#D1AA49]">{s.num}</span>
                 <h3 className="font-serif text-3xl text-white mt-3">{s.title}</h3>
                 <p className="text-white/60 font-light mt-5 leading-[1.8]">{s.text}</p>
               </div>
@@ -404,13 +423,13 @@ const VerticalProcess = ({ editions = [] }) => {
         {shownEditions.length > 0 && (
           <section className="bg-[#F5F1EB] py-28 px-8" aria-label="Nuestras ediciones">
             <div className="max-w-6xl mx-auto text-center">
-              <span className="text-[11px] uppercase tracking-[0.3em] text-[#CCA678] font-bold mb-5 block">Nuestras ediciones</span>
+              <span className="text-[11px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold mb-5 block">Nuestras ediciones</span>
               <h2 className="font-serif text-4xl md:text-5xl text-[#1A1A1A] leading-tight mb-12">
-                Cafés con nombre <span className="italic text-[#CCA678]">y con historia.</span>
+                Cafés con nombre <span className="italic text-[#D1AA49]">y con historia.</span>
               </h2>
               <div className="flex flex-wrap justify-center gap-10">
-                {shownEditions.map((p) => (
-                  <EditionCard key={p.id} id={p.id} name={p.name} image={p.image} tag={p.tag} />
+                {shownEditions.map((p, i) => (
+                  <EditionCard key={p.id} index={i + 1} id={p.id} name={p.name} image={p.image} tag={p.tag} notes={(p.tags || []).slice(1).join(' · ')} />
                 ))}
               </div>
             </div>
@@ -443,11 +462,11 @@ const VerticalProcess = ({ editions = [] }) => {
         </defs>
         <g mask="url(#vpThreadMask)">
           <path className="vp-thread-track" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
-          <path className="vp-thread-line" fill="none" stroke="#CCA678" strokeWidth="2.5" strokeLinecap="round" style={{ filter: 'drop-shadow(0 0 7px rgba(204,166,120,0.6))' }} />
+          <path className="vp-thread-line" fill="none" stroke="#D1AA49" strokeWidth="2.5" strokeLinecap="round" style={{ filter: 'drop-shadow(0 0 7px rgba(209,170,73,0.6))' }} />
           <g className="vp-thread-seed">
-            <circle r="14" fill="rgba(204,166,120,0.28)" />
-            <ellipse rx="7" ry="10" fill="rgba(204,166,120,0.14)" stroke="#CCA678" strokeWidth="1.7" />
-            <path d="M0 -9 C -5.5 -3, -5.5 3, 0 9" fill="none" stroke="#CCA678" strokeWidth="1.7" />
+            <circle r="14" fill="rgba(209,170,73,0.28)" />
+            <ellipse rx="7" ry="10" fill="rgba(209,170,73,0.14)" stroke="#D1AA49" strokeWidth="1.7" />
+            <path d="M0 -9 C -5.5 -3, -5.5 3, 0 9" fill="none" stroke="#D1AA49" strokeWidth="1.7" />
           </g>
         </g>
       </svg>
@@ -461,7 +480,7 @@ const VerticalProcess = ({ editions = [] }) => {
               <BeanIcon width={38} height={54} />
             </div>
             <h2 className="font-serif font-light text-4xl md:text-6xl xl:text-7xl text-white leading-[1.08]">
-              Un proceso guiado por la <span className="italic text-[#CCA678]">cooperación.</span>
+              Un proceso guiado por la <span className="italic text-[#D1AA49]">cooperación.</span>
             </h2>
             <p className="mt-10 text-white/50 font-light text-base md:text-lg max-w-md mx-auto md:mx-0">
               Tres momentos entre la tierra y tu taza. Baja despacio: el hilo te lleva.
@@ -478,17 +497,17 @@ const VerticalProcess = ({ editions = [] }) => {
         {shownEditions.length > 0 && (
           <div className="relative min-h-screen flex flex-col items-center justify-center gap-10 md:gap-14 px-6 md:px-16 py-24 bg-[#F5F1EB]">
             <div className="text-center">
-              <span className="text-[11px] uppercase tracking-[0.3em] text-[#CCA678] font-bold mb-4 block">Nuestras ediciones</span>
+              <span className="text-[11px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold mb-4 block">Nuestras ediciones</span>
               <h2 className="font-serif text-4xl md:text-5xl text-[#1A1A1A] leading-[1.05] md:whitespace-nowrap">
-                Cafés con nombre <span className="italic text-[#CCA678]">y con historia.</span>
+                Cafés con nombre <span className="italic text-[#D1AA49]">y con historia.</span>
               </h2>
             </div>
-            <div className="flex justify-center items-start gap-8 md:gap-12">
-              {shownEditions.map((p) => (
-                <EditionCard key={p.id} id={p.id} name={p.name} image={p.image} tag={p.tag} />
+            <div className="flex justify-center items-start gap-8 md:gap-14">
+              {shownEditions.map((p, i) => (
+                <EditionCard key={p.id} index={i + 1} id={p.id} name={p.name} image={p.image} tag={p.tag} notes={(p.tags || []).slice(1).join(' · ')} />
               ))}
             </div>
-            <a href="/productos" className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 hover:border-[#CCA678] hover:text-[#CCA678] transition-all">
+            <a href="/productos" className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 hover:border-[#D1AA49] hover:text-[#D1AA49] transition-all">
               Ver toda la colección <span aria-hidden="true">→</span>
             </a>
           </div>
