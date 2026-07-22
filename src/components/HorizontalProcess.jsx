@@ -209,20 +209,20 @@ const StepPanel = ({ num, title, text, img, alt, video, flip, onOpenVideo }) => 
  * Su foto lleva .hp-weave, así el hilo conductor también se teje por detrás.
  */
 const EditionCard = ({ id, name, image, tag }) => (
-  <a href={`/products/${id}`} className="group block shrink-0 w-[clamp(180px,24vw,300px)]">
-    <div className="hp-weave relative aspect-[4/5] rounded-sm overflow-hidden bg-white border border-[#1A1A1A]/8 mb-5 shadow-[0_20px_50px_rgba(0,0,0,0.06)]">
+  <a href={`/products/${id}`} className="group block shrink-0 w-[clamp(220px,25vw,340px)] text-center">
+    <div className="hp-weave relative aspect-[4/5] rounded-sm overflow-hidden bg-white border border-[#1A1A1A]/8 mb-6 shadow-[0_30px_70px_rgba(0,0,0,0.10)] transition-all duration-500 ease-out group-hover:-translate-y-1.5 group-hover:shadow-[0_40px_90px_rgba(0,0,0,0.14)]">
       <img
         src={image}
         alt={name}
-        className="w-full h-full object-contain p-6 transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+        className="w-full h-full object-contain p-7 transition-transform duration-500 ease-out group-hover:scale-[1.05]"
       />
       {tag && (
-        <span className="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest bg-[#F5F1EB]/85 backdrop-blur-sm px-3 py-1.5 rounded-sm font-bold text-[#1A1A1A]">
+        <span className="absolute top-4 left-4 z-10 text-[9px] uppercase tracking-widest bg-[#F5F1EB]/85 backdrop-blur-sm px-3 py-1.5 rounded-sm font-bold text-[#1A1A1A]">
           {tag}
         </span>
       )}
     </div>
-    <h4 className="font-serif text-xl md:text-2xl text-[#1A1A1A] group-hover:text-[#CCA678] transition-colors duration-300">{name}</h4>
+    <h4 className="font-serif text-xl md:text-2xl text-[#1A1A1A] group-hover:text-[#CCA678] transition-colors duration-300 leading-tight">{name}</h4>
   </a>
 );
 
@@ -319,6 +319,7 @@ const HorizontalProcess = ({ editions = [] }) => {
     const threadSeed = rootRef.current.querySelector('.hp-thread-seed');
     const threadMaskBg = rootRef.current.querySelector('.hp-thread-mask-bg');
     const threadHoles = Array.from(rootRef.current.querySelectorAll('.hp-thread-hole'));
+    const threadTail = rootRef.current.querySelector('.hp-thread-tail');
     const stationsX = Array.from({ length: PANELS }, (_, i) => i / (PANELS - 1));
     let threadLen = 0;
     let lastP = 0;
@@ -351,9 +352,10 @@ const HorizontalProcess = ({ editions = [] }) => {
       threadLen = threadLine.getTotalLength();
       threadLine.style.strokeDasharray = String(threadLen);
       threadLine.style.strokeDashoffset = String(threadLen);
-      // Estaciones en los cruces por el eje (y = base)
+      // Estaciones en los cruces por el eje (y = base). Solo las del proceso
+      // (título + pasos); el destino de las ediciones lo marcan las fichas.
       threadNodes.innerHTML = '';
-      stationsX.forEach((sx) => {
+      stationsX.slice(0, STEPS.length + 1).forEach((sx) => {
         const c = document.createElementNS(SVGNS, 'circle');
         c.setAttribute('cx', (sx * W).toFixed(1));
         c.setAttribute('cy', base.toFixed(1));
@@ -397,6 +399,42 @@ const HorizontalProcess = ({ editions = [] }) => {
         }
       }
       updateHoles();
+      updateTail();
+    };
+
+    // Corta la cola del hilo a la derecha de las fichas cuando el panel de
+    // ediciones está en pantalla: el recorrido TERMINA detrás de ellas, no
+    // sigue de largo hasta el borde. Durante el proceso queda inactivo (las
+    // fichas están fuera de pantalla), así el tejido a lo ancho no se toca.
+    const updateTail = () => {
+      if (!threadTail) return;
+      const cards = rootRef.current
+        ? rootRef.current.querySelectorAll('.hp-panel-editions .hp-weave')
+        : [];
+      const W = window.innerWidth;
+      const H = window.innerHeight;
+      // Cortamos desde el CENTRO de la última ficha: el hilo se hunde en ella
+      // y termina ahí, sin el gancho que asomaba abajo-derecha.
+      let cutX = Infinity;
+      let onScreen = false;
+      let rightmostRight = -Infinity;
+      cards.forEach((c) => {
+        const r = c.getBoundingClientRect();
+        if (r.left < W && r.right > 0) onScreen = true;
+        if (r.right > rightmostRight) {
+          rightmostRight = r.right;
+          cutX = (r.left + r.right) / 2;
+        }
+      });
+      if (onScreen && isFinite(cutX)) {
+        threadTail.setAttribute('x', cutX.toFixed(1));
+        threadTail.setAttribute('y', '0');
+        threadTail.setAttribute('width', Math.max(0, W - cutX).toFixed(1));
+        threadTail.setAttribute('height', String(H));
+      } else {
+        threadTail.setAttribute('width', '0');
+        threadTail.setAttribute('height', '0');
+      }
     };
 
     const onResizeThread = () => {
@@ -649,26 +687,28 @@ const HorizontalProcess = ({ editions = [] }) => {
               ediciones. Fondo crema; el hilo se teje tras las fichas y luego
               el scroll se suelta a la página normal. */}
           {shownEditions.length > 0 && (
-            <div className="hp-panel hp-panel-editions relative w-screen h-full shrink-0 flex items-center px-8 md:px-24 bg-[#F5F1EB]">
-              <div className="w-full max-w-6xl mx-auto">
-                <div className="mb-10 md:mb-14 max-w-2xl">
-                  <span className="text-[11px] uppercase tracking-[0.3em] text-[#CCA678] font-bold mb-5 block">Nuestras ediciones</span>
-                  <h2 className="font-serif text-4xl md:text-6xl text-[#1A1A1A] leading-[1.05]">
-                    Cafés con nombre <span className="italic text-[#CCA678]">y con historia.</span>
-                  </h2>
-                </div>
-                <div className="flex gap-6 md:gap-10 items-start">
-                  {shownEditions.map((p) => (
-                    <EditionCard key={p.id} id={p.id} name={p.name} image={p.image} tag={p.tag} />
-                  ))}
-                </div>
-                <a
-                  href="/productos"
-                  className="inline-flex items-center gap-2 mt-10 md:mt-12 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 hover:border-[#CCA678] hover:text-[#CCA678] transition-all"
-                >
-                  Ver toda la colección <span aria-hidden="true">→</span>
-                </a>
+            <div className="hp-panel hp-panel-editions relative w-screen h-full shrink-0 flex flex-col items-center justify-center gap-10 md:gap-14 px-6 md:px-16 bg-[#F5F1EB]">
+              {/* Titular en un solo renglón, centrado */}
+              <div className="text-center">
+                <span className="text-[11px] uppercase tracking-[0.3em] text-[#CCA678] font-bold mb-4 block">Nuestras ediciones</span>
+                <h2 className="font-serif text-4xl md:text-5xl text-[#1A1A1A] leading-[1.05] md:whitespace-nowrap">
+                  Cafés con nombre <span className="italic text-[#CCA678]">y con historia.</span>
+                </h2>
               </div>
+
+              {/* Las fichas, grandes y centradas en el viewport */}
+              <div className="flex justify-center items-start gap-8 md:gap-12">
+                {shownEditions.map((p) => (
+                  <EditionCard key={p.id} id={p.id} name={p.name} image={p.image} tag={p.tag} />
+                ))}
+              </div>
+
+              <a
+                href="/productos"
+                className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] border-b border-[#1A1A1A]/20 pb-1 hover:border-[#CCA678] hover:text-[#CCA678] transition-all"
+              >
+                Ver toda la colección <span aria-hidden="true">→</span>
+              </a>
             </div>
           )}
         </div>
@@ -695,6 +735,9 @@ const HorizontalProcess = ({ editions = [] }) => {
               {Array.from({ length: weaveCount }).map((_, i) => (
                 <rect key={i} className="hp-thread-hole" x="-9999" y="-9999" width="0" height="0" rx="6" fill="black" />
               ))}
+              {/* Cortador de cola: al llegar al panel final, oculta el hilo a
+                  la derecha de las fichas para que termine DETRÁS de ellas. */}
+              <rect className="hp-thread-tail" x="-9999" y="-9999" width="0" height="0" fill="black" />
             </mask>
           </defs>
 
