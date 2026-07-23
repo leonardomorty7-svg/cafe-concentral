@@ -169,13 +169,14 @@ const CinematicStory = () => {
       const H = window.innerHeight;
       if (!W || !H) return;
       threadSvg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-      // El hilo NACE justo debajo del texto de la finca (~0.56H) y baja con
-      // una ondulación corta y suave, pasando al lado del texto, hasta salir
-      // por el borde inferior (relevo hacia la sección de productos).
+      // El hilo NACE justo debajo del texto de la finca (~0.56H) y baja RECTO
+      // por el centro hasta salir por el borde inferior: así conecta, sin
+      // quiebre, con el hilo (también recto y centrado) de la sección de
+      // productos que lo retoma abajo. Coherencia arriba↔abajo.
       const anchors = [
         { x: 0.50 * W, y: 0.56 * H },
-        { x: 0.585 * W, y: 0.70 * H },
-        { x: 0.45 * W, y: 0.85 * H },
+        { x: 0.50 * W, y: 0.72 * H },
+        { x: 0.50 * W, y: 0.88 * H },
         { x: 0.50 * W, y: 1.04 * H },
       ];
       const d = smoothPath(anchors);

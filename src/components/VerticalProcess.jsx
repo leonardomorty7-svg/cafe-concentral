@@ -235,7 +235,7 @@ const priceLabel = (variants = []) => {
 const EditionCard = ({ id, name, image, variants }) => {
   const price = priceLabel(variants);
   return (
-    <a href={`/products/${id}`} className="vp-card group block shrink-0 w-[clamp(250px,26vw,340px)]">
+    <a href={`/products/${id}`} className="vp-card group block w-full">
       {/* Packshot: la bolsa FLOTA (object-contain con aire) sobre blanco
           limpio, como los mockups del cliente. Card más alta. */}
       <div
@@ -579,7 +579,7 @@ const VerticalProcess = ({ editions = [] }) => {
                 Cafés con nombre <span className="italic text-[#D1AA49]">y con historia.</span>
               </h2>
             </div>
-            <div className="flex justify-center items-start gap-8 md:gap-14">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-16 w-full max-w-7xl mx-auto">
               {shownEditions.map((p, i) => (
                 <EditionCard key={p.id} id={p.id} name={p.name} image={p.image} variants={p.variants} />
               ))}

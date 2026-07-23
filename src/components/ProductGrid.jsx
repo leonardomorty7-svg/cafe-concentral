@@ -248,7 +248,7 @@ const ProductGrid = ({ products = [], limit = 0, eyebrow, heading, headingItalic
                 {headingItalic && <span className="italic text-[#D1AA49]">{headingItalic}</span>}
               </h2>
               {description && (
-                <p className="mt-6 text-[#6B6B6B] font-light text-base md:text-lg leading-[1.7] md:whitespace-nowrap">
+                <p className="mt-6 mx-auto md:max-w-none text-[#6B6B6B] font-light text-base md:text-lg leading-[1.7] md:whitespace-nowrap">
                   {description}
                 </p>
               )}
