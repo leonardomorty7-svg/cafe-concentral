@@ -77,7 +77,7 @@ function smoothPath(points) {
 
 const BeatText = ({ eyebrow, title, italic, Tag = 'h2', withCtas = false }) => (
   <div className="max-w-5xl mx-auto px-6 text-center">
-    <p className="cine-eyebrow tracking-[0.3em] text-xs uppercase mb-6 text-[#D1AA49] font-bold">{eyebrow}</p>
+    <p className="cine-eyebrow max-w-none tracking-[0.3em] text-xs uppercase mb-6 text-[#D1AA49] font-bold">{eyebrow}</p>
     <Tag className="font-serif font-light text-white tracking-tight leading-[1.05] text-4xl md:text-6xl xl:text-7xl">
       <span className="cine-title-main block">{title}</span>{' '}
       <span className="cine-title-italic italic text-[#D1AA49] block mt-2">{italic}</span>

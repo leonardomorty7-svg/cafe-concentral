@@ -2,6 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Gotham (tipografía corporativa del manual) ───────────────────────── */
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/gotham/Gotham-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/gotham/Gotham-Book.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/gotham/Gotham-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/gotham/Gotham-Bold.otf') format('opentype');
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/gotham/Gotham-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     --base-black: #0B0B0B;
@@ -22,7 +59,7 @@
 
   body {
     @apply bg-[#F5F1EB] text-[#1A1A1A] antialiased;
-    font-family: 'Montserrat', 'Manrope', system-ui, sans-serif;
+    font-family: 'Gotham', 'Montserrat', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: all 0.4s ease-out;

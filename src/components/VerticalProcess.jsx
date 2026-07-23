@@ -414,6 +414,15 @@ const VerticalProcess = ({ editions = [] }) => {
         gsap.utils.toArray('.vp-beat').forEach((beat) => {
           const media = beat.querySelector('.vp-weave');
           if (media) gsap.from(media, { autoAlpha: 0, duration: 1.1, ease: 'power2.out', scrollTrigger: { trigger: beat, start: 'top 72%', once: true } });
+
+          // Parallax sutil (estilo le-mugs): la imagen deriva un poco con el
+          // scroll. Va sobre el <img>, no sobre .vp-weave, para que el ancla
+          // del hilo (centro del contenedor) quede intacta.
+          const inner = beat.querySelector('.vp-weave img, .vp-weave video');
+          if (inner) gsap.fromTo(inner, { yPercent: -7 }, {
+            yPercent: 7, ease: 'none',
+            scrollTrigger: { trigger: beat, start: 'top bottom', end: 'bottom top', scrub: true },
+          });
         });
 
         // Previews de video solo con la sección en vista.
