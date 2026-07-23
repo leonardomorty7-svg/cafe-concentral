@@ -313,30 +313,11 @@ const CinematicStory = () => {
         // Los puntos aparecen cuando empiezan las fotos.
         tl.to('.cine-dots', { autoAlpha: 1, duration: 0.2 }, BEANS_DUR + 0.1);
 
-        // ── El hilo conductor ondulado se dibuja bajando con el scroll ──
-        // La semilla EMERGE debajo del texto de la finca, y el hilo baja
-        // trazándose al lado del texto hasta salir por el borde inferior:
-        // ahí lo retoma la sección de productos (no se desvanece de golpe).
-        const lastAt = AT[AT.length - 1];
-        const threadStart = BEANS_DUR + 0.45;
-        const threadEnd = lastAt + 1.1;
-        const threadSpan = threadEnd - threadStart;
-        const threadProxy = { p: 0 };
-        tl.fromTo('.cine-thread', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, threadStart - 0.1);
-        tl.fromTo(
-          threadProxy,
-          { p: 0 },
-          { p: 1, duration: threadSpan, ease: 'none', onUpdate: () => updateThread(threadProxy.p) },
-          threadStart
-        );
-
         // Cola para sostener el beat final antes de soltar el pin.
         tl.to({}, { duration: 0.5 });
 
-        // La semilla del hilo respira, igual que en el proceso: el hilo
-        // conductor nace en la apertura y sigue por toda la web.
+        // La semilla del aviso de scroll respira.
         gsap.to('.cine-seed', { y: 6, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1 });
-        gsap.to('.cine-thread-bean', { scale: 1.14, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1, transformOrigin: 'center' });
       }, rootRef);
     });
 
@@ -393,33 +374,6 @@ const CinematicStory = () => {
         <canvas ref={beansRef} className="cine-beans absolute inset-0 w-full h-full z-[7]">
           <img src={LAST_FRAME} alt="Café Coocentral" />
         </canvas>
-
-        {/* El hilo conductor ondulado: nace cuando el logo se disuelve, ondea
-            alrededor del texto y baja dibujándose con la semilla en la punta.
-            Va por encima de las fotos (z-9) pero por debajo del texto (z-10),
-            así se teje por detrás de las palabras. */}
-        <svg
-          className="cine-thread absolute inset-0 w-full h-full z-[9] pointer-events-none opacity-0"
-          aria-hidden="true"
-          preserveAspectRatio="none"
-        >
-          <path className="cine-thread-track" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
-          <path
-            className="cine-thread-line"
-            fill="none"
-            stroke="#D1AA49"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            style={{ filter: 'drop-shadow(0 0 7px rgba(209,170,73,0.6))' }}
-          />
-          <g className="cine-thread-seed">
-            <g className="cine-thread-bean">
-              <circle r="13" fill="rgba(209,170,73,0.26)" />
-              <ellipse rx="6.5" ry="9.5" fill="rgba(209,170,73,0.14)" stroke="#D1AA49" strokeWidth="1.6" />
-              <path d="M0 -8 C -5 -2.5, -5 2.5, 0 8" fill="none" stroke="#D1AA49" strokeWidth="1.6" />
-            </g>
-          </g>
-        </svg>
 
         {/* El aviso de scroll: la semilla dorada al pie, se despide al arrancar. */}
         <div className="cine-hint absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none z-[10]">

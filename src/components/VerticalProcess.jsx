@@ -27,27 +27,24 @@ const STEPS = [
     num: '01',
     title: 'Nuestras manos',
     text: 'Más de 3.500 familias del Huila cultivan cada grano con el conocimiento que heredaron de sus padres y el cuidado de quien trabaja su propia tierra.',
-    img: '/assets/images/proceso-nuestras-manos.jpg',
-    alt: 'Manos empacando una bolsa de Café Coocentral en la planta',
+    img: '/assets/process/proceso-01-nuestras-manos.png',
+    alt: 'Grano y cereza de café con la hoja, cultivado por las familias del Huila',
     illustration: 'branch',
   },
   {
     num: '02',
     title: 'Nuestro cuidado',
     text: 'Seleccionamos, secamos y tostamos cada lote con el mismo rigor con el que fue cultivado. Cuidar el grano es cuidar el trabajo que hay detrás.',
-    img: '/assets/images/tostion-cafe.jpg',
-    alt: 'Granos de café en la tostadora de Coocentral',
-    // Cuando llegue el material del cliente, se reemplaza este archivo (mismo
-    // nombre) y listo. Mientras tanto `img` hace de póster.
-    video: '/assets/process/proceso-cuidado.mp4',
+    img: '/assets/process/proceso-02-nuestro-cuidado.png',
+    alt: 'Bolsas de Café Coocentral reposando sobre un costal de fique con grano',
     illustration: 'hands',
   },
   {
     num: '03',
     title: 'Nuestro propósito',
     text: 'Llevamos el café del Huila al mundo para que el valor regrese a quienes lo cultivan. El café viaja, el bienestar vuelve.',
-    img: '/assets/images/cafes-premium-costales.jpg',
-    alt: 'Cafés Coocentral sobre costales de exportación',
+    img: '/assets/process/proceso-03-nuestro-proposito.png',
+    alt: 'Cafés Coocentral junto a una taza servida, listos para el mundo',
     illustration: 'world',
   },
 ];
@@ -149,50 +146,22 @@ const VideoLightbox = ({ src, title, onClose }) => {
 };
 
 /**
- * OvalMedia — foto o video enmascarados en una elipse vertical (estilo Jazean).
- * Lleva .vp-weave: es punto de anclaje del hilo y hueco de la máscara.
+ * ProcessMedia — imagen PNG transparente del cliente, FLOTANDO con sombra
+ * (sin óvalo ni recorte). Lleva .vp-weave: es punto de anclaje del hilo y
+ * hueco de la máscara, así el hilo dorado se teje por detrás.
  */
-const OvalMedia = ({ img, video, alt, title, onOpenVideo }) => (
-  <div className="vp-weave relative mx-auto w-[clamp(240px,34vw,420px)] aspect-[4/5] rounded-[50%] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.5)]">
-    {video ? (
-      <video
-        className="vp-video w-full h-full object-cover"
-        src={video}
-        poster={img}
-        aria-hidden="true"
-        muted
-        loop
-        playsInline
-        preload="metadata"
-      />
-    ) : (
-      <img src={img} alt={alt} className="w-full h-full object-cover" />
-    )}
-    <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 50% 60%, transparent 55%, rgba(0,0,0,0.35))' }} />
-
-    {video && (
-      <button
-        type="button"
-        onClick={() => onOpenVideo({ src: video, title })}
-        aria-label={`Ver el video: ${title}`}
-        className="group absolute inset-0 flex flex-col items-center justify-center gap-3 cursor-pointer"
-      >
-        <span className="relative flex items-center justify-center">
-          <span className="hp-pulse-ring absolute w-20 h-20 rounded-full border border-[#D1AA49]/50" style={{ animation: 'hpPulse 2.4s ease-out infinite' }} aria-hidden="true" />
-          <span className="relative w-16 h-16 rounded-full border border-[#D1AA49]/80 bg-black/35 backdrop-blur-sm flex items-center justify-center transition-all duration-500 group-hover:bg-[#D1AA49] group-hover:scale-110">
-            <svg width="15" height="18" viewBox="0 0 15 18" fill="none" aria-hidden="true" className="ml-1">
-              <path d="M14 9L0.5 17.2V0.8L14 9z" className="fill-[#D1AA49] transition-colors duration-500 group-hover:fill-[#0B0B0B]" />
-            </svg>
-          </span>
-        </span>
-        <span className="text-[10px] uppercase tracking-[0.3em] text-white/70 font-bold transition-colors duration-300 group-hover:text-white">Ver el video</span>
-      </button>
-    )}
+const ProcessMedia = ({ img, alt }) => (
+  <div className="vp-weave relative mx-auto w-[clamp(280px,40vw,520px)]">
+    <img
+      src={img}
+      alt={alt}
+      className="w-full h-auto object-contain drop-shadow-[0_36px_70px_rgba(0,0,0,0.55)]"
+    />
   </div>
 );
 
 /**
- * Beat — un momento del proceso: óvalo a un lado, texto al otro (alternando).
+ * Beat — un momento del proceso: imagen a un lado, texto al otro (alternando).
  */
 const Beat = ({ num, title, text, img, video, alt, flip, illustration, onOpenVideo }) => (
   <div className="vp-beat relative min-h-screen flex items-center px-6 md:px-16 py-24 overflow-hidden">
@@ -208,7 +177,7 @@ const Beat = ({ num, title, text, img, video, alt, flip, illustration, onOpenVid
     )}
     <div className={`relative grid grid-cols-1 md:grid-cols-2 items-center gap-12 md:gap-20 w-full max-w-6xl mx-auto ${flip ? 'md:[direction:rtl]' : ''}`}>
       <div className="[direction:ltr]">
-        <OvalMedia img={img} video={video} alt={alt} title={title} onOpenVideo={onOpenVideo} />
+        <ProcessMedia img={img} alt={alt} />
       </div>
       <div className="[direction:ltr] max-w-md">
         <span className="font-serif italic text-5xl md:text-7xl text-[#D1AA49] inline-block">{num}</span>
@@ -553,15 +522,16 @@ const VerticalProcess = ({ editions = [] }) => {
         {/* Título — arranque del hilo, centrado en el viewport */}
         <div className="min-h-screen flex items-center justify-center px-6 md:px-16">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="vp-bean vp-start inline-block mb-10">
-              <BeanIcon width={40} height={56} />
-            </div>
             <h2 className="font-serif font-light text-4xl md:text-6xl xl:text-7xl text-white leading-[1.08]">
               Un proceso guiado por la <span className="italic text-[#D1AA49]">cooperación.</span>
             </h2>
             <p className="mt-10 text-white/50 font-light text-base md:text-lg max-w-md mx-auto">
               Tres momentos entre la tierra y tu taza. Baja despacio: el hilo te lleva.
             </p>
+            {/* El grano NACE debajo del texto: desde aquí arranca el hilo. */}
+            <div className="vp-bean vp-start inline-block mt-14">
+              <BeanIcon width={40} height={56} />
+            </div>
           </div>
         </div>
 
