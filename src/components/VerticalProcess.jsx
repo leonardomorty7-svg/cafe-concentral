@@ -492,7 +492,7 @@ const VerticalProcess = ({ editions = [] }) => {
       <div className="absolute inset-0 pointer-events-none z-[2]" style={{ backgroundImage: GRAIN, opacity: 0.05, mixBlendMode: 'overlay' }} />
 
       {/* El hilo conductor — un SVG que cubre toda la sección */}
-      <svg className="vp-thread absolute inset-0 w-full h-full z-20 pointer-events-none" aria-hidden="true" preserveAspectRatio="none">
+      <svg className="vp-thread hidden md:block absolute inset-0 w-full h-full z-20 pointer-events-none" aria-hidden="true" preserveAspectRatio="none">
         <defs>
           <mask id="vpThreadMask" maskUnits="userSpaceOnUse">
             <rect className="vp-mask-bg" x="0" y="0" width="100%" height="100%" fill="white" />

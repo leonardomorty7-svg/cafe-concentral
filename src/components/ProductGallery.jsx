@@ -32,13 +32,16 @@ const ProductGallery = ({ images = [], name = '', badge = null }) => {
         </span>
       )}
 
-      {/* Primary image */}
-      <div className="aspect-[4/5] rounded-sm overflow-hidden bg-white shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
+      {/* Primary image — la bolsa FLOTA (object-contain con aire), sin recorte */}
+      <div
+        className="aspect-[4/5] rounded-sm overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.08)] ring-1 ring-black/[0.04]"
+        style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F6F1E9 100%)' }}
+      >
         <img
           src={activeImage}
           alt={name}
           loading="eager"
-          className={`w-full h-full object-cover transition-opacity duration-200 ${fading ? 'opacity-0' : 'opacity-100'}`}
+          className={`w-full h-full object-contain p-8 md:p-12 transition-opacity duration-200 ${fading ? 'opacity-0' : 'opacity-100'}`}
         />
       </div>
 
@@ -63,7 +66,7 @@ const ProductGallery = ({ images = [], name = '', badge = null }) => {
                   src={src}
                   alt={`${name} — vista ${i + 1}`}
                   loading="lazy"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain p-2"
                 />
               </button>
             );

@@ -11,10 +11,18 @@ const GRID_PRODUCTS = getAllProducts().map((p) => ({
 ---
 
 <MainLayout title="Productos | Café Coocentral">
-	<div class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
-		<h1 class="text-5xl font-bold mb-8">Nuestros cafés</h1>
-		<p class="text-neutral-500 text-lg max-w-3xl">Cada uno nace en las montañas del Huila, del trabajo de las familias que hacen parte de nuestra cooperativa.</p>
-	</div>
-	
+	{/* Encabezado premium — sobre crema, centrado, para que fluya con la grilla */}
+	<section class="bg-[#F5F1EB] pt-40 md:pt-52 px-6">
+		<div class="max-w-3xl mx-auto text-center" data-fx="header">
+			<span class="text-[11px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold mb-6 block" data-fx-eyebrow>Nuestra colección</span>
+			<h1 class="font-serif font-light text-4xl md:text-6xl xl:text-7xl text-[#1A1A1A] leading-tight">
+				Nuestros <span class="italic text-[#D1AA49]">cafés</span>
+			</h1>
+			<p class="mt-6 mx-auto max-w-xl text-[#6B6B6B] font-light text-base md:text-lg leading-[1.7]">
+				Cada uno nace en las montañas del Huila, del trabajo de las familias que hacen parte de nuestra cooperativa.
+			</p>
+		</div>
+	</section>
+
 	<ProductGrid client:load products={GRID_PRODUCTS} />
 </MainLayout>
