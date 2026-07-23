@@ -29,7 +29,7 @@ const ProductCard = ({ id, name, tag, description, category, image, variants = [
       {/* Packshot: la bolsa FLOTA (object-contain con aire) sobre un blanco
           limpio y consistente — como los mockups del cliente. Card más alta. */}
       <div
-        className="relative aspect-[3/4] rounded-sm overflow-hidden mb-6"
+        className="relative aspect-[3/4] rounded-sm overflow-hidden mb-6 shadow-[0_8px_24px_rgba(0,0,0,0.05)] ring-1 ring-black/[0.04] transition-all duration-500 group-hover:shadow-[0_36px_72px_rgba(0,0,0,0.17)] group-hover:ring-[#D1AA49]/40"
         style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F6F1E9 100%)' }}
       >
         <img
@@ -58,9 +58,9 @@ const ProductCard = ({ id, name, tag, description, category, image, variants = [
           {name}
         </h3>
         {Number.isFinite(lowestPrice) && (
-          <span className="font-serif text-base md:text-lg text-[#1A1A1A]/70 shrink-0 whitespace-nowrap tabular-nums">
+          <span className="font-serif text-xl md:text-2xl text-[#1A1A1A] font-medium shrink-0 whitespace-nowrap tabular-nums">
             {variants.length > 1 && (
-              <span className="font-sans text-[10px] uppercase tracking-wide text-[#9A9488] mr-1">desde</span>
+              <span className="font-sans text-[10px] uppercase tracking-wide text-[#9A9488] mr-1 font-semibold align-middle">desde</span>
             )}
             {formatPrice(lowestPrice)}
           </span>

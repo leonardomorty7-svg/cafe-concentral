@@ -208,7 +208,7 @@ const EditionCard = ({ id, name, image, variants }) => {
       {/* Packshot: la bolsa FLOTA (object-contain con aire) sobre blanco
           limpio, como los mockups del cliente. Card más alta. */}
       <div
-        className="relative aspect-[3/4] rounded-sm overflow-hidden mb-6 transition-transform duration-500 ease-out group-hover:-translate-y-2"
+        className="relative aspect-[3/4] rounded-sm overflow-hidden mb-6 shadow-[0_8px_24px_rgba(0,0,0,0.06)] ring-1 ring-black/[0.04] transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:shadow-[0_36px_72px_rgba(0,0,0,0.18)] group-hover:ring-[#D1AA49]/40"
         style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F6F1E9 100%)' }}
       >
         <img
@@ -219,7 +219,7 @@ const EditionCard = ({ id, name, image, variants }) => {
       </div>
       <div className="flex items-baseline justify-between gap-3 px-1">
         <h4 className="font-serif text-xl md:text-2xl text-[#1A1A1A] leading-tight group-hover:text-[#D1AA49] transition-colors duration-300">{name}</h4>
-        {price && <span className="font-serif text-lg text-[#1A1A1A]/70 shrink-0 tabular-nums">{price}</span>}
+        {price && <span className="font-serif text-lg md:text-xl text-[#1A1A1A] font-medium shrink-0 tabular-nums">{price}</span>}
       </div>
     </a>
   );
@@ -520,8 +520,16 @@ const VerticalProcess = ({ editions = [] }) => {
       {/* Contenido */}
       <div className="relative z-10">
         {/* Título — arranque del hilo, centrado en el viewport */}
-        <div className="min-h-screen flex items-center justify-center px-6 md:px-16">
-          <div className="max-w-3xl mx-auto text-center">
+        <div className="relative min-h-screen flex items-center justify-center px-6 md:px-16">
+          {/* Rama de café — adorno del intro, a la derecha del hilo (como el mockup) */}
+          <img
+            src="/assets/process/proceso-inicio.png"
+            alt=""
+            aria-hidden="true"
+            className="hidden md:block absolute z-[6] pointer-events-none select-none w-[clamp(140px,14vw,220px)] drop-shadow-[0_24px_50px_rgba(0,0,0,0.55)]"
+            style={{ left: '54%', top: '57%' }}
+          />
+          <div className="relative z-10 max-w-3xl mx-auto text-center">
             <h2 className="font-serif font-light text-4xl md:text-6xl xl:text-7xl text-white leading-[1.08]">
               Un proceso guiado por la <span className="italic text-[#D1AA49]">cooperación.</span>
             </h2>
