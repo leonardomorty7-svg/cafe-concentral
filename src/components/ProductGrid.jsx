@@ -74,7 +74,7 @@ const ProductCard = ({ id, name, tag, description, category, image, variants = [
  * (tierra → familias → modelo) y puede apoyarse en él. En /productos la página
  * ya trae su propio h1, así que se omite para no duplicarlo.
  */
-const ProductGrid = ({ products = [], limit = 0, eyebrow, heading, headingItalic, description }) => {
+const ProductGrid = ({ products = [], limit = 0, eyebrow, heading, headingItalic, description, centered = false }) => {
   if (!products || products.length === 0) return null;
 
   // limit=0 means show all; any positive number caps the list
@@ -84,22 +84,41 @@ const ProductGrid = ({ products = [], limit = 0, eyebrow, heading, headingItalic
     <section className="py-32 md:py-48 px-6 bg-[#F5F1EB]" id="productos">
       <div className="max-w-7xl mx-auto">
         {heading && (
-          <div className="mb-24 flex flex-col md:flex-row justify-between items-end gap-10" data-fx="header">
-            <div className="max-w-2xl">
+          centered ? (
+            // Encabezado centrado: título en un solo renglón (desde md) y el
+            // apoyo, pequeño, centrado debajo — cierra el recorrido del hero.
+            <div className="mb-24 text-center" data-fx="header">
               {eyebrow && (
                 <span className="text-[11px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold mb-6 block" data-fx-eyebrow>{eyebrow}</span>
               )}
-              <h2 className="text-4xl md:text-6xl font-serif text-[#1A1A1A] leading-tight">
+              <h2 className="text-4xl md:text-5xl xl:text-6xl font-serif text-[#1A1A1A] leading-tight md:whitespace-nowrap">
                 {heading}{' '}
                 {headingItalic && <span className="italic text-[#D1AA49]">{headingItalic}</span>}
               </h2>
+              {description && (
+                <p className="mt-6 text-[#6B6B6B] font-light text-base md:text-lg leading-[1.7] md:whitespace-nowrap">
+                  {description}
+                </p>
+              )}
             </div>
-            {description && (
-              <p className="text-[#6B6B6B] max-w-sm font-light text-lg leading-[1.7]">
-                {description}
-              </p>
-            )}
-          </div>
+          ) : (
+            <div className="mb-24 flex flex-col md:flex-row justify-between items-end gap-10" data-fx="header">
+              <div className="max-w-2xl">
+                {eyebrow && (
+                  <span className="text-[11px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold mb-6 block" data-fx-eyebrow>{eyebrow}</span>
+                )}
+                <h2 className="text-4xl md:text-6xl font-serif text-[#1A1A1A] leading-tight">
+                  {heading}{' '}
+                  {headingItalic && <span className="italic text-[#D1AA49]">{headingItalic}</span>}
+                </h2>
+              </div>
+              {description && (
+                <p className="text-[#6B6B6B] max-w-sm font-light text-lg leading-[1.7]">
+                  {description}
+                </p>
+              )}
+            </div>
+          )
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-20 gap-x-10" data-fx="stagger">

@@ -6,13 +6,15 @@ import BeanIcon from './BeanIcon.jsx';
  * CinematicStory — la apertura del sitio como UNA sola animación continua,
  * dentro de un único pin y un único timeline con scrub de scroll:
  *
- *   granos (secuencia del cliente) → logo → la finca florece detrás del
- *   logo → oportunidades → la tierra → (suelta el pin hacia la tienda)
+ *   granos (secuencia del cliente) → logo → la finca se FUNDE detrás del logo
+ *   → oportunidades → (suelta el pin hacia la tienda)
  *
- * Los granos son 76 fotogramas WebP (render de After Effects del cliente,
- * 1080p) dibujados en canvas con object-cover y scrubbed por el scroll;
- * al llegar al logo, el canvas se disuelve mientras la primera foto ya
- * está floreciendo debajo. Nada se siente como "otra sección".
+ * Las transiciones entre imágenes son FUNDIDOS CRUZADOS (no deslizamientos):
+ * cada capa vive a pantalla completa (inset-0, object-cover) y solo cambia su
+ * opacidad, así JAMÁS se expone un borde ni se ve un "recorte". La sensación
+ * de descenso la dan el ken-burns (la foto entra un poco desde abajo y hace
+ * zoom-out) y el HILO CONDUCTOR ondulado que se dibuja bajando con el scroll,
+ * con la semilla de café viajando en su punta — el mismo hilo del proceso.
  */
 
 const GOLD = '#D1AA49';
@@ -53,6 +55,25 @@ const BEATS = [
 // Viñeta de cine: centro más luminoso, bordes hundidos.
 const VIGNETTE =
   'radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.62) 95%), linear-gradient(rgba(0,0,0,0.28), rgba(0,0,0,0.45))';
+
+/** Catmull-Rom → polyline suave que pasa por todos los puntos ancla. */
+function smoothPath(points) {
+  if (points.length < 2) return '';
+  const p = [points[0], ...points, points[points.length - 1]];
+  let d = `M${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)} `;
+  const SEG = 24;
+  for (let i = 1; i < p.length - 2; i++) {
+    const p0 = p[i - 1], p1 = p[i], p2 = p[i + 1], p3 = p[i + 2];
+    for (let t = 1; t <= SEG; t++) {
+      const s = t / SEG;
+      const s2 = s * s, s3 = s2 * s;
+      const x = 0.5 * ((2 * p1.x) + (-p0.x + p2.x) * s + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * s2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * s3);
+      const y = 0.5 * ((2 * p1.y) + (-p0.y + p2.y) * s + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * s2 + (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * s3);
+      d += `L${x.toFixed(1)} ${y.toFixed(1)} `;
+    }
+  }
+  return d;
+}
 
 const BeatText = ({ eyebrow, title, italic, Tag = 'h2', withCtas = false }) => (
   <div className="max-w-5xl mx-auto px-6 text-center">
@@ -134,7 +155,54 @@ const CinematicStory = () => {
       images[i] = im;
     });
 
-    window.addEventListener('resize', resizeBeans);
+    // ── Hilo conductor ondulado (SVG a tamaño del viewport) ───────────
+    const threadSvg = rootRef.current.querySelector('.cine-thread');
+    const threadTrack = rootRef.current.querySelector('.cine-thread-track');
+    const threadLine = rootRef.current.querySelector('.cine-thread-line');
+    const threadSeed = rootRef.current.querySelector('.cine-thread-seed');
+    let threadLen = 0;
+    let lastP = 0;
+
+    const buildThread = () => {
+      if (!threadSvg || !threadLine || !threadTrack) return;
+      const W = window.innerWidth;
+      const H = window.innerHeight;
+      if (!W || !H) return;
+      threadSvg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      // Ondulación suave alrededor del texto centrado: baja desde donde
+      // reposa el logo y ondea de lado a lado (±10% del ancho) hasta salir.
+      const anchors = [
+        { x: 0.50 * W, y: 0.01 * H },
+        { x: 0.58 * W, y: 0.17 * H },
+        { x: 0.40 * W, y: 0.35 * H },
+        { x: 0.60 * W, y: 0.53 * H },
+        { x: 0.41 * W, y: 0.71 * H },
+        { x: 0.55 * W, y: 0.89 * H },
+        { x: 0.50 * W, y: 1.03 * H },
+      ];
+      const d = smoothPath(anchors);
+      threadTrack.setAttribute('d', d);
+      threadLine.setAttribute('d', d);
+      threadLen = threadLine.getTotalLength();
+      threadLine.style.strokeDasharray = String(threadLen);
+      threadLine.style.strokeDashoffset = String(threadLen);
+      updateThread(lastP);
+    };
+
+    const updateThread = (p) => {
+      lastP = p;
+      if (!threadLen || !threadLine) return;
+      const clamped = Math.max(0, Math.min(1, p));
+      threadLine.style.strokeDashoffset = String(threadLen * (1 - clamped));
+      const pt = threadLine.getPointAtLength(threadLen * clamped);
+      if (threadSeed) threadSeed.setAttribute('transform', `translate(${pt.x.toFixed(1)} ${pt.y.toFixed(1)})`);
+    };
+
+    const onResize = () => {
+      resizeBeans();
+      buildThread();
+    };
+    window.addEventListener('resize', onResize);
     resizeBeans();
 
     // gsap y ScrollTrigger son CJS: importarlos estáticos rompe el SSR de Astro.
@@ -145,6 +213,8 @@ const CinematicStory = () => {
       gsap.registerPlugin(ScrollTrigger);
 
       ctx = gsap.context(() => {
+        buildThread();
+
         const tl = gsap.timeline({
           defaults: { ease: 'none' },
           scrollTrigger: {
@@ -153,6 +223,7 @@ const CinematicStory = () => {
             end: 'bottom bottom',
             scrub: true,
             invalidateOnRefresh: true,
+            onRefresh: () => buildThread(),
           },
         });
 
@@ -160,11 +231,9 @@ const CinematicStory = () => {
         const texts = gsap.utils.toArray('.cine-text');
         const dots = gsap.utils.toArray('.cine-dot');
 
-        // El beat arranca invisible (inline opacity:0, evita flash en carga);
-        // GSAP lo hace visible y el fromTo de abajo lo posiciona/anima. Usamos
-        // fromTo (no .to) porque con invalidateOnRefresh los .to re-leen el
-        // inicio y se quedaban abajo — el fromTo trae el valor explícito.
-        gsap.set(beats, { autoAlpha: 1 });
+        // Las fotos empiezan invisibles y a pantalla completa (inset-0). Con
+        // fundido cruzado nunca se mueve la capa entera → nunca hay recorte.
+        gsap.set(beats, { autoAlpha: 0 });
 
         // ── Fase 1: los granos se scrubbean hasta el logo ──────────────
         tl.to(beans, { frame: FRAME_COUNT - 1, duration: BEANS_DUR, onUpdate: drawBeans }, 0);
@@ -174,41 +243,51 @@ const CinematicStory = () => {
         // está ahí antes del primer scroll) y se despide al arrancar el viaje.
         tl.to('.cine-opening', { autoAlpha: 0, y: -40, duration: 0.7, ease: 'power2.in' }, 0.9);
 
-        // El canvas de granos (con el logo) se disuelve para revelar las
-        // fotos que ya están floreciendo debajo.
-        tl.to('.cine-beans', { autoAlpha: 0, duration: 0.6, ease: 'power1.inOut' }, BEANS_DUR);
+        // ── Fase 2: las fotos se FUNDEN una sobre otra (cross-fade) ─────
+        // Momentos de cada beat, con aire entre ellos.
+        const AT = [BEANS_DUR, BEANS_DUR + 1.8];
+        const FADE = 0.8;
 
-        // ── Fase 2: las fotos BAJAN una tras otra (scroll-down) ────────
-        // Cada imagen entra desde abajo cubriendo la anterior: la sensación
-        // de ir bajando, como en el proceso y en la referencia (jazeancoffee).
-        // Así el hilo conductor (la semilla que desciende) cobra sentido.
         beats.forEach((beat, i) => {
-          const at = BEANS_DUR + i * 1.5 + (i === 0 ? 0 : 0.2);
+          const at = AT[i];
+          const img = beat.querySelector('img');
 
-          tl.fromTo(beat, { yPercent: 100 }, { yPercent: 0, duration: 1, ease: 'power2.inOut' }, at);
-          tl.fromTo(beat.querySelector('img'), { scale: 1.16 }, { scale: 1, duration: 1.2, ease: 'power1.out' }, at);
+          // Fundido de la foto (capa completa: sin exponer bordes).
+          tl.to(beat, { autoAlpha: 1, duration: FADE, ease: 'power1.inOut' }, at);
+
+          // Ken-burns + leve deriva desde abajo → sensación de descenso sin
+          // deslizar la capa. El drift termina pronto, mientras la escala
+          // sigue >1 (headroom del object-cover), así jamás asoma un borde.
+          tl.fromTo(img, { scale: 1.14 }, { scale: 1.0, duration: 3.2, ease: 'power1.out' }, at);
+          tl.fromTo(img, { yPercent: 4 }, { yPercent: 0, duration: FADE + 0.3, ease: 'power2.out' }, at);
+
+          // La primera foto se funde a la vez que se disuelve el canvas de
+          // granos (con el logo): un dissolve limpio granos → finca.
+          if (i === 0) {
+            tl.to('.cine-beans', { autoAlpha: 0, duration: FADE, ease: 'power1.inOut' }, at);
+          }
 
           // La frase entra coreografiada: eyebrow comprimiendo su tracking,
           // luego la línea principal y por último la itálica.
           const text = texts[i];
-          tl.fromTo(text, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, at + 0.55);
+          tl.fromTo(text, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, at + 0.5);
           tl.fromTo(
             text.querySelector('.cine-eyebrow'),
             { letterSpacing: '0.7em', autoAlpha: 0, y: 20 },
             { letterSpacing: '0.3em', autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' },
-            at + 0.55
+            at + 0.5
           );
           tl.fromTo(
             text.querySelector('.cine-title-main'),
-            { y: 50, autoAlpha: 0 },
+            { y: 44, autoAlpha: 0 },
             { y: 0, autoAlpha: 1, duration: 0.3, ease: 'power2.out' },
-            at + 0.62
+            at + 0.58
           );
           tl.fromTo(
             text.querySelector('.cine-title-italic'),
-            { y: 60, autoAlpha: 0 },
+            { y: 52, autoAlpha: 0 },
             { y: 0, autoAlpha: 1, duration: 0.3, ease: 'power2.out' },
-            at + 0.7
+            at + 0.66
           );
           if (i === beats.length - 1) {
             tl.fromTo(
@@ -218,13 +297,14 @@ const CinematicStory = () => {
               at + 0.85
             );
           } else {
-            tl.to(text, { autoAlpha: 0, y: -50, duration: 0.25, ease: 'power2.in' }, at + 1.25);
+            // La frase saliente se despide antes de que entre la siguiente foto.
+            tl.to(text, { autoAlpha: 0, y: -44, duration: 0.3, ease: 'power2.in' }, AT[i + 1] - 0.35);
           }
 
           // Punto de progreso del beat activo.
-          tl.to(dots[i], { backgroundColor: GOLD, scale: 1.7, duration: 0.12 }, at + 0.55);
+          tl.to(dots[i], { backgroundColor: GOLD, scale: 1.7, duration: 0.12 }, at + 0.5);
           if (i > 0) {
-            tl.to(dots[i - 1], { backgroundColor: 'rgba(255,255,255,0.25)', scale: 1, duration: 0.12 }, at + 0.55);
+            tl.to(dots[i - 1], { backgroundColor: 'rgba(255,255,255,0.25)', scale: 1, duration: 0.12 }, at + 0.5);
           }
         });
 
@@ -234,12 +314,22 @@ const CinematicStory = () => {
         // Los puntos aparecen cuando empiezan las fotos.
         tl.to('.cine-dots', { autoAlpha: 1, duration: 0.2 }, BEANS_DUR + 0.1);
 
-        // El hilo conductor acompaña las fotos del cliente: aparece con ellas,
-        // su semilla baja por el riel y se despide justo antes de soltar el pin.
-        const beatsSpan = beats.length * 1.5 + 0.6;
-        tl.fromTo('.cine-thread', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, BEANS_DUR - 0.1);
-        tl.fromTo('.cine-thread-seed', { top: '0%' }, { top: '100%', ease: 'none', duration: beatsSpan }, BEANS_DUR);
-        tl.to('.cine-thread', { autoAlpha: 0, duration: 0.4 }, BEANS_DUR + beatsSpan);
+        // ── El hilo conductor ondulado se dibuja bajando con el scroll ──
+        // Aparece cuando el logo se disuelve y se sigue trazando a lo largo
+        // de las fotos; la semilla viaja en la punta. Al final se despide y
+        // el proceso lo retoma.
+        const lastAt = AT[AT.length - 1];
+        const threadEnd = lastAt + 1.3;
+        const threadSpan = threadEnd - BEANS_DUR;
+        const threadProxy = { p: 0 };
+        tl.fromTo('.cine-thread', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, BEANS_DUR - 0.2);
+        tl.fromTo(
+          threadProxy,
+          { p: 0 },
+          { p: 1, duration: threadSpan, ease: 'none', onUpdate: () => updateThread(threadProxy.p) },
+          BEANS_DUR
+        );
+        tl.to('.cine-thread', { autoAlpha: 0, duration: 0.4 }, threadEnd);
 
         // Cola para sostener el beat final antes de soltar el pin.
         tl.to({}, { duration: 0.5 });
@@ -247,12 +337,13 @@ const CinematicStory = () => {
         // La semilla del hilo respira, igual que en el proceso: el hilo
         // conductor nace en la apertura y sigue por toda la web.
         gsap.to('.cine-seed', { y: 6, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+        gsap.to('.cine-thread-bean', { scale: 1.14, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1, transformOrigin: 'center' });
       }, rootRef);
     });
 
     return () => {
       cancelled = true;
-      window.removeEventListener('resize', resizeBeans);
+      window.removeEventListener('resize', onResize);
       stopDust();
       if (ctx) ctx.revert();
     };
@@ -275,14 +366,14 @@ const CinematicStory = () => {
   return (
     <section ref={rootRef} className="relative bg-black" style={{ height: '440vh' }} aria-label="Café Coocentral">
       <div className="sticky top-0 h-screen overflow-hidden">
-        {/* Fotos: florecen por círculo en orden, cada una tapa la anterior */}
+        {/* Fotos: a pantalla completa, se FUNDEN una sobre otra (sin recortes) */}
         {BEATS.map((b) => (
           <div
             key={b.img}
-            className="cine-beat absolute inset-0 z-[8] will-change-transform"
+            className="cine-beat absolute inset-0 z-[8] will-change-[opacity]"
             style={{ opacity: 0 }}
           >
-            <img src={b.img} alt={b.alt} className="w-full h-full object-cover" />
+            <img src={b.img} alt={b.alt} className="w-full h-full object-cover will-change-transform" />
             <div className="absolute inset-0" style={{ background: VIGNETTE }} />
           </div>
         ))}
@@ -304,26 +395,40 @@ const CinematicStory = () => {
           <img src={LAST_FRAME} alt="Café Coocentral" />
         </canvas>
 
-        {/* El hilo conductor nace aquí: la semilla dorada y un hilo que baja,
-            el mismo que recorrerá el proceso. También hace de aviso de scroll. */}
-        <div className="cine-hint absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none z-[8]">
+        {/* El hilo conductor ondulado: nace cuando el logo se disuelve, ondea
+            alrededor del texto y baja dibujándose con la semilla en la punta.
+            Va por encima de las fotos (z-9) pero por debajo del texto (z-10),
+            así se teje por detrás de las palabras. */}
+        <svg
+          className="cine-thread absolute inset-0 w-full h-full z-[9] pointer-events-none opacity-0"
+          aria-hidden="true"
+          preserveAspectRatio="none"
+        >
+          <path className="cine-thread-track" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
+          <path
+            className="cine-thread-line"
+            fill="none"
+            stroke="#D1AA49"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            style={{ filter: 'drop-shadow(0 0 7px rgba(209,170,73,0.6))' }}
+          />
+          <g className="cine-thread-seed">
+            <g className="cine-thread-bean">
+              <circle r="13" fill="rgba(209,170,73,0.26)" />
+              <ellipse rx="6.5" ry="9.5" fill="rgba(209,170,73,0.14)" stroke="#D1AA49" strokeWidth="1.6" />
+              <path d="M0 -8 C -5 -2.5, -5 2.5, 0 8" fill="none" stroke="#D1AA49" strokeWidth="1.6" />
+            </g>
+          </g>
+        </svg>
+
+        {/* El aviso de scroll: la semilla dorada al pie, se despide al arrancar. */}
+        <div className="cine-hint absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none z-[10]">
           <span className="cine-seed inline-block mb-3">
             <BeanIcon width={22} height={31} />
           </span>
           <span className="text-[10px] uppercase tracking-[0.35em] text-white/50 font-bold">Sigue el hilo</span>
           <div className="mt-3 w-px h-12" style={{ background: 'linear-gradient(to bottom, #D1AA49, transparent)' }} />
-        </div>
-
-        {/* El hilo conductor NO se pierde en las fotos: un riel dorado por el
-            margen, con la semilla que baja mientras las imágenes del cliente
-            entran. Al soltar el pin, se desvanece y el proceso lo retoma. */}
-        <div
-          className="cine-thread absolute left-6 md:left-14 top-[16vh] bottom-[13vh] w-px z-[8] pointer-events-none opacity-0"
-          style={{ background: 'linear-gradient(to bottom, transparent, #D1AA49 12%, rgba(209,170,73,0.3) 86%, transparent)' }}
-        >
-          <span className="cine-thread-seed absolute left-1/2 -translate-x-1/2 top-0 -translate-y-1/2">
-            <BeanIcon width={18} height={25} />
-          </span>
         </div>
 
         {/* Titular de apertura: sobre los granos, visible antes de scrollear */}
