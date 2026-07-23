@@ -23,7 +23,10 @@ export default {
         }
       },
       fontFamily: {
-        serif: ['Playfair Display', 'serif'],
+        // El manual pide Gotham en TODA la web (títulos incluidos). Ambos
+        // tokens resuelven a Gotham; la jerarquía la dan los calibres
+        // (light/book/medium/bold). El serif queda solo de respaldo.
+        serif: ['Gotham', 'Playfair Display', 'serif'],
         sans: ['Gotham', 'Montserrat', 'system-ui', 'sans-serif'],
       },
     },
