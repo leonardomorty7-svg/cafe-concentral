@@ -24,7 +24,7 @@ export default {
       },
       fontFamily: {
         serif: ['Playfair Display', 'serif'],
-        sans: ['Manrope', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Montserrat', 'Manrope', 'system-ui', 'sans-serif'],
       },
     },
 	},

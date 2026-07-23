@@ -22,7 +22,7 @@
 
   body {
     @apply bg-[#F5F1EB] text-[#1A1A1A] antialiased;
-    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-family: 'Montserrat', 'Manrope', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: all 0.4s ease-out;
