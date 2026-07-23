@@ -26,15 +26,16 @@ const ProductCard = ({ id, name, tag, description, category, image, variants = [
       {/* Enlace estirado: toda la tarjeta navega al producto, salvo el botón. */}
       <a href={`/products/${id}`} className="absolute inset-0 z-[1]" aria-label={`Ver ${name}`} />
 
-      {/* Minimalista: la bolsa flota sobre un tono cálido, sin adornos. */}
+      {/* Packshot: la bolsa FLOTA (object-contain con aire) sobre un blanco
+          limpio y consistente — como los mockups del cliente. Card más alta. */}
       <div
-        className="relative aspect-[4/5] rounded-sm overflow-hidden mb-6"
-        style={{ background: 'linear-gradient(160deg, #FFFFFF 0%, #F1EADC 100%)' }}
+        className="relative aspect-[3/4] rounded-sm overflow-hidden mb-6"
+        style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F6F1E9 100%)' }}
       >
         <img
           src={image}
           alt={name}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
+          className="absolute inset-0 w-full h-full object-contain p-5 md:p-7 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
         />
 
         {/* Añadir rápido — aparece al pasar el mouse, por encima del enlace */}

@@ -169,16 +169,14 @@ const CinematicStory = () => {
       const H = window.innerHeight;
       if (!W || !H) return;
       threadSvg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-      // Ondulación suave alrededor del texto centrado: baja desde donde
-      // reposa el logo y ondea de lado a lado (±10% del ancho) hasta salir.
+      // El hilo NACE justo debajo del texto de la finca (~0.56H) y baja con
+      // una ondulación corta y suave, pasando al lado del texto, hasta salir
+      // por el borde inferior (relevo hacia la sección de productos).
       const anchors = [
-        { x: 0.50 * W, y: 0.01 * H },
-        { x: 0.58 * W, y: 0.17 * H },
-        { x: 0.40 * W, y: 0.35 * H },
-        { x: 0.60 * W, y: 0.53 * H },
-        { x: 0.41 * W, y: 0.71 * H },
-        { x: 0.55 * W, y: 0.89 * H },
-        { x: 0.50 * W, y: 1.03 * H },
+        { x: 0.50 * W, y: 0.56 * H },
+        { x: 0.585 * W, y: 0.70 * H },
+        { x: 0.45 * W, y: 0.85 * H },
+        { x: 0.50 * W, y: 1.04 * H },
       ];
       const d = smoothPath(anchors);
       threadTrack.setAttribute('d', d);
@@ -315,21 +313,21 @@ const CinematicStory = () => {
         tl.to('.cine-dots', { autoAlpha: 1, duration: 0.2 }, BEANS_DUR + 0.1);
 
         // ── El hilo conductor ondulado se dibuja bajando con el scroll ──
-        // Aparece cuando el logo se disuelve y se sigue trazando a lo largo
-        // de las fotos; la semilla viaja en la punta. Al final se despide y
-        // el proceso lo retoma.
+        // La semilla EMERGE debajo del texto de la finca, y el hilo baja
+        // trazándose al lado del texto hasta salir por el borde inferior:
+        // ahí lo retoma la sección de productos (no se desvanece de golpe).
         const lastAt = AT[AT.length - 1];
-        const threadEnd = lastAt + 1.3;
-        const threadSpan = threadEnd - BEANS_DUR;
+        const threadStart = BEANS_DUR + 0.45;
+        const threadEnd = lastAt + 1.1;
+        const threadSpan = threadEnd - threadStart;
         const threadProxy = { p: 0 };
-        tl.fromTo('.cine-thread', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, BEANS_DUR - 0.2);
+        tl.fromTo('.cine-thread', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, threadStart - 0.1);
         tl.fromTo(
           threadProxy,
           { p: 0 },
           { p: 1, duration: threadSpan, ease: 'none', onUpdate: () => updateThread(threadProxy.p) },
-          BEANS_DUR
+          threadStart
         );
-        tl.to('.cine-thread', { autoAlpha: 0, duration: 0.4 }, threadEnd);
 
         // Cola para sostener el beat final antes de soltar el pin.
         tl.to({}, { duration: 0.5 });

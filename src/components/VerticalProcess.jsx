@@ -236,15 +236,16 @@ const EditionCard = ({ id, name, image, variants }) => {
   const price = priceLabel(variants);
   return (
     <a href={`/products/${id}`} className="vp-card group block shrink-0 w-[clamp(250px,26vw,340px)]">
-      {/* Minimalista: la bolsa flota sobre un tono cálido, sin adornos. */}
+      {/* Packshot: la bolsa FLOTA (object-contain con aire) sobre blanco
+          limpio, como los mockups del cliente. Card más alta. */}
       <div
-        className="relative aspect-[4/5] rounded-sm overflow-hidden mb-6 transition-transform duration-500 ease-out group-hover:-translate-y-2"
-        style={{ background: 'linear-gradient(160deg, #FCFAF5 0%, #EFE7D8 100%)' }}
+        className="relative aspect-[3/4] rounded-sm overflow-hidden mb-6 transition-transform duration-500 ease-out group-hover:-translate-y-2"
+        style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F6F1E9 100%)' }}
       >
         <img
           src={image}
           alt={name}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
+          className="absolute inset-0 w-full h-full object-contain p-5 md:p-7 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
         />
       </div>
       <div className="flex items-baseline justify-between gap-3 px-1">
