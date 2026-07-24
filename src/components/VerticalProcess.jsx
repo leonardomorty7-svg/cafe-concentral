@@ -393,10 +393,15 @@ const VerticalProcess = ({ editions = [] }) => {
         buildThread();
         updateThread(0);
 
-        // El hilo se dibuja con el scroll a lo largo de toda la sección.
+        // El hilo se dibuja con el scroll y TERMINA de llenarse al final del
+        // último paso (fin de lo oscuro), no en el fondo de la sección: así se
+        // ve la línea completamente amarilla antes de la sección de ediciones.
+        const beatEls = gsap.utils.toArray('.vp-beat');
+        const lastBeatEl = beatEls[beatEls.length - 1] || rootRef.current;
         ScrollTrigger.create({
           trigger: rootRef.current,
           start: 'top top',
+          endTrigger: lastBeatEl,
           end: 'bottom bottom',
           scrub: true,
           invalidateOnRefresh: true,
