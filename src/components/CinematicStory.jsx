@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { startDust, GRAIN } from '../scripts/atmosphere.js';
 import BeanIcon from './BeanIcon.jsx';
+import ColombianoBadge from './ColombianoBadge.jsx';
 
 /**
  * CinematicStory — la apertura del sitio como UNA sola animación continua,
@@ -76,27 +77,30 @@ function smoothPath(points) {
 }
 
 const BeatText = ({ eyebrow, title, italic, Tag = 'h2', withCtas = false }) => (
-  <div className="max-w-5xl xl:max-w-7xl mx-auto px-6 text-center">
+  <div className="relative max-w-5xl xl:max-w-7xl mx-auto px-6 text-center">
     <p className="cine-eyebrow max-w-none tracking-[0.3em] text-xs uppercase mb-6 text-[#D1AA49] font-bold">{eyebrow}</p>
     <Tag className="font-serif font-light text-white tracking-tight leading-[1.05] text-4xl md:text-6xl xl:text-7xl">
       <span className="cine-title-main block">{title}</span>{' '}
       <span className="cine-title-italic italic text-[#D1AA49] block mt-2">{italic}</span>
     </Tag>
     {withCtas && (
-      <div className="cine-ctas mt-12 flex flex-col sm:flex-row gap-6 justify-center items-center">
-        <a
-          href="/productos"
-          className="inline-block border border-white/40 text-white px-8 py-3 uppercase tracking-wide bg-transparent hover:bg-white/10 transition-all duration-300"
-        >
-          Conocer nuestros cafés
-        </a>
-        <a
-          href="/nosotros"
-          className="inline-block border-b border-transparent text-white px-6 py-3 uppercase tracking-wide bg-transparent hover:border-white/40 transition-all duration-300"
-        >
-          Nuestra historia
-        </a>
-      </div>
+      <>
+        <div className="cine-ctas mt-12 flex flex-col sm:flex-row gap-6 justify-center items-center relative z-10">
+          <a
+            href="/productos"
+            className="inline-block border border-white/40 text-white px-8 py-3 uppercase tracking-wide bg-transparent hover:bg-white/10 transition-all duration-300"
+          >
+            Conocer nuestros cafés
+          </a>
+          <a
+            href="/nosotros"
+            className="inline-block border-b border-transparent text-white px-6 py-3 uppercase tracking-wide bg-transparent hover:border-white/40 transition-all duration-300"
+          >
+            Nuestra historia
+          </a>
+        </div>
+        <ColombianoBadge className="absolute -bottom-10 -right-4 md:-bottom-16 md:-right-0 lg:-bottom-20 lg:right-10" />
+      </>
     )}
   </div>
 );
@@ -395,7 +399,21 @@ const CinematicStory = () => {
         {BEATS.map((b, i) => (
           <div key={b.eyebrow} className="cine-text absolute inset-0 flex items-center opacity-0 z-10">
             <div className="w-full">
-              <BeatText {...b} Tag="h2" withCtas={i === BEATS.length - 1} />
+              {i === 0 ? (
+                /* Beat 0 — "Nuestra Tierra": título más largo que max-w-7xl.
+                   Se usa max-w-none para que el contenedor ocupe todo el ancho
+                   disponible. Las clases GSAP (cine-eyebrow / cine-title-main /
+                   cine-title-italic) se preservan sin cambios. */
+                <div className="max-w-none mx-auto px-6 text-center">
+                  <p className="cine-eyebrow max-w-none tracking-[0.3em] text-xs uppercase mb-6 text-[#D1AA49] font-bold">{b.eyebrow}</p>
+                  <h2 className="font-serif font-light text-white tracking-tight leading-[1.05] text-4xl md:text-6xl xl:text-7xl">
+                    <span className="cine-title-main block">{b.title}</span>{' '}
+                    <span className="cine-title-italic italic text-[#D1AA49] block mt-2">{b.italic}</span>
+                  </h2>
+                </div>
+              ) : (
+                <BeatText {...b} Tag="h2" withCtas={i === BEATS.length - 1} />
+              )}
             </div>
           </div>
         ))}

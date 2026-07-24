@@ -59,9 +59,7 @@ const ProductCard = ({ id, name, tag, description, category, image, variants = [
         </h3>
         {Number.isFinite(lowestPrice) && (
           <span className="font-serif text-xl md:text-2xl text-[#1A1A1A] font-medium shrink-0 whitespace-nowrap tabular-nums">
-            {variants.length > 1 && (
-              <span className="font-sans text-[10px] uppercase tracking-wide text-[#9A9488] mr-1 font-semibold align-middle">desde</span>
-            )}
+
             {formatPrice(lowestPrice)}
           </span>
         )}
@@ -97,7 +95,7 @@ const ProductGrid = ({ products = [], limit = 0, eyebrow, heading, headingItalic
                 {headingItalic && <span className="italic text-[#D1AA49]">{headingItalic}</span>}
               </h2>
               {description && (
-                <p className="mt-6 mx-auto md:max-w-none text-[#6B6B6B] font-light text-base md:text-lg leading-[1.7] md:whitespace-nowrap">
+                <p className="mt-3 mx-auto md:max-w-none text-[#6B6B6B] font-light text-xl md:text-2xl leading-[1.7] md:whitespace-nowrap">
                   {description}
                 </p>
               )}
@@ -114,7 +112,7 @@ const ProductGrid = ({ products = [], limit = 0, eyebrow, heading, headingItalic
                 </h2>
               </div>
               {description && (
-                <p className="text-[#6B6B6B] max-w-sm font-light text-lg leading-[1.7]">
+                <p className="text-[#6B6B6B] max-w-sm font-light text-xl md:text-2xl leading-[1.7]">
                   {description}
                 </p>
               )}

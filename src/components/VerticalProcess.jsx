@@ -546,15 +546,15 @@ const VerticalProcess = ({ editions = [] }) => {
             src="/assets/process/proceso-inicio.png"
             alt=""
             aria-hidden="true"
-            className="hidden md:block absolute z-[6] pointer-events-none select-none w-[clamp(280px,28vw,460px)]"
+            className="hidden md:block absolute z-[6] pointer-events-none select-none w-[clamp(280px,28vw,460px)] mt-5"
             style={{ left: '52%', top: '54%' }}
           />
           <div className="relative z-10 max-w-3xl mx-auto text-center">
             <h2 className="font-serif font-light text-4xl md:text-6xl xl:text-7xl text-white leading-[1.08]">
               Un proceso guiado por la <span className="italic text-[#D1AA49]">cooperación.</span>
             </h2>
-            <p className="mt-10 text-white/50 font-light text-base md:text-lg max-w-md mx-auto">
-              Tres momentos entre la tierra y tu taza. Baja despacio: el hilo te lleva.
+            <p className="mt-6 text-white/50 font-light text-xl md:text-2xl leading-[1.7] max-w-none mx-auto">
+              Tres momentos entre la tierra y tu taza.
             </p>
             {/* El grano NACE debajo del texto: desde aquí arranca el hilo. */}
             <div className="vp-bean vp-start inline-block mt-14">

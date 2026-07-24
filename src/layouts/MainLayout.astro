@@ -30,6 +30,12 @@ const {
 		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 	</head>
 	<body class="bg-white">
+		<img 
+			src="/assets/brand/colombia-ribbon.png" 
+			alt="Café de Colombia" 
+			class="fixed top-0 right-0 z-[9999] pointer-events-none w-20 sm:w-24 md:w-32 h-auto"
+			aria-hidden="true"
+		/>
 		<Navbar client:load currentPath={Astro.url.pathname} />
 		<main>
 			<slot />

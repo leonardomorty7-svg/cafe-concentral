@@ -5,49 +5,45 @@ const Footer = () => {
     <footer className="bg-[#0B0B0B] text-white py-32 px-8">
       <div className="max-w-7xl mx-auto">
         
-        {/* Inspiration Section: Lifestyle & Interaction */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 pb-24 border-b border-white/10">
+        {/* Institutional Contact Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 pb-24 border-b border-white/10 items-center">
           
-          {/* Newsletter */}
-          <div className="space-y-6">
-            <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold">NEWSLETTER</h4>
-            <p className="text-xl font-serif leading-tight">Mantente cerca de nuestro origen</p>
-            <form className="flex gap-4 border-b border-white/20 pb-2 group focus-within:border-[#D1AA49] transition-colors">
-              <input 
-                type="email" 
-                placeholder="Tu correo" 
-                className="bg-transparent text-sm w-full focus:outline-none placeholder:text-white/30 font-light"
-              />
-              <button className="text-[10px] uppercase tracking-widest hover:text-[#D1AA49] transition-colors font-bold">
-                SUSCRIBIRME
-              </button>
-            </form>
+          {/* Column 1: Contacto */}
+          <div className="space-y-4">
+            <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold">CONTACTO</h4>
+            <div className="space-y-3 text-xs tracking-widest text-white/50 uppercase">
+              <p>
+                <a href="mailto:marketing@coocentral.co" className="hover:text-white transition-colors">
+                  marketing@coocentral.co
+                </a>
+              </p>
+              <p>
+                (+57) 318 612 8444 Ext. 149
+              </p>
+            </div>
           </div>
 
-          {/* Contact / Collaborations */}
-          <div className="space-y-6 text-center md:border-x md:border-white/10 md:px-12">
-            <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold">CONTACTO</h4>
-            <p className="text-xl font-serif leading-tight">¿Quieres trabajar con nosotros?</p>
+          {/* Column 2: CTA Central */}
+          <div className="text-center md:border-x md:border-white/10 md:px-12 py-4">
+            <p className="text-xl font-serif leading-tight text-white mb-10">¿Quieres trabajar con nosotros?</p>
             <a 
               href="mailto:hola@cafecoocentral.com" 
-              className="inline-block px-8 py-3 border border-white/20 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-[#0B0B0B] transition-all rounded-sm"
+              className="inline-block px-6 py-3 border border-white/20 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-[#0B0B0B] transition-all rounded-sm"
             >
               ESCRÍBENOS
             </a>
           </div>
 
-          {/* Lifestyle / Playlist */}
-          <div className="space-y-6 text-right">
-            <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold">TÓMATE TU TIEMPO</h4>
-            <p className="text-xl font-serif leading-tight italic">Disfruta tu café</p>
-            <a 
-              href="https://open.spotify.com/playlist/0sc2FfgT3UMWrHqu4Napbf" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-block px-8 py-3 border border-white/20 text-[10px] uppercase tracking-[0.2em] font-bold hover:border-[#D1AA49] hover:text-[#D1AA49] transition-all rounded-sm"
-            >
-              ESCUCHAR PLAYLIST
-            </a>
+          {/* Column 3: Visítanos */}
+          <div className="text-left md:text-right">
+            <div className="space-y-4">
+              <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold">VISÍTANOS</h4>
+              <p className="text-xs tracking-widest text-white/50 uppercase leading-relaxed">
+                Cra. 12 # 2 – 55<br />
+                C.C. El Molino<br />
+                Garzón · Huila
+              </p>
+            </div>
           </div>
         </div>
 

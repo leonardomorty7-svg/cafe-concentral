@@ -1,4 +1,5 @@
 import React from 'react';
+import ColombianoBadge from './ColombianoBadge';
 
 /**
  * CTA — el cierre y manifiesto de marca ("Haz parte"). Full-bleed sobre una
@@ -30,19 +31,21 @@ const CTA = () => {
       <div className="relative z-10 max-w-4xl mx-auto text-center" data-fx="header">
         <span className="label-premium text-[#D1AA49] mx-auto mb-8">Haz parte</span>
         <h2 className="font-serif font-light text-white text-4xl md:text-6xl xl:text-7xl leading-[1.08] tracking-[-0.02em]">
-          Cuando eliges nuestro café,{' '}
-          <span className="italic text-[#D1AA49]">eliges a quienes lo cultivan.</span>
+          <span className="md:whitespace-nowrap">Cuando eliges nuestro café,</span><br />
+          <span className="italic text-[#D1AA49] inline-block md:w-max">eliges a quienes lo cultivan.</span>
         </h2>
         <p className="text-white/65 text-lg md:text-xl mt-10 mb-14 max-w-2xl mx-auto font-light leading-relaxed">
-          No te estamos pidiendo que compres café. Te estamos invitando a un modelo que
-          genera bienestar, fortalece comunidades y demuestra que el café puede transformar vidas.
+          Te estamos invitando a un modelo que genera bienestar, fortalece comunidades y demuestra que el café puede transformar vidas.
         </p>
-        <div className="flex flex-col sm:flex-row gap-5 justify-center" data-fx="rise">
+        <div className="flex flex-col sm:flex-row gap-5 justify-center relative z-10" data-fx="rise">
           <a href="/productos" className="btn-primary">Ver nuestros cafés</a>
           <a href="/contacto" className="btn-secondary border-white/25 text-white hover:bg-white/10">
             Hablar con nosotros
           </a>
         </div>
+        
+        {/* Floating label decoration (Reutilizado como componente compartido) */}
+        <ColombianoBadge className="absolute -bottom-16 -right-16 md:-bottom-24 md:-right-24" />
       </div>
     </section>
   );

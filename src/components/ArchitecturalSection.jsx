@@ -1,6 +1,9 @@
 import React from 'react';
 
 const ArchitecturalSection = () => {
+  // FASE 1 Refactor visual: Ocultar sección sin borrarla
+  return null;
+
   return (
     <section className="bg-white py-32 px-8 md:px-12 overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -70,29 +73,6 @@ const ArchitecturalSection = () => {
                   </p>
                 </div>
               </div>
-            </div>
-            
-            {/* Floating label decoration */}
-            <div className="absolute -bottom-12 -left-12 hidden lg:block z-10">
-              <svg
-                viewBox="0 0 240 240"
-                className="w-[190px] h-[190px] animate-spin-slow md:w-[210px] md:h-[210px]"
-              >
-                <defs>
-                  <path
-                    id="circlePath"
-                    d="M 120, 120
-                       m -95, 0
-                       a 95,95 0 1,1 190,0
-                       a 95,95 0 1,1 -190,0"
-                  />
-                </defs>
-                <text fontSize="13" letterSpacing="3.5" fill="#3B2A1A" fontWeight="600" opacity="0.75">
-                  <textPath href="#circlePath">
-                    100% COLOMBIANO • 100% COLOMBIANO •
-                  </textPath>
-                </text>
-              </svg>
             </div>
           </div>
 

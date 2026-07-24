@@ -129,7 +129,7 @@ const Navbar = ({ currentPath = '/' }) => {
           <a 
             key={item}
             href={`/${item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`} 
-            className={`text-5xl md:text-7xl font-serif text-base-white hover:text-accent-gold hover:italic transition-all duration-500 transform ${
+            className={`text-5xl md:text-7xl font-serif text-base-white hover:text-accent-gold transition-all duration-500 transform ${
               isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
             }`}
             style={{ transitionDelay: `${idx * 100 + 300}ms` }}
@@ -141,12 +141,21 @@ const Navbar = ({ currentPath = '/' }) => {
       </div>
 
       {/* Contact Block */}
-      <div className={`absolute bottom-8 left-8 md:bottom-12 md:left-12 flex flex-col gap-2 max-w-[260px] transition-all duration-700 transform ${
+      <div className={`absolute bottom-8 left-8 md:bottom-12 md:left-12 flex flex-col gap-6 max-w-[260px] transition-all duration-700 transform ${
         isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
       }`} style={{ transitionDelay: '600ms' }}>
-        <p className="text-[12px] tracking-[0.05em] text-white/50 leading-[1.6]">+57 311 351 9915</p>
-        <p className="text-[12px] tracking-[0.05em] text-white/50 leading-[1.6]">cafescoocentral.comercial@coocentral.co</p>
-        <p className="text-[12px] tracking-[0.05em] text-white/50 leading-[1.6]">Garzón, Huila — Colombia</p>
+        <div className="space-y-3">
+          <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold">CONTACTO</h4>
+          <p className="text-[12px] tracking-[0.05em] text-white/50 leading-[1.6]">marketing@coocentral.co</p>
+          <p className="text-[12px] tracking-[0.05em] text-white/50 leading-[1.6]">(+57) 318 612 8444 Ext. 149</p>
+        </div>
+        <div>
+          <p className="text-[12px] tracking-[0.05em] text-white/50 leading-[1.6]">
+            Cra. 12 # 2 – 55<br />
+            C.C. El Molino<br />
+            Garzón · Huila
+          </p>
+        </div>
       </div>
 
       {/* Social Block */}

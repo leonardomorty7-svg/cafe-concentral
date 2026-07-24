@@ -145,3 +145,12 @@
   animation: spin-slow 20s linear infinite;
 }
 
+/* ── CinematicStory: beat 1 "Nuestra Tierra" — título a una sola línea en desktop ── */
+/* Reducción del ~3% sobre text-7xl (4.5rem → 4.35rem) exclusivamente en xl.         */
+/* No afecta tablet, móvil, ni ningún otro beat. Las animaciones GSAP no dependen    */
+/* del font-size, solo de .cine-title-main como selector, por lo que no se rompen.   */
+@media (min-width: 1280px) {
+  .cine-beat:nth-child(1) .cine-title-main {
+    font-size: 4.35rem;
+  }
+}

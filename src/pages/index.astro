@@ -5,6 +5,7 @@ import CinematicStory from '../components/CinematicStory';
 import VerticalProcess from '../components/VerticalProcess';
 import ProductGrid from '../components/ProductGrid';
 import ArchitecturalSection from '../components/ArchitecturalSection.jsx';
+import TeamSection from '../components/TeamSection';
 import CTA from '../components/CTA';
 
 import { getExclusivas, getColeccion } from '../lib/products';
@@ -58,6 +59,9 @@ const FEATURED_PRODUCTS = getColeccion().map((p) => ({
 
 	{/* 4 — Profundidad: las raíces y las familias */}
 	<ArchitecturalSection client:visible />
+	
+	{/* FASE 2 Refactor visual: Nueva sección que reemplaza a la anterior */}
+	<TeamSection client:visible />
 
 	{/* 5 — El cierre: el manifiesto de marca ("Haz parte"). La exportación
 	       (B2B) vive en su propia página /exportacion para no repetir aquí
