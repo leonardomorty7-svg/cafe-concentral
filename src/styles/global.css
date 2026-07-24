@@ -73,6 +73,13 @@
     @apply font-serif font-medium tracking-tight text-base-black leading-[1.2];
   }
 
+  /* El manual pide Gotham SIN itálicas en los títulos: se anula la itálica
+     en todos los encabezados y sus acentos (spans con la utilidad .italic). */
+  h1, h2, h3, h4, h5, h6,
+  h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
+    font-style: normal !important;
+  }
+
   /* Premium tracking for headings */
   h1 { @apply tracking-[-0.03em] text-6xl md:text-[6.5rem] lg:text-[8rem] mb-8; }
   h2 { @apply tracking-[-0.02em] text-5xl md:text-[4rem] lg:text-7xl mb-6; }

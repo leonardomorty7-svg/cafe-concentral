@@ -151,11 +151,13 @@ const VideoLightbox = ({ src, title, onClose }) => {
  * hueco de la máscara, así el hilo dorado se teje por detrás.
  */
 const ProcessMedia = ({ img, alt }) => (
-  <div className="vp-weave relative mx-auto w-[clamp(280px,40vw,520px)]">
+  <div className="vp-weave group relative mx-auto w-[clamp(280px,40vw,520px)] transition-transform duration-500 ease-out will-change-transform hover:scale-[1.05] hover:-translate-y-2">
+    {/* Sin sombra/círculo debajo: así se ve que el hilo pasa POR DETRÁS. El
+        movimiento va en el contenedor (el parallax va en el <img>). */}
     <img
       src={img}
       alt={alt}
-      className="w-full h-auto object-contain drop-shadow-[0_36px_70px_rgba(0,0,0,0.55)]"
+      className="w-full h-auto object-contain"
     />
   </div>
 );
@@ -315,14 +317,18 @@ const VerticalProcess = ({ editions = [] }) => {
       const ovals = Array.from(root.querySelectorAll('.vp-weave')).map(toLocal);
       const cards = Array.from(root.querySelectorAll('.vp-card')).map(toLocal);
 
-      // Anclas del hilo: arranque (semilla del título) → óvalos → centro de
-      // la ficha central (destino final).
+      // Anclas del hilo: arranque (semilla del título) → imágenes de los pasos
+      // → borde inferior del ÚLTIMO paso. El hilo TERMINA al final de la parte
+      // oscura; NO entra a la sección de ediciones (crema) ni pasa por detrás
+      // de su título.
       const anchors = [];
       anchors.push(startEl ? { x: toLocal(startEl).cx, y: toLocal(startEl).cy } : { x: W * 0.5, y: 0 });
       ovals.forEach((o) => anchors.push({ x: o.cx, y: o.cy }));
-      if (cards.length) {
-        const mid = cards[Math.floor(cards.length / 2)];
-        anchors.push({ x: mid.cx, y: mid.cy });
+      const beatsEls = Array.from(root.querySelectorAll('.vp-beat'));
+      const lastBeat = beatsEls[beatsEls.length - 1];
+      if (lastBeat) {
+        const b = toLocal(lastBeat);
+        anchors.push({ x: W * 0.5, y: b.cy + b.ry }); // fin de lo oscuro
       } else {
         anchors.push({ x: W * 0.5, y: H });
       }
@@ -535,7 +541,7 @@ const VerticalProcess = ({ editions = [] }) => {
             src="/assets/process/proceso-inicio.png"
             alt=""
             aria-hidden="true"
-            className="hidden md:block absolute z-[6] pointer-events-none select-none w-[clamp(140px,14vw,220px)] drop-shadow-[0_24px_50px_rgba(0,0,0,0.55)]"
+            className="hidden md:block absolute z-[6] pointer-events-none select-none w-[clamp(190px,19vw,300px)]"
             style={{ left: '54%', top: '57%' }}
           />
           <div className="relative z-10 max-w-3xl mx-auto text-center">
