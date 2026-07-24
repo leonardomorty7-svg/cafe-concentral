@@ -512,7 +512,7 @@ const VerticalProcess = ({ editions = [] }) => {
       <div className="absolute inset-0 pointer-events-none z-[2]" style={{ backgroundImage: GRAIN, opacity: 0.05, mixBlendMode: 'overlay' }} />
 
       {/* El hilo conductor — un SVG que cubre toda la sección */}
-      <svg className="vp-thread hidden md:block absolute inset-0 w-full h-full z-20 pointer-events-none" aria-hidden="true" preserveAspectRatio="none">
+      <svg className="vp-thread hidden md:block absolute inset-0 w-full h-full z-[5] pointer-events-none" aria-hidden="true" preserveAspectRatio="none">
         <defs>
           <mask id="vpThreadMask" maskUnits="userSpaceOnUse">
             <rect className="vp-mask-bg" x="0" y="0" width="100%" height="100%" fill="white" />
@@ -526,7 +526,7 @@ const VerticalProcess = ({ editions = [] }) => {
             <rect className="vp-hole-head" x="-9999" y="-9999" width="0" height="0" fill="black" />
           </mask>
         </defs>
-        <g mask="url(#vpThreadMask)">
+        <g>
           <path className="vp-thread-track" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
           <path className="vp-thread-line" fill="none" stroke="#D1AA49" strokeWidth="2.5" strokeLinecap="round" style={{ filter: 'drop-shadow(0 0 7px rgba(209,170,73,0.6))' }} />
           <g className="vp-thread-seed">
@@ -546,8 +546,8 @@ const VerticalProcess = ({ editions = [] }) => {
             src="/assets/process/proceso-inicio.png"
             alt=""
             aria-hidden="true"
-            className="hidden md:block absolute z-[6] pointer-events-none select-none w-[clamp(190px,19vw,300px)]"
-            style={{ left: '54%', top: '57%' }}
+            className="hidden md:block absolute z-[6] pointer-events-none select-none w-[clamp(280px,28vw,460px)]"
+            style={{ left: '52%', top: '54%' }}
           />
           <div className="relative z-10 max-w-3xl mx-auto text-center">
             <h2 className="font-serif font-light text-4xl md:text-6xl xl:text-7xl text-white leading-[1.08]">
