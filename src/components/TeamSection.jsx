@@ -107,8 +107,9 @@ const TeamCard = ({ member, horizontal }) => {
   // ── Variante HORIZONTAL: foto al lado del texto ──────────────────────
   if (horizontal) {
     return (
-      <div className={`${cardBase} w-[340px] sm:w-[440px] md:w-[520px] p-5 md:p-6 flex items-center gap-5`}>
-        <div className="w-[38%] shrink-0 aspect-square overflow-hidden bg-black/5 rounded-sm">
+      <div className={`${cardBase} w-[340px] sm:w-[440px] md:w-[520px] overflow-hidden flex items-stretch`}>
+        {/* Foto a sangre: pegada al borde de la card (sin margen). */}
+        <div className="w-[38%] shrink-0 overflow-hidden bg-black/5">
           <img
             src={`/assets/team/${id}.jpg`}
             alt={name}
@@ -116,15 +117,17 @@ const TeamCard = ({ member, horizontal }) => {
             className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-105"
           />
         </div>
-        <div className="min-w-0 flex-1">{meta}</div>
+        <div className="min-w-0 flex-1 p-5 md:p-6 flex flex-col justify-center">{meta}</div>
       </div>
     );
   }
 
   // ── Variante VERTICAL (por defecto): más ANCHA y menos alta ──────────
   return (
-    <div className={`${cardBase} w-[330px] sm:w-[360px] md:w-[400px] p-6 md:p-8 flex flex-col`}>
-      <div className="w-full aspect-[4/3] mb-6 overflow-hidden bg-black/5 rounded-sm">
+    <div className={`${cardBase} w-[330px] sm:w-[360px] md:w-[400px] overflow-hidden flex flex-col`}>
+      {/* Foto a sangre: al ras del borde de la card, sin padding alrededor.
+          El aire queda solo en el texto. */}
+      <div className="w-full aspect-[4/3] overflow-hidden bg-black/5">
         <img
           src={`/assets/team/${id}.jpg`}
           alt={name}
@@ -132,7 +135,7 @@ const TeamCard = ({ member, horizontal }) => {
           className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-105"
         />
       </div>
-      {meta}
+      <div className="p-6 md:p-8">{meta}</div>
     </div>
   );
 };

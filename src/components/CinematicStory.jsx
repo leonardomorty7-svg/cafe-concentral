@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { startDust, GRAIN } from '../scripts/atmosphere.js';
 import BeanIcon from './BeanIcon.jsx';
-import ColombianoBadge from './ColombianoBadge.jsx';
 
 /**
  * CinematicStory — la apertura del sitio como UNA sola animación continua,
@@ -99,7 +98,6 @@ const BeatText = ({ eyebrow, title, italic, Tag = 'h2', withCtas = false }) => (
             Nuestra historia
           </a>
         </div>
-        <ColombianoBadge className="absolute -bottom-10 -right-4 md:-bottom-16 md:-right-0 lg:-bottom-20 lg:right-10" />
       </>
     )}
   </div>
