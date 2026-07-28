@@ -36,7 +36,7 @@ const ExportSection = () => {
         <div className="max-w-4xl mb-28" data-fx="header">
           <span className="label-premium text-accent-gold">El Huila en el mundo</span>
           <h2 className="text-base-white mb-10 leading-tight">
-            <span className="block md:whitespace-nowrap">Llevamos el trabajo de nuestras familias</span>
+            <span className="block lg:whitespace-nowrap">Llevamos el trabajo de nuestras familias</span>
             <span className="block italic-serif text-accent-gold">al mundo entero.</span>
           </h2>
           <p className="text-neutral-warm/50 text-xl font-light leading-relaxed max-w-[480px]">

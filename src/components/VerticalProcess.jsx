@@ -573,7 +573,7 @@ const VerticalProcess = ({ editions = [] }) => {
           <div className="relative min-h-screen flex flex-col items-center justify-center gap-10 md:gap-14 px-6 md:px-16 py-24 bg-[#F5F1EB]">
             <div className="text-center">
               <span className="text-[11px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold mb-4 block">Nuestras ediciones</span>
-              <h2 className="vp-headmask font-serif text-4xl md:text-5xl text-[#1A1A1A] leading-[1.05] md:whitespace-nowrap">
+              <h2 className="vp-headmask font-serif text-4xl md:text-5xl text-[#1A1A1A] leading-[1.05] lg:whitespace-nowrap">
                 Cafés con nombre <span className="italic text-[#D1AA49]">y con historia.</span>
               </h2>
             </div>

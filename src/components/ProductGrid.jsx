@@ -90,12 +90,12 @@ const ProductGrid = ({ products = [], limit = 0, eyebrow, heading, headingItalic
               {eyebrow && (
                 <span className="text-[11px] uppercase tracking-[0.3em] text-[#D1AA49] font-bold mb-6 block" data-fx-eyebrow>{eyebrow}</span>
               )}
-              <h2 className="inline-block text-4xl md:text-5xl xl:text-6xl font-serif text-[#1A1A1A] leading-tight md:whitespace-nowrap">
+              <h2 className="inline-block text-4xl md:text-5xl xl:text-6xl font-serif text-[#1A1A1A] leading-tight lg:whitespace-nowrap">
                 {heading}{' '}
                 {headingItalic && <span className="italic text-[#D1AA49]">{headingItalic}</span>}
               </h2>
               {description && (
-                <p className="mt-3 mx-auto md:max-w-none text-[#6B6B6B] font-light text-xl md:text-2xl leading-[1.7] md:whitespace-nowrap">
+                <p className="mt-3 mx-auto md:max-w-none text-[#6B6B6B] font-light text-xl md:text-2xl leading-[1.7] lg:whitespace-nowrap">
                   {description}
                 </p>
               )}

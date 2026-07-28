@@ -48,8 +48,11 @@ const Navbar = ({ currentPath = '/' }) => {
           />
         </a>
         
-        <div className="flex items-center gap-8 md:gap-12">
-          <div className="hidden md:flex space-x-12 items-center">
+        <div className="flex items-center gap-6 lg:gap-10 xl:gap-12">
+          {/* Los enlaces sueltos solo desde lg: en tablet (768px) no cabían
+              junto al logo, el carrito y MENU, y desbordaban la página a lo
+              ancho. Hasta lg la navegación vive en el menú de pantalla completa. */}
+          <div className="hidden lg:flex space-x-8 xl:space-x-12 items-center">
             {['Productos', 'Nosotros', 'Exportación'].map((item) => (
               <a 
                 key={item}
